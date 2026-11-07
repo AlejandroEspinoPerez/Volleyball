@@ -1612,6 +1612,8 @@
 
       .wardrobe {
         width: min(100% - 28px, 620px);
+        max-height: min(92dvh, 760px);
+        overflow: auto;
         background: linear-gradient(150deg, #292340, #1c2138 82%);
       }
       .locker {
@@ -1743,6 +1745,39 @@
       }
       [data-skin="orbita"] i {
         background: #94d7ff;
+      }
+      .swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .swatches button {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border-radius: 50%;
+        border: 2px solid #ffffff30;
+        box-shadow: inset 0 -6px 8px #00000022;
+      }
+      .swatches button[aria-pressed="true"] {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 2px #ffdb67;
+      }
+      .kitNumber {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 7px;
+      }
+      .kitNumber input {
+        width: 64px;
+        min-height: 34px;
+        text-align: center;
+        font: 850 0.9rem var(--mono);
+      }
+      #faceOptions button {
+        min-height: 36px;
+        font-size: 0.72rem;
       }
       .choiceGroup .fine {
         margin: 6px 0 0;
@@ -2183,26 +2218,63 @@
           </div>
         </div>
         <div class="lockerChoices">
-          <div class="choiceGroup" role="group" aria-label="Modelos de jugador">
-            <div class="choiceLabel">01 <span>JUGADOR</span></div>
+          <div class="choiceGroup" role="group" aria-label="Peinado">
+            <div class="choiceLabel">01 <span>PELO</span></div>
             <div class="skinOptions">
               <button type="button" data-skin="marea" aria-pressed="true">
-                <i aria-hidden="true"></i>Marea
+                <i aria-hidden="true"></i>Púas
               </button>
               <button type="button" data-skin="rayo" aria-pressed="false">
-                <i aria-hidden="true"></i>Rayo
+                <i aria-hidden="true"></i>Melena
               </button>
               <button type="button" data-skin="brasa" aria-pressed="false">
-                <i aria-hidden="true"></i>Brasa
+                <i aria-hidden="true"></i>Cresta
               </button>
               <button type="button" data-skin="orbita" aria-pressed="false">
-                <i aria-hidden="true"></i>Órbita
+                <i aria-hidden="true"></i>Volumen
               </button>
             </div>
-            <p class="fine">Todos los modelos juegan igual.</p>
+            <div class="choiceLabel" style="margin-top: 10px">
+              02 <span>COLOR</span>
+            </div>
+            <div class="swatches" id="hairColorSwatches"></div>
+          </div>
+          <div class="choiceGroup" role="group" aria-label="Cara y piel">
+            <div class="choiceLabel">03 <span>CARA</span></div>
+            <div class="skinOptions" id="faceOptions">
+              <button type="button" data-face="smile" aria-pressed="true">
+                Sonrisa
+              </button>
+              <button type="button" data-face="wow" aria-pressed="false">
+                Asombro
+              </button>
+              <button type="button" data-face="cool" aria-pressed="false">
+                Serio
+              </button>
+              <button type="button" data-face="smirk" aria-pressed="false">
+                Pícaro
+              </button>
+            </div>
+            <div class="choiceLabel" style="margin-top: 10px">
+              04 <span>PIEL</span>
+            </div>
+            <div class="swatches" id="skinToneSwatches"></div>
+          </div>
+          <div class="choiceGroup" role="group" aria-label="Camiseta">
+            <div class="choiceLabel">05 <span>CAMISETA</span></div>
+            <div class="swatches" id="kitSwatches"></div>
+            <label class="kitNumber" for="kitNumber"
+              ><span class="choiceLabel" style="margin: 0">NÚMERO</span
+              ><input
+                id="kitNumber"
+                type="number"
+                min="0"
+                max="99"
+                value="1"
+            /></label>
           </div>
           <div class="choiceGroup" role="group" aria-label="Canchas">
-            <div class="choiceLabel">02 <span>CANCHA</span></div>
+            <div class="choiceLabel">06 <span>CANCHA</span></div>
             <div class="courtOptions">
               <button type="button" data-court="playa" aria-pressed="true">
                 <i aria-hidden="true"></i
@@ -2334,9 +2406,8 @@
       <details class="option">
         <summary>Configurar un servidor TURN</summary>
         <p class="fine">
-          Opcional. Si sus redes bloquean WebRTC directo, ambos pueden usar las
-          credenciales de su servidor TURN. Configúrenlo antes de crear o
-          unirse.
+          El juego ya usa un relé TURN automático para unir móvil y laptop.
+          Solo rellena esto si tienes tu propio servidor.
         </p>
         <label for="turnUrl">URL de TURN</label>
         <input
@@ -7653,24 +7724,24 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       ];
       const SKINS = {
         marea: {
-          name: "Marea",
+          name: "Púas",
           tag: "CLÁSICO",
-          description: "Pelo negro, sudadera blanca y manos de pelota.",
+          description: "Pelo corto con púas, cara grande y camiseta de parque.",
         },
         rayo: {
-          name: "Rayo",
+          name: "Melena",
           tag: "VELOCIDAD",
-          description: "Melena amarilla y camiseta de pista.",
+          description: "Pelo al viento, listo para el remate.",
         },
         brasa: {
-          name: "Brasa",
+          name: "Cresta",
           tag: "POTENCIA",
-          description: "Cresta naranja y look de rematador.",
+          description: "Mohawk de atacante y mirada de bloqueo.",
         },
         orbita: {
-          name: "Órbita",
+          name: "Volumen",
           tag: "ESTILO",
-          description: "Pelo violeta, como el rival de parque.",
+          description: "Melena redonda, como el rival de Just Volleyball.",
         },
       };
       const LOOKS = {
@@ -7679,11 +7750,76 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         brasa: { hair: 0xff6a2b, skin: 0x8d5a3c, sock: 0xffd36a },
         orbita: { hair: 0x9b5cff, skin: 0xe8b898, sock: 0xf4f4f4 },
       };
+      const FACES = {
+        smile: { name: "Sonrisa" },
+        wow: { name: "Asombro" },
+        cool: { name: "Serio" },
+        smirk: { name: "Pícaro" },
+      };
+      const HAIR_COLORS = [
+        { name: "Negro", hex: 0x1c1c1e },
+        { name: "Rubio", hex: 0xffe566 },
+        { name: "Naranja", hex: 0xff6a2b },
+        { name: "Violeta", hex: 0x9b5cff },
+        { name: "Castaño", hex: 0x5a3318 },
+        { name: "Blanco", hex: 0xf2f0ea },
+      ];
+      const SKIN_TONES = [
+        { name: "Clara", hex: 0xf0c9a0 },
+        { name: "Media", hex: 0xc8895a },
+        { name: "Morena", hex: 0x8d5a3c },
+        { name: "Dorada", hex: 0xe8b898 },
+        { name: "Oscura", hex: 0x5c3a28 },
+      ];
+      const KIT_COLORS = [
+        { name: "Blanca", hex: 0xf6f3ec },
+        { name: "Negra", hex: 0x2c2c36 },
+        { name: "Agua", hex: 0x40cebd },
+        { name: "Coral", hex: 0xff846d },
+        { name: "Azul", hex: 0x68b9e8 },
+        { name: "Rosa", hex: 0xef87ad },
+      ];
       const DEFAULT_SKINS = ["marea", "brasa", "rayo", "orbita"];
       const validSkin = (name) =>
         typeof name === "string" && Object.hasOwn(SKINS, name);
       const skinFor = (name, slot = 0) =>
         validSkin(name) ? name : DEFAULT_SKINS[slot] || "marea";
+      const hasHex = (list, value) =>
+        list.some((item) => item.hex === Number(value));
+      function parseLook(raw, skin = "marea") {
+        const base = LOOKS[skinFor(skin)] || LOOKS.marea;
+        const look = raw && typeof raw === "object" ? raw : {};
+        const number = Math.trunc(Number(look.number));
+        return {
+          face: Object.hasOwn(FACES, look.face) ? look.face : "smile",
+          hairColor: hasHex(HAIR_COLORS, look.hairColor)
+            ? Number(look.hairColor)
+            : base.hair,
+          skinTone: hasHex(SKIN_TONES, look.skinTone)
+            ? Number(look.skinTone)
+            : base.skin,
+          jersey: hasHex(KIT_COLORS, look.jersey)
+            ? Number(look.jersey)
+            : 0xf6f3ec,
+          number:
+            Number.isInteger(number) && number >= 0 && number <= 99
+              ? number
+              : 1,
+        };
+      }
+      function cpuLook(slot, skin) {
+        return parseLook(
+          {
+            face: ["smile", "wow", "cool", "smirk"][slot % 4],
+            hairColor: HAIR_COLORS[slot % HAIR_COLORS.length].hex,
+            skinTone: SKIN_TONES[slot % SKIN_TONES.length].hex,
+            jersey: KIT_COLORS[(slot + 1) % KIT_COLORS.length].hex,
+            number: [7, 11, 4, 9][slot] || slot + 1,
+          },
+          skin,
+        );
+      }
+      const playerLook = (p) => parseLook(p?.look, p?.skin);
       const SHOT_COLORS = {
         soft: {
           trail: 0xffdda0,
@@ -8049,8 +8185,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             skin = skinFor(p.skin, slot);
           const hue = PALETTES[slot],
             look = LOOKS[skin] || LOOKS.marea;
-          const { x, y, z } = p,
-            size = (p.scale || 1) * 1.04,
+            const { x, y, z } = p,
             facing = preview ? p.previewYaw : p.yaw;
           const action = p.anim > 0 ? p.pose : "",
             prep = p.intent || "";
@@ -8063,6 +8198,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             y > 0.05
               ? Math.sin(clamp((airborne || 0.22) / 0.84, 0, 1) * Math.PI)
               : 0;
+          const size = (p.scale || 1) * 1.08 * (1 + tuck * 0.08);
           const plant = p.load > 0 ? easeMotion((0.123 - p.load) / 0.105) : 0;
           const extension =
             airborne > 0 ? Math.sin(clamp(airborne / 0.17, 0, 1) * Math.PI) : 0;
@@ -8071,8 +8207,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           const step = Math.sin(clock * 18.5 + slot * 2.18) * running;
           const idle =
             !running && y < 0.04 && !action && !prep
-              ? Math.sin(clock * 5.6 + slot) * 0.022
-              : 0;
+              ? Math.sin(clock * 6.2 + slot) * 0.038
+              : Math.sin(clock * 9.4 + slot) * running * 0.012;
           const brace =
             action === "spike"
               ? easeMotion((phase - 0.05) / 0.31) *
@@ -8146,12 +8282,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.r.draw(this.mesh.post, beamMatrix(a, b, radius * size), hex);
           };
 
-          const tone = look.skin,
-            hair = look.hair,
+          const kit = playerLook(p);
+          const tone = kit.skinTone,
+            hair = kit.hairColor,
             sock = look.sock,
-            jersey = p.side ? 0x2c2c36 : 0xf6f3ec,
+            jersey = kit.jersey,
             shorts = 0x2d3340,
-            accent = hue.main;
+            accent = hue.main,
+            iris = hair === 0xf2f0ea || hair === 0xffe566 ? 0x3a5a9a : 0x3a2418,
+            blush = 0xff8aa8,
+            face =
+              action === "spike" || readySpike > 0.55
+                ? "wow"
+                : action === "dive"
+                  ? "cool"
+                  : kit.face,
+            hairSway = Math.sin(clock * 3.6 + slot) * 0.04;
           for (const side of [-1, 1]) {
             const lead = side === arm;
             const stride = side * step * 0.42 + plant * (lead ? -0.21 : 0.24);
@@ -8193,66 +8339,172 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             );
           }
           shape(shorts, 0, 0.48, 0.02, 0.4, 0.16, 0.3);
-          shape(jersey, 0, 0.74, 0.03, 0.4, 0.34, 0.3);
-          shape(accent, 0, 0.72, 0.26, 0.18, 0.12, 0.08);
+          shape(jersey, 0, 0.74, 0.03, 0.42, 0.36, 0.32);
+          shape(accent, 0, 0.72, 0.28, 0.2, 0.13, 0.08);
+          const ink =
+            jersey === 0x2c2c36 || jersey === 0x40cebd ? 0xf6f3ec : 0x1c1c22;
+          const digits = String(kit.number);
+          const glyph = [
+            "1111110",
+            "0110000",
+            "1101101",
+            "1111001",
+            "0110011",
+            "1011011",
+            "1011111",
+            "1110000",
+            "1111111",
+            "1111011",
+          ];
+          const bars = [
+            [0, 0.11, 0.09, 0.028],
+            [0.055, 0.055, 0.028, 0.07],
+            [0.055, -0.055, 0.028, 0.07],
+            [0, -0.11, 0.09, 0.028],
+            [-0.055, -0.055, 0.028, 0.07],
+            [-0.055, 0.055, 0.028, 0.07],
+            [0, 0, 0.09, 0.028],
+          ];
+          for (const depth of [0.32, -0.3]) {
+            digits.split("").forEach((ch, i) => {
+              const ox = (i - (digits.length - 1) / 2) * 0.2;
+              glyph[Number(ch)]?.split("").forEach((on, s) => {
+                if (on !== "1") return;
+                const [lx, ly, sx, sy] = bars[s];
+                shape(ink, ox + lx, 0.78 + ly, depth, sx, sy, 0.04);
+              });
+            });
+          }
           if (playerSide && !preview) {
-            shape(0xffffff, 0, 0.82, 0.3, 0.16, 0.035, 0.04);
-            shape(0xffffff, 0, 0.82, 0.3, 0.035, 0.16, 0.04);
+            shape(0xffffff, 0, 0.82, 0.34, 0.16, 0.035, 0.04);
+            shape(0xffffff, 0, 0.82, 0.34, 0.035, 0.16, 0.04);
           }
-          shape(tone, 0, 1.22, 0.1, 0.66, 0.6, 0.58);
-          const blink =
-            Math.sin(clock * 1.85 + slot * 1.6) > 0.996 ? 0.04 : 0.17;
-          for (const side of [-1, 1]) {
-            shape(0xffffff, side * 0.19, 1.26, 0.52, 0.17, blink, 0.1);
-            shape(0x1a1a1a, side * 0.19, 1.25, 0.58, 0.06, blink * 0.55, 0.045);
-            shape(0xffffff, side * 0.16, 1.3, 0.6, 0.025, blink * 0.2, 0.014);
-          }
-          shape(0x1a1a1a, 0, 1.1, 0.54, 0.08, 0.028, 0.032);
-          shape(tone, 0, 1.12, 0.52, 0.055, 0.032, 0.03);
+          const bob = idle * 5;
+          shape(tone, 0, 1.22 + bob, 0.02, 0.62, 0.58, 0.5);
+          shape(tone, -0.56, 1.2 + bob, 0.02, 0.13, 0.18, 0.11);
+          shape(tone, 0.56, 1.2 + bob, 0.02, 0.13, 0.18, 0.11);
           if (skin === "marea") {
-            shape(hair, 0, 1.52, -0.16, 0.68, 0.34, 0.52);
-            shape(hair, -0.3, 1.58, -0.02, 0.24, 0.36, 0.22, 0.2, 0.45);
-            shape(hair, 0.28, 1.6, -0.04, 0.22, 0.38, 0.2, 0.18, -0.4);
-            shape(hair, 0, 1.74, -0.14, 0.3, 0.3, 0.24);
-            shape(hair, -0.14, 1.66, 0.02, 0.2, 0.24, 0.16);
+            shape(hair, 0, 1.58 + bob, -0.28, 0.58, 0.2, 0.28);
+            shape(
+              hair,
+              -0.22 + hairSway,
+              1.72 + bob,
+              -0.26,
+              0.16,
+              0.28,
+              0.16,
+              0.35,
+              0.4,
+            );
+            shape(
+              hair,
+              0.2 + hairSway,
+              1.74 + bob,
+              -0.26,
+              0.15,
+              0.3,
+              0.15,
+              0.32,
+              -0.38,
+            );
+            shape(hair, 0, 1.78 + bob, -0.32, 0.22, 0.22, 0.16);
           } else if (skin === "rayo") {
-            shape(hair, 0, 1.56, -0.16, 0.62, 0.32, 0.46);
-            for (const [sx, sy, sz] of [
-              [-0.32, 1.74, -0.08],
-              [0.3, 1.78, -0.1],
-              [-0.08, 1.9, -0.18],
-              [0.16, 1.86, -0.06],
-            ]) {
-              shape(hair, sx, sy, sz, 0.18, 0.36, 0.18, 0.24, sx);
-            }
-          } else if (skin === "brasa") {
-            shape(hair, 0, 1.52, -0.16, 0.58, 0.28, 0.44);
+            shape(hair, 0, 1.54 + bob, -0.3, 0.54, 0.18, 0.26);
             for (const [sx, sy] of [
-              [-0.26, 1.82],
-              [-0.08, 1.96],
-              [0.1, 1.94],
-              [0.28, 1.8],
+              [-0.28, 1.78],
+              [0.26, 1.82],
+              [-0.04, 1.94],
+              [0.12, 1.9],
             ]) {
               shape(
                 hair,
+                sx + hairSway,
+                sy + bob,
+                -0.34,
+                0.15,
+                0.36,
+                0.14,
+                0.42,
                 sx,
-                sy,
-                -0.2,
-                0.15,
+              );
+            }
+          } else if (skin === "brasa") {
+            shape(hair, 0, 1.5 + bob, -0.3, 0.48, 0.16, 0.24);
+            for (const [sx, sy] of [
+              [-0.12, 1.82],
+              [0, 1.98],
+              [0.12, 1.86],
+            ]) {
+              shape(
+                hair,
+                sx + hairSway * 0.4,
+                sy + bob,
+                -0.32,
+                0.12,
                 0.4,
-                0.15,
-                0.3,
-                -sx * 0.8,
+                0.12,
+                0.38,
+                -sx,
                 false,
                 "cone",
               );
             }
           } else {
-            shape(hair, 0, 1.56, -0.12, 0.64, 0.36, 0.48);
-            shape(hair, 0, 1.8, -0.18, 0.34, 0.3, 0.28);
-            shape(hair, -0.36, 1.46, -0.02, 0.22, 0.24, 0.2);
-            shape(hair, 0.36, 1.46, -0.02, 0.22, 0.24, 0.2);
+            shape(hair, 0, 1.58 + bob, -0.3, 0.6, 0.24, 0.28);
+            shape(hair, 0 + hairSway, 1.8 + bob, -0.34, 0.32, 0.24, 0.2);
+            shape(hair, -0.32, 1.42 + bob, -0.22, 0.18, 0.2, 0.14);
+            shape(hair, 0.32, 1.42 + bob, -0.22, 0.18, 0.2, 0.14);
           }
+          shape(tone, 0, 1.18 + bob, 0.36, 0.5, 0.44, 0.24);
+          shape(blush, -0.3, 1.08 + bob, 0.52, 0.12, 0.055, 0.05);
+          shape(blush, 0.3, 1.08 + bob, 0.52, 0.12, 0.055, 0.05);
+          const blinkWave = (Math.sin(clock * 1.28 + slot * 1.7) + 1) * 0.5;
+          const blink = blinkWave > 0.93 ? 0.04 : 0.22;
+          shape(0x1a1a1a, -0.22, 1.44 + bob, 0.5, 0.2, 0.05, 0.05, 0, 0.32);
+          shape(0x1a1a1a, 0.22, 1.44 + bob, 0.5, 0.2, 0.05, 0.05, 0, -0.32);
+          for (const side of [-1, 1]) {
+            shape(0xffffff, side * 0.22, 1.26 + bob, 0.52, 0.24, blink, 0.16);
+            shape(
+              iris,
+              side * 0.22,
+              1.24 + bob,
+              0.62,
+              0.13,
+              blink * 0.74,
+              0.1,
+            );
+            shape(
+              0x1a1a1a,
+              side * 0.22,
+              1.24 + bob,
+              0.68,
+              0.07,
+              blink * 0.5,
+              0.06,
+            );
+            shape(
+              0xffffff,
+              side * 0.16,
+              1.32 + bob,
+              0.7,
+              0.05,
+              blink * 0.24,
+              0.03,
+            );
+          }
+          if (face === "wow") {
+            shape(0x4a2030, 0, 1.0 + bob, 0.54, 0.12, 0.12, 0.09);
+            shape(0xff9aa8, 0, 0.98 + bob, 0.58, 0.055, 0.055, 0.04);
+          } else if (face === "cool") {
+            shape(0x1a1a1a, 0, 1.04 + bob, 0.54, 0.16, 0.035, 0.04);
+          } else if (face === "smirk") {
+            shape(0x4a2030, 0.08, 1.03 + bob, 0.54, 0.16, 0.05, 0.05, 0, 0.5);
+          } else {
+            shape(0x4a2030, 0, 1.02 + bob, 0.54, 0.18, 0.055, 0.05);
+            shape(0x4a2030, -0.12, 1.05 + bob, 0.53, 0.06, 0.035, 0.035, 0, 0.7);
+            shape(0x4a2030, 0.12, 1.05 + bob, 0.53, 0.06, 0.035, 0.035, 0, -0.7);
+          }
+          shape(tone, 0, 1.12 + bob, 0.56, 0.08, 0.06, 0.06);
 
           for (const side of [-1, 1]) {
             const shoulder = local(side * 0.493, 1.171, 0.031);
@@ -8456,8 +8708,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             });
           }
         }
-        previewSkin(skin, clock) {
-          this.r.begin([2.35, 1.72, 4.95], [0, 1.02, 0], 30, 0);
+        previewSkin(skin, clock, look) {
+          this.r.begin([1.85, 1.55, 4.35], [0, 1.18, 0.12], 28, 0);
           this.r.blend(true);
           this.r.draw(
             this.mesh.disk,
@@ -8477,13 +8729,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.avatar(
             {
               skin,
+              look,
               slot: 0,
               side: 0,
               x: 0,
               y: 0,
               z: 0,
               arm: 1,
-              previewYaw: 0.36 + Math.sin(clock * 0.68) * 0.62,
+              previewYaw: 0.12 + Math.sin(clock * 0.72) * 0.34,
             },
             clock,
             false,
@@ -8502,8 +8755,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           if (preview) {
             const sway = this.r.software ? 0 : Math.sin(clock * 0.3);
             this.r.begin(
-              [11.2 + sway * 0.66, 6.35 + narrow, 15.2 + narrow * 8],
-              [0.12, 1.15, -1.4],
+              [11.2 + sway * 0.66, 6.15 + narrow, 15.2 + narrow * 8],
+              [0.12, 1.22, -1.4],
               44 + narrow * 14,
               aspect > 1.12 ? 0.28 : 0.22,
             );
@@ -8519,11 +8772,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.r.begin(
               [
                 drift + shake,
-                9.15 + narrow * 4 + (big ? 0.46 : 0),
-                flip * (19.8 + narrow * 12 + (big ? 0.55 : 0)),
+                7.65 + narrow * 3.2 + (big ? 0.4 : 0),
+                flip * (16.9 + narrow * 10 + (big ? 0.48 : 0)),
               ],
-              [drift * 0.48, 0.62 + shake * 0.42, flip * -0.55],
-              50 + narrow * 14,
+              [drift * 0.42, 1.12 + shake * 0.42, flip * -0.42],
+              46 + narrow * 12,
               0,
             );
           }
@@ -8887,7 +9140,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       const orientation = (side) => (side ? -1 : 1);
       const teamOf = (slot) => slot % 2;
 
-      function playerAt(slot, x, z, bot, skin) {
+      function playerAt(slot, x, z, bot, skin, look) {
         const side = teamOf(slot);
         return {
           slot,
@@ -8920,6 +9173,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           grace: null,
           bot,
           skin,
+          look: bot ? cpuLook(slot, skin) : parseLook(look, skin),
         };
       }
       function forecast(ball, height = COURT.radius) {
@@ -9097,6 +9351,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           serial = 0,
           drill = "",
           skins = [],
+          looks = [],
         ) {
           this.level = LEVELS[level];
           this.size = size;
@@ -9106,6 +9361,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             (_, slot) => !humanSlots.includes(slot),
           );
           this.skins = this.bots.map((_, slot) => skinFor(skins[slot], slot));
+          this.looks = this.skins.map((skin, slot) =>
+            this.bots[slot]
+              ? cpuLook(slot, skin)
+              : parseLook(looks[slot], skin),
+          );
           this.scores = [0, 0];
           this.stats = this.bots.map(() => ({
             spikes: 0,
@@ -9160,7 +9420,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             const sign = orientation(teamOf(slot));
             const x = this.size === 1 ? 0 : sign * (slot < 2 ? -1.78 : 1.67);
             const depth = slot === server ? 7.35 : slot < 2 ? 5.0 : 2.36;
-            return playerAt(slot, x, depth * sign, bot, this.skins[slot]);
+            return playerAt(
+              slot,
+              x,
+              depth * sign,
+              bot,
+              this.skins[slot],
+              this.looks[slot],
+            );
           });
           this.holdBall();
           this.readAfter = this.clock;
@@ -10168,6 +10435,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 call,
                 bot,
                 skin,
+                look,
               }) => ({
                 slot,
                 side,
@@ -10193,6 +10461,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 call,
                 bot,
                 skin,
+                look,
               }),
             ),
             ball: { ...ball },
@@ -10246,6 +10515,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       let muted = pref("silent", "false") === "true";
       let assistJump = pref("assist-jump", "false") === "true";
       let selectedSkin = skinFor(pref("skin", "marea"));
+      let selectedLook = parseLook(
+        (() => {
+          try {
+            return JSON.parse(pref("look", "null"));
+          } catch {
+            return null;
+          }
+        })(),
+        selectedSkin,
+      );
       let selectedCourt = pref("court", "playa") === "neon" ? "neon" : "playa";
       let bestSpike = Math.max(0, Number(pref("top-spike", "0")) || 0);
       let skinStage = null;
@@ -10338,9 +10617,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       const sizeButtons = [...document.querySelectorAll("[data-size]")];
       const skinButtons = [...document.querySelectorAll("button[data-skin]")];
       const courtButtons = [...document.querySelectorAll("button[data-court]")];
+      const faceButtons = [...document.querySelectorAll("button[data-face]")];
+      function fillSwatches(id, list, current, onPick) {
+        const root = $(id);
+        root.replaceChildren(
+          ...list.map((item) => {
+            const button = Object.assign(document.createElement("button"), {
+              type: "button",
+              title: item.name,
+            });
+            button.style.background =
+              "#" + item.hex.toString(16).padStart(6, "0");
+            button.setAttribute("aria-label", item.name);
+            button.setAttribute("aria-pressed", String(item.hex === current));
+            button.addEventListener("click", () => onPick(item.hex));
+            return button;
+          }),
+        );
+      }
+      function saveLook(next) {
+        selectedLook = parseLook(next, selectedSkin);
+        remember("look", JSON.stringify(selectedLook));
+        updateWardrobe();
+      }
       function updateWardrobe() {
         const skin = SKINS[selectedSkin],
           court = COURTS[selectedCourt];
+        selectedLook = parseLook(selectedLook, selectedSkin);
         for (const button of skinButtons)
           button.setAttribute(
             "aria-pressed",
@@ -10351,9 +10654,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             "aria-pressed",
             String(button.dataset.court === selectedCourt),
           );
+        for (const button of faceButtons)
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.face === selectedLook.face),
+          );
+        fillSwatches("hairColorSwatches", HAIR_COLORS, selectedLook.hairColor, (hex) =>
+          saveLook({ ...selectedLook, hairColor: hex }),
+        );
+        fillSwatches("skinToneSwatches", SKIN_TONES, selectedLook.skinTone, (hex) =>
+          saveLook({ ...selectedLook, skinTone: hex }),
+        );
+        fillSwatches("kitSwatches", KIT_COLORS, selectedLook.jersey, (hex) =>
+          saveLook({ ...selectedLook, jersey: hex }),
+        );
+        if ($("kitNumber").value !== String(selectedLook.number))
+          $("kitNumber").value = String(selectedLook.number);
         showText("skinTag", skin.tag);
         showText("skinName", skin.name);
-        showText("skinDescription", skin.description);
+        showText(
+          "skinDescription",
+          FACES[selectedLook.face].name +
+            " · dorsal " +
+            selectedLook.number +
+            " · " +
+            skin.description,
+        );
         showText("locationName", court.name);
         showText("locationNumber", court.tag);
         document.body.dataset.court = selectedCourt;
@@ -10465,6 +10791,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           humans = [0],
           drill = "",
           skins = [selectedSkin],
+          looks = [selectedLook],
         } = {},
       ) {
         if (!arena) return;
@@ -10473,7 +10800,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         game =
           next === "guest"
             ? null
-            : new Match(level, size, humans, serial, drill, skins);
+            : new Match(level, size, humans, serial, drill, skins, looks);
         incoming = null;
         target = null;
         visual = null;
@@ -10557,15 +10884,30 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         showDialog("practiceDialog"),
       );
       $("wardrobe").addEventListener("click", () => {
-        skinStage ||= new Arena($("skinPreview"), true);
+        try {
+          skinStage ||= new Arena($("skinPreview"), true);
+        } catch (error) {
+          console.error(error);
+          showText(
+            "skinDescription",
+            "No se pudo abrir el preview 3D. El vestuario sigue guardando tu look.",
+          );
+        }
         showDialog("wardrobeDialog");
       });
       for (const button of skinButtons)
         button.addEventListener("click", () => {
           selectedSkin = button.dataset.skin;
           remember("skin", selectedSkin);
-          updateWardrobe();
+          saveLook(selectedLook);
         });
+      for (const button of faceButtons)
+        button.addEventListener("click", () => {
+          saveLook({ ...selectedLook, face: button.dataset.face });
+        });
+      $("kitNumber").addEventListener("input", () => {
+        saveLook({ ...selectedLook, number: $("kitNumber").value });
+      });
       for (const button of courtButtons)
         button.addEventListener("click", () => {
           selectedCourt = button.dataset.court;
@@ -10606,6 +10948,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             size: game.size,
             serial: game.serial + 1,
             drill: game.drill?.key || "",
+            skins: game.skins,
+            looks: game.looks,
           });
         }
       });
@@ -10758,17 +11102,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             slot: 0,
             side: 0,
             skin: selectedSkin,
+            look: selectedLook,
             x: 0.32 + 0.11 * Math.sin(clock * 1.4),
             y: phase < 0.23 ? Math.sin((phase * Math.PI) / 0.23) * 0.28 : 0,
             z: 4.82,
             scale: 1.17,
-            previewYaw: 0.7,
+            previewYaw: 0.32,
             anim: phase < 0.24 ? 0.25 : 0,
             pose: "return",
           },
           {
             slot: 1,
             side: 1,
+            look: cpuLook(1, "brasa"),
+            skin: "brasa",
             x: 1.5 + 0.17 * Math.cos(clock * 1.25),
             y:
               phase > 1 && phase < 1.23
@@ -10786,6 +11133,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             {
               slot: 2,
               side: 0,
+              look: cpuLook(2, "rayo"),
+              skin: "rayo",
               x: 3.02,
               y: 0,
               z: 1.22,
@@ -10797,6 +11146,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             {
               slot: 3,
               side: 1,
+              look: cpuLook(3, "orbita"),
+              skin: "orbita",
               x: -2.54,
               y: 0,
               z: -5.1,
@@ -10884,6 +11235,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             "call",
             "bot",
             "skin",
+            "look",
             "vy",
             "airTime",
           ])
@@ -11215,7 +11567,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         if (mode === "menu") {
           arena.frame(menuScene(clock), clock, dt, mode, 0, null, null, null);
           if (skinStage && $("wardrobeDialog").open)
-            skinStage.previewSkin(selectedSkin, clock);
+            skinStage.previewSkin(selectedSkin, clock, selectedLook);
           return;
         }
         let state = null;
@@ -11299,7 +11651,37 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       const ROOM_CHARACTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
       const ICE_SERVERS = [
         { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun1.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:19302" },
         { urls: "stun:stun.cloudflare.com:3478" },
+        { urls: "stun:stun.relay.metered.ca:80" },
+        {
+          urls: [
+            "turn:0.peerjs.com:3478",
+            "turn:0.peerjs.com:3478?transport=tcp",
+            "turns:0.peerjs.com:443?transport=tcp",
+          ],
+          username: "peerjs",
+          credential: "peerjsp",
+        },
+        {
+          urls: [
+            "turn:eu-0.turn.peerjs.com:3478",
+            "turn:eu-0.turn.peerjs.com:3478?transport=tcp",
+            "turns:eu-0.turn.peerjs.com:443?transport=tcp",
+          ],
+          username: "peerjs",
+          credential: "peerjsp",
+        },
+        {
+          urls: [
+            "turn:us-0.turn.peerjs.com:3478",
+            "turn:us-0.turn.peerjs.com:3478?transport=tcp",
+            "turns:us-0.turn.peerjs.com:443?transport=tcp",
+          ],
+          username: "peerjs",
+          credential: "peerjsp",
+        },
       ];
       let session = null;
       const onlineDialog = $("onlineDialog"),
@@ -11370,13 +11752,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         const url = $("turnUrl").value.trim(),
           username = $("turnUser").value.trim(),
           credential = $("turnPass").value;
-        const iceServers = [...ICE_SERVERS];
+        const iceServers = ICE_SERVERS.map((server) =>
+          Array.isArray(server.urls)
+            ? { ...server, urls: [...server.urls] }
+            : { ...server },
+        );
         if (url) {
           if (!/^turns?:[^\s]+$/i.test(url) || !username || !credential)
             throw Error("Completa la URL de TURN, el usuario y la credencial.");
-          iceServers.push({ urls: url, username, credential });
+          iceServers.unshift({ urls: url, username, credential });
         }
-        return { iceServers };
+        return {
+          iceServers,
+          iceCandidatePoolSize: 10,
+          sdpSemantics: "unified-plan",
+          iceTransportPolicy: "all",
+        };
       }
       function timeLimit(current, time, reason) {
         clearTimeout(current.timer);
@@ -11395,6 +11786,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         const entry = {
           slot: -1,
           skin: null,
+          look: null,
           ready: false,
           timer: 0,
           lossTimer: 0,
@@ -11410,13 +11802,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         const peers = readyEntries(current);
         return Array.from({ length: current.size * 2 }, (_, slot) => {
           if (slot === 0)
-            return { slot, name: "Anfitrión", human: true, skin: selectedSkin };
+            return {
+              slot,
+              name: "Anfitrión",
+              human: true,
+              skin: selectedSkin,
+              look: selectedLook,
+            };
           const entry = peers.find((p) => p.slot === slot);
+          const skin = skinFor(entry?.skin, slot);
           return {
             slot,
             name: entry?.label || "CPU",
             human: !!entry,
-            skin: skinFor(entry?.skin, slot),
+            skin,
+            look: entry?.look
+              ? parseLook(entry.look, skin)
+              : cpuLook(slot, skin),
           };
         });
       }
@@ -11578,6 +11980,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           serial: current.serial,
           humans: [0, ...guests.map((p) => p.slot)],
           skins: seats(current).map((seat) => seat.skin),
+          looks: seats(current).map((seat) => seat.look),
         });
         for (const entry of guests)
           sendEntry(current, entry, {
@@ -11616,10 +12019,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         entry.ready = true;
         if (current.role === "guest") {
           current.host = entry;
-          sendEntry(current, entry, { type: "skin", skin: selectedSkin });
+          sendEntry(current, entry, {
+            type: "skin",
+            skin: selectedSkin,
+            look: selectedLook,
+          });
           if (!current.remoteSeats) {
             status("Conectado. Recibiendo la sala…");
-            timeLimit(current, 12000, "El anfitrión no envió la sala.");
+            timeLimit(current, 18000, "El anfitrión no envió la sala.");
           }
           return;
         }
@@ -11652,7 +12059,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
         const current = newConnection(role, "room");
         busy(true);
-        status(role === "host" ? "Creando sala…" : "Buscando la sala…");
+        status(
+          role === "host"
+            ? "Creando sala…"
+            : "Buscando la sala. En 4G esto puede tardar unos segundos…",
+        );
         try {
           const Peer = window.Peer,
             config = iceConfig();
@@ -11665,13 +12076,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             role === "host"
               ? roomId(current.code)
               : roomId(newCode()) + "-guest",
-            { secure: true, config },
+            { debug: 0, secure: true, pingInterval: 5000, config },
           );
           current.peer = peer;
           timeLimit(
             current,
-            15000,
-            "No responde el servicio de salas. Prueba la conexión directa.",
+            35000,
+            "No responde el servicio de salas. Prueba la conexión directa o la misma WiFi.",
           );
           peer.on("open", () => {
             if (session !== current) return;
@@ -11684,7 +12095,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 "Sala lista. Comparte la invitación y deja esta pestaña abierta.",
               );
             } else {
-              status("Sala encontrada. Conectando…");
+              status(
+                "Sala encontrada. Abriendo túnel (puede usar relé TURN si el móvil está en datos)…",
+              );
               attachRoomLink(
                 current,
                 peer.connect(roomId(code), {
@@ -11744,9 +12157,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             entryFailed(
               current,
               entry,
-              "No se pudo conectar por WebRTC. Prueben con TURN o con otra red.",
+              "No se pudo conectar por WebRTC. El móvil en 4G y la laptop en WiFi necesitan el relé TURN; espera 10 segundos y vuelve a unirte, o usen la misma WiFi.",
             ),
-          18000,
+          40000,
         );
         link.on("open", () => entryReady(current, entry));
         link.on("data", (message) => receive(current, entry, message));
@@ -11775,7 +12188,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             entryFailed(
               current,
               entry,
-              "WebRTC no logró conectar. Prueben con TURN o con otra red.",
+              "No se abrió el túnel entre esos dispositivos. Prueben la misma WiFi o vuelvan a unirse.",
             );
           if (pc.connectionState === "disconnected")
             entry.lossTimer = setTimeout(
@@ -11918,9 +12331,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             validSkin(message.skin)
           ) {
             entry.skin = message.skin;
+            entry.look = parseLook(message.look, message.skin);
             if (current.started && game?.players[entry.slot]) {
               game.skins[entry.slot] = entry.skin;
+              game.looks[entry.slot] = entry.look;
               game.players[entry.slot].skin = entry.skin;
+              game.players[entry.slot].look = entry.look;
             }
             if (entry.ready) syncLobby(current);
           }
@@ -11970,7 +12386,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           current.remoteSeats = message.seats;
           current.size = message.size;
           if (firstLobby)
-            sendEntry(current, entry, { type: "skin", skin: selectedSkin });
+            sendEntry(current, entry, {
+              type: "skin",
+              skin: selectedSkin,
+              look: selectedLook,
+            });
           if (!current.started) {
             drawLobby(current, message.slot);
             status("Listo. Esperando al anfitrión.");
@@ -12011,14 +12431,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           const listen = () => {
             if (pc.iceGatheringState === "complete") finished();
           };
-          const timer = setTimeout(finished, 7200);
+          const timer = setTimeout(finished, 12000);
           pc.addEventListener("icegatheringstatechange", listen);
         });
       }
       function encode(desc, size) {
         if (!desc || !desc.sdp.includes("a=candidate:"))
           throw Error(
-            "WebRTC no encontró una ruta en esta red. Prueba con TURN o con otra red.",
+            "Esta red bloqueó el túnel. Prueben la misma WiFi o vuelvan a crear la sala.",
           );
         return (
           "MAREA4." +
@@ -12146,7 +12566,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             timeLimit(
               current,
               18000,
-              "No se pudo conectar entre esas redes. Prueben con TURN o con otra red.",
+              "No se pudo conectar entre esas redes. Prueben la misma WiFi o vuelvan a unirse.",
             );
           }
         } catch (error) {
