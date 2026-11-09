@@ -112,6 +112,10 @@ body.touch #hint{top:calc(max(12px,env(safe-area-inset-top)) + 96px);bottom:auto
 #lbTop,#lbBot{position:fixed;left:0;right:0;height:0;background:#000;z-index:30;transition:height .35s;pointer-events:none}
 #lbTop{top:0}#lbBot{bottom:0}
 body.replay #lbTop,body.replay #lbBot{height:9vh}
+#rpBtn{position:fixed;right:16px;bottom:calc(max(16px,env(safe-area-inset-bottom)) + 70px);z-index:14;border:0;border-radius:16px;padding:10px 16px;background:rgba(29,35,64,.82);color:#fff;font:700 16px Fredoka,system-ui;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(10px);transition:.25s}
+#rpBtn.on{opacity:1;pointer-events:auto;transform:none}
+body.touch #rpBtn{bottom:auto;top:calc(max(12px,env(safe-area-inset-top)) + 100px);right:14px}
+body.replay #rpBtn{display:none}
 #rpBadge{position:fixed;left:16px;top:calc(9vh + 12px);z-index:31;color:#fff;font-weight:700;font-size:18px;text-shadow:0 2px 6px rgba(0,0,0,.6);display:none;cursor:pointer}
 #rpBadge .rec{color:#ff3b3b;animation:blink 1s infinite}
 #rpBadge b{display:block;font-size:26px;color:#ffe14d}
@@ -318,6 +322,7 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
 </section>
 
 <div id="lbTop"></div><div id="lbBot"></div>
+<button id="rpBtn">🎬 Repetir jugada</button>
 <div id="rpBadge"><span class="rec">●</span> REPETICIÓN <b id="rpTitle"></b><small>toca para saltar</small></div>
 
 <section class="screen dim" id="scrGoals">
@@ -428,7 +433,9 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
     <h2>Pausa</h2>
     <button class="btn green" id="bResume">Continuar</button>
     <button class="btn" id="bTags">🏷️ Nombres: Auto</button>
-    <button class="btn" id="bReplays">🎬 Repeticiones: Destacadas</button>
+    <button class="btn green" id="bWatch">▶ Ver la última jugada</button>
+    <button class="btn" id="bReplays">🎬 Repeticiones automáticas: Solo las mejores</button>
+    <button class="btn" id="bQuality">⚙️ Calidad: Automática</button>
     <button class="btn gray" id="bQuit">Salir al menú</button>
   </div>
 </section>
@@ -697,8 +704,10 @@ function mesh(geo, mat, shadow = true) {
   m.castShadow = shadow;
   return m;
 }
+let OUTLINES = true;
 function outline(m, s = 1.08) {
   const o = new THREE.Mesh(m.geometry, outlineMat);
+  o.userData.ol = true; o.visible = OUTLINES;
   o.scale.setScalar(s);
   m.add(o);
   return m;
@@ -821,38 +830,6 @@ function hillsLayer(g, color, n = 14, r = 125) {
   }
 }
 
-const CROWDS = [];
-const crowdBodyGeo = new THREE.CylinderGeometry(1, 1.15, 2, 8), crowdHeadGeo = new THREE.SphereGeometry(1, 10, 8);
-function addCrowd(g, spots) {
-  const cols = ['#ff4f9a', '#2fd27a', '#ffd23a', '#ffffff', '#3a7bff', '#ff7a2f', '#a24bff', '#1d2340', '#25b8ff'];
-  const skins = OPTS.skin.map((o) => o.v), hairs = ['#2b1d14', '#6b3e1f', '#e8c25a', '#d9502f', '#1d2340'];
-  const fans = spots.map((f) => ({ ...f, ph: rand(0, 6), sp: rand(5, 8) }));
-  const mat = () => new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonGrad });
-  const body = inst(crowdBodyGeo, mat(), fans.map((f) => ({ x: f.x, y: 0.42, z: f.z, sx: 0.26, sy: 0.42, sz: 0.22, c: pick(cols) })), true);
-  const head = inst(crowdHeadGeo, mat(), fans.map((f) => ({ x: f.x, y: 1.05, z: f.z, s: 0.21, c: pick(skins) })));
-  const hair = inst(crowdHeadGeo, mat(), fans.map((f) => ({ x: f.x, y: 1.13, z: f.z, sx: 0.22, sy: 0.15, sz: 0.22, c: pick(hairs) })));
-  g.add(body, head, hair);
-  CROWDS.push({
-    update(t) {
-      const amp = 0.03 + VENUE.hype * 0.32;
-      fans.forEach((f, i) => {
-        const y = Math.max(0, Math.sin(t * (f.sp + VENUE.hype * 3) + f.ph)) * amp;
-        _m4.compose(_p3.set(f.x, 0.42 + y, f.z), _q.identity(), _s3.set(0.26, 0.42, 0.22)); body.setMatrixAt(i, _m4);
-        _m4.compose(_p3.set(f.x, 1.05 + y, f.z), _q.identity(), _s3.set(0.21, 0.21, 0.21)); head.setMatrixAt(i, _m4);
-        _m4.compose(_p3.set(f.x, 1.13 + y, f.z), _q.identity(), _s3.set(0.22, 0.15, 0.22)); hair.setMatrixAt(i, _m4);
-      });
-      body.instanceMatrix.needsUpdate = true; head.instanceMatrix.needsUpdate = true; hair.instanceMatrix.needsUpdate = true;
-    },
-  });
-}
-function sidelineSpots(x0, rows, z0, z1, gap = 1.0, skip = 0.3) {
-  const out = [];
-  for (const sd of [-1, 1]) for (let r = 0; r < rows; r++) for (let z = z0; z <= z1; z += gap) {
-    if (Math.random() < skip) continue;
-    out.push({ x: sd * (x0 + r * 0.9) + rand(-0.15, 0.15), z: z + rand(-0.2, 0.2) });
-  }
-  return out;
-}
 const VENUES = {
   parque: {
     name: 'Parque', emoji: '🌳',
@@ -881,7 +858,6 @@ const VENUES = {
       const bushes = [];
       for (let i = 0; i < 40; i++) { const sc = rand(0.6, 1.1); bushes.push({ x: (i % 2 ? 1 : -1) * rand(10, 16), y: sc * 0.4, z: rand(-18, 18), sx: sc * 1.3, sy: sc * 0.8, sz: sc }); }
       g.add(inst(blobGeo, new THREE.MeshToonMaterial({ color: 0x47a83c, gradientMap: toonGrad }), bushes));
-      addCrowd(g, sidelineSpots(8.4, 2, -8, 8));
       hillsLayer(g, 0x7cc767);
       cloudsLayer(g);
     },
@@ -933,7 +909,6 @@ const VENUES = {
         const top = outline(mesh(new THREE.ConeGeometry(1.3, 0.6, 10), toon(col))); top.position.set(x, 2.45, z); g.add(top);
         const towel = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 1.8), toon(pick(['#ffffff', col, '#7fd0ff']))); towel.rotation.set(-Math.PI / 2, 0, rand(0, 3)); towel.position.set(x + rand(-1, 1), 0.02, z + rand(0.8, 1.6)); towel.receiveShadow = true; g.add(towel);
       }
-      addCrowd(g, sidelineSpots(7.7, 1, -8, 8, 1.1, 0.35));
       cloudsLayer(g, 0xffffff, 0xb8c8d8, 8);
       return { update(dt, t) { seaTex.offset.y = (t * 0.03) % 1; seaTex.offset.x = Math.sin(t * 0.3) * 0.02; foam.material.opacity = 0.6 + Math.sin(t * 1.3) * 0.25; foam.position.z = -35.5 + Math.sin(t * 1.3) * 0.6; } };
     },
@@ -988,7 +963,6 @@ const VENUES = {
       }
       const bulbMesh = inst(new THREE.SphereGeometry(1, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffffff }), bulbs);
       g.add(bulbMesh);
-      addCrowd(g, sidelineSpots(8.0, 2, -9, 9));
       cloudsLayer(g, 0xffc2d6, 0x8a4a7a, 8);
       return { update(dt, t) { bulbMesh.material.color.setScalar(0.85 + Math.sin(t * 3) * 0.15); } };
     },
@@ -1016,7 +990,6 @@ const VENUES = {
       g.add(inst(new THREE.CylinderGeometry(0.2, 0.25, 1, 6), toon('#6b4a2a'), trunks));
       g.add(inst(new THREE.ConeGeometry(1, 1, 8), new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonGrad }), cones));
       g.add(inst(new THREE.ConeGeometry(1, 1, 8), toon('#ffffff'), caps));
-      addCrowd(g, sidelineSpots(8.4, 2, -8, 8));
       // montañas lejanas con cumbre nevada
       for (let i = 0; i < 12; i++) {
         const a = (i / 12) * Math.PI * 2 + rand(-0.1, 0.1), r = rand(115, 145), hgt = rand(35, 70), w = rand(30, 50);
@@ -1085,20 +1058,6 @@ const VENUES = {
       for (let i = 0; i < N; i++) { const a = rand(0, Math.PI * 2), e = rand(0.15, 1.3), r = 180; sp[i * 3] = Math.cos(a) * Math.cos(e) * r; sp[i * 3 + 1] = Math.sin(e) * r; sp[i * 3 + 2] = Math.sin(a) * Math.cos(e) * r; }
       const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
       g.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xffffff, size: 0.9, fog: false })));
-      return {
-        hype: 0,
-        update(dt, t) {
-          // el público salta (más cuando hay punto)
-          const amp = 0.06 + VENUE.hype * 0.5;
-          for (let i = 0; i < fans.length; i += 1) {
-            const f = fans[i];
-            const y = f.base + Math.max(0, Math.sin(t * (6 + VENUE.hype * 4) + f.ph)) * amp;
-            _m4.compose(_p3.set(f.x, y, f.z), _q.identity(), _s3.set(0.5, 0.75, 0.4));
-            fanMesh.setMatrixAt(i, _m4);
-          }
-          fanMesh.instanceMatrix.needsUpdate = true;
-        },
-      };
     },
   },
 };
@@ -1114,7 +1073,6 @@ function setVenue(id) {
     VENUE.group.traverse((o) => { if (o.geometry && o.geometry !== blobGeo) o.geometry.dispose(); });
   }
   const g = new THREE.Group();
-  CROWDS.length = 0;
   VENUE.fx = v.build(g) || null;
   scene.add(g);
   VENUE.group = g; VENUE.id = id;
@@ -1130,12 +1088,7 @@ function setVenue(id) {
   lineMat.color.setHex(v.lines);
   DUST = v.dust;
 }
-function updateVenue(dt, t) {
-  VENUE.hype = Math.max(0, (VENUE.hype || 0) - dt * 0.5);
-  for (const c of CROWDS) c.update(t);
-  if (VENUE.fx && VENUE.fx.update) VENUE.fx.update(dt, t);
-}
-function venueHype(x) { VENUE.hype = Math.min(1.5, (VENUE.hype || 0) + x); }
+function updateVenue(dt, t) { if (VENUE.fx && VENUE.fx.update) VENUE.fx.update(dt, t); }
 
 // ---------- balón ----------
 const ballTex = canvasTex(256, 128, (g, w, h) => {
@@ -1209,13 +1162,16 @@ function spawnPart(x, y, z, vx, vy, vz, size, color, life, grav = 0) {
   s.sp.material.color.set(color);
   s.sp.visible = true;
 }
+let PART_SCALE = 1;
 function puff(x, y, z, n = 8, color = 0xffffff, size = 0.5, spread = 2.2, up = 1.2) {
+  n = Math.max(1, Math.round(n * PART_SCALE));
   for (let i = 0; i < n; i++) {
     const a = rand(0, Math.PI * 2), sp = rand(0.4, 1) * spread;
     spawnPart(x, y + 0.1, z, Math.cos(a) * sp, rand(0.3, 1) * up, Math.sin(a) * sp, size * rand(0.7, 1.3), color, rand(0.35, 0.6));
   }
 }
 function sparks(x, y, z, n = 14, color = 0xffe14d) {
+  n = Math.max(2, Math.round(n * PART_SCALE));
   for (let i = 0; i < n; i++) {
     const a = rand(0, Math.PI * 2), b = rand(-0.5, 1.2), sp = rand(3, 7);
     spawnPart(x, y, z, Math.cos(a) * sp * Math.cos(b), Math.sin(b) * sp, Math.sin(a) * sp * Math.cos(b), rand(0.18, 0.32), color, rand(0.3, 0.55), 9);
@@ -1391,6 +1347,8 @@ function buildHat(head, look, teamColor) {
 const THIGH = 0.27, SHIN = 0.28;
 const legH = (h, k) => THIGH * Math.cos(h) + SHIN * Math.cos(h + k);
 let DUST = 0xe9f3dc;
+const BLOB_GEO = new THREE.CircleGeometry(0.45, 18), BLOB_MAT = new THREE.MeshBasicMaterial({ color: 0x1d2340, transparent: true, opacity: 0.28, depthWrite: false });
+const _lookV = new THREE.Vector3();
 class CharView {
   constructor(info) {
     this.id = info.id;
@@ -1452,6 +1410,12 @@ class CharView {
     this.mouth.scale.set(0.06, 0.025, 0.02); this.mouth.position.set(0, -0.16, 0.365); head.add(this.mouth);
     buildHair(head, look);
     buildHat(head, look, teamColor);
+    // solo las piezas grandes proyectan sombra (muchas menos llamadas de dibujo)
+    this.root.traverse((o) => { o.castShadow = false; });
+    tm.castShadow = true; skull.castShadow = true; shorts.castShadow = true;
+    this.blob = new THREE.Mesh(BLOB_GEO, BLOB_MAT);
+    this.blob.rotation.x = -Math.PI / 2;
+    this.root.add(this.blob);
     scene.add(this.root);
     this.blinkT = rand(1, 4);
     this.ph = rand(0, 6);
@@ -1636,6 +1600,8 @@ class CharView {
     r.position.set(st.x, st.y, st.z);
     r.rotation.y = angDamp(r.rotation.y, st.ry, 14, dt);
     this.foot.position.y = -st.y + 0.025;
+    this.blob.visible = !renderer.shadowMap.enabled;
+    if (this.blob.visible) { this.blob.position.y = -st.y + 0.018; this.blob.scale.setScalar(Math.max(0.5, 1 - st.y * 0.25)); }
     this.foot.material.opacity = st.y > 0.05 ? 0.4 : 0.75;
     const T = this.pose(st, ctx, dt);
     const K = 20;
@@ -1691,7 +1657,7 @@ class CharView {
       this.head.rotation.y = damp(this.head.rotation.y, clamp(d, -1.1, 1.1) * 0.75 - this.torso.rotation.y, 10, dt);
       const up = Math.atan2(lookY - (st.y + 1.5), Math.hypot(lookX - st.x, lookZ - st.z));
       this.head.rotation.x = damp(this.head.rotation.x, clamp(T.headX - up * 0.5 - this.torso.rotation.x * 0.6, -1.2, 0.6), 10, dt);
-      const v = new THREE.Vector3(lookX, lookY, lookZ);
+      const v = _lookV.set(lookX, lookY, lookZ);
       this.head.worldToLocal(v);
       v.normalize();
       this.pupils.forEach((p, i) => {
@@ -2521,6 +2487,7 @@ const playing = () => (GAME.mode === 'local' || GAME.mode === 'host' || GAME.mod
 addEventListener('keydown', (e) => {
   if (e.target.tagName === 'INPUT') return;
   if (RP.on && ['Space', 'Enter', 'Escape', 'KeyJ', 'KeyP'].includes(e.code)) { e.preventDefault(); rpSkip(); return; }
+  if (e.code === 'KeyR' && !e.repeat && !RP.on && GAME.mode === 'local' && !GAME.paused) { watchLastReplay(); return; }
   INPUT.keys[e.code] = true;
   if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
   if (e.repeat) return;
@@ -2842,7 +2809,7 @@ function handleEvent(e) {
     case 'whistle': SFX.whistle(); break;
     case 'point': {
       const mine = e.team === GAME.myTeam;
-      SFX.point(mine); SFX.cheer(mine ? 1 : 0.5); venueHype(1.2);
+      SFX.point(mine); SFX.cheer(mine ? 1 : 0.5);
       if (GAME.manager) mgrOnPoint();
       if (e.team === GAME.myTeam) {
         if (e.pid === GAME.myId) { const k = { kill: 'kills', ace: 'aces', blockpt: 'blocks' }[e.reason]; if (k) track(k); }
@@ -3482,6 +3449,7 @@ function togglePause() {
   if (GAME.screen === 'scrEnd') return;
   GAME.paused = !GAME.paused;
   $('#bResume').textContent = GAME.mode === 'local' ? 'Continuar' : 'Volver al partido (sigue online)';
+  $('#bWatch').style.display = GAME.mode === 'local' && !GAME.tutorial ? '' : 'none';
   showScreen(GAME.paused ? 'scrPause' : null);
 }
 
@@ -4436,10 +4404,10 @@ function mgrAfterMatch(res) {
 // =========================================================
 //  REPETICIONES: los puntos destacados se repiten en cámara lenta
 // =========================================================
-const RP = { buf: [], evs: [], on: false, frames: null, fev: null, i: 0, evI: 0, t: 0, t0: 0, t1: 0, focus: null, pending: null, ang: 0, dir: 1, view: null, teams: new Map(), title: '' };
+const RP = { buf: [], evs: [], on: false, frames: null, fev: null, i: 0, evI: 0, t: 0, t0: 0, t1: 0, focus: null, capture: null, lastClip: null, ang: 0, dir: 1, view: null, teams: new Map(), title: '' };
 const RP_KEEP = 7;
 const RP_EVENTS = ['hit', 'block', 'bounce', 'net', 'jump', 'land', 'dive'];
-const RP_MODES = { dest: 'Destacadas', todas: 'Todas', no: 'No' };
+const RP_MODES = { dest: 'Solo las mejores', todas: 'Todos los puntos', no: 'Apagadas' };
 function rpRecord(sim, evs) {
   const b = sim.ball;
   RP.buf.push({ t: sim.time, b: [b.x, b.y, b.z, b.vx, b.vy, b.vz, b.fire ? 1 : 0, b.held ? 1 : 0], p: sim.players.map((p) => [p.id, p.x, p.y, p.z, p.ry, p.anim, p.animT, p.vx, p.vz]) });
@@ -4448,11 +4416,11 @@ function rpRecord(sim, evs) {
   while (RP.buf.length && RP.buf[0].t < cut) RP.buf.shift();
   while (RP.evs.length && RP.evs[0].t < cut) RP.evs.shift();
 }
-function rpClear() { RP.buf = []; RP.evs = []; RP.pending = null; if (RP.on) rpStop(); }
-// ¿merece repetición este punto?
+function rpClear() { RP.buf = []; RP.evs = []; RP.capture = null; RP.lastClip = null; if (RP.on) rpStop(); hideRpBtn(); }
+// cada punto se guarda como "clip"; los destacados se repiten solos
 function rpConsider(e) {
+  if (GAME.mode !== 'local' || GAME.tutorial || !GAME.sim) return;
   const mode = SAVE.replays || 'dest';
-  if (GAME.mode !== 'local' || GAME.tutorial || mode === 'no' || !GAME.sim) return;
   const now = GAME.sim.time;
   const lastHit = [...RP.evs].reverse().find((x) => (x.e.type === 'hit' && x.e.kind !== 'body') || x.e.type === 'block');
   const sup = RP.evs.find((x) => x.e.type === 'hit' && x.e.sup && x.t > now - 3);
@@ -4461,34 +4429,52 @@ function rpConsider(e) {
   else if (sup) title = sup.e.kind === 'jserve' ? '🔥 SÚPER SAQUE' : '🔥 SÚPER REMATE';
   else if (e.reason === 'ace') title = '🎯 ¡ACE!';
   else if (e.reason === 'blockpt') title = '🧱 ¡BLOQUEO!';
-  else if (e.rally >= 8) title = `⏱️ JUGADÓN · ${e.rally} toques`;
-  else if (e.reason === 'kill' && lastHit && lastHit.e.grade === 'perfect') title = '💥 REMATE PERFECTO';
-  if (!title && mode === 'todas') title = REASON_TXT[e.reason] || 'PUNTO';
-  if (!title) return;
-  const focus = sup ? sup.t : lastHit ? lastHit.t : null;
-  RP.pending = { at: performance.now() + 750, focus, title };
+  else if (e.rally >= 7) title = `⏱️ JUGADÓN · ${e.rally} toques`;
+  else if (e.reason === 'kill' && lastHit && (lastHit.e.grade === 'perfect' || lastHit.e.pid === GAME.myId)) title = '💥 REMATAZO';
+  const auto = mode === 'todas' || (mode === 'dest' && !!title);
+  RP.capture = { at: now + 0.7, focus: sup ? sup.t : lastHit ? lastHit.t : null, title: title || REASON_TXT[e.reason] || 'PUNTO', auto };
 }
-function rpStart() {
-  const p = RP.pending;
-  RP.pending = null;
-  const sim = GAME.sim;
-  if (!sim || RP.buf.length < 20) return;
+function rpCaptureCheck() {
+  const c = RP.capture, sim = GAME.sim;
+  if (!c || !sim || sim.time < c.at || RP.buf.length < 20) return;
+  RP.capture = null;
   const t1 = sim.time;
-  let t0 = (p.focus != null ? p.focus : t1 - 1.4) - 1.5;
-  t0 = Math.max(t0, RP.buf[0].t, t1 - 5);
-  RP.frames = RP.buf.filter((f) => f.t >= t0);
-  RP.fev = RP.evs.filter((x) => x.t >= t0);
-  if (RP.frames.length < 10) return;
-  RP.i = 0; RP.evI = 0; RP.t = RP.frames[0].t; RP.t0 = RP.t; RP.t1 = t1; RP.focus = p.focus; RP.title = p.title;
-  RP.teams = new Map(GAME.roster.map((r) => [r.id, r.team]));
+  const t0 = Math.max((c.focus != null ? c.focus : t1 - 2.1) - 1.5, RP.buf[0].t, t1 - 5);
+  const frames = RP.buf.filter((f) => f.t >= t0);
+  if (frames.length < 10) return;
+  RP.lastClip = { frames, fev: RP.evs.filter((x) => x.t >= t0), t1, focus: c.focus, title: c.title, teams: new Map(GAME.roster.map((r) => [r.id, r.team])) };
+  if (c.auto && !GAME.paused) rpPlay(RP.lastClip);
+  else showRpBtn();
+}
+function rpPlay(clip) {
+  if (!clip || GAME.mode !== 'local') return false;
+  hideRpBtn();
+  RP.frames = clip.frames; RP.fev = clip.fev;
+  RP.i = 0; RP.evI = 0; RP.t = clip.frames[0].t; RP.t0 = RP.t; RP.t1 = clip.t1; RP.focus = clip.focus; RP.title = clip.title;
+  RP.teams = clip.teams;
   // empieza viendo la jugada de costado y gira despacio
-  const b0 = RP.frames[0].b;
+  const b0 = clip.frames[0].b;
   RP.dir = Math.random() < 0.5 ? 1 : -1;
   RP.ang = RP.dir * Math.PI / 2 + (b0[2] > 0 ? 0.35 : -0.35);
   RP.on = true;
   document.body.classList.add('replay');
-  $('#rpTitle').textContent = p.title;
+  $('#rpTitle').textContent = clip.title;
   SFX.cheer(0.6);
+  return true;
+}
+let rpBtnT = null;
+function showRpBtn() {
+  const b = $('#rpBtn');
+  b.classList.add('on');
+  clearTimeout(rpBtnT);
+  rpBtnT = setTimeout(hideRpBtn, 4500);
+}
+function hideRpBtn() { clearTimeout(rpBtnT); $('#rpBtn').classList.remove('on'); }
+function watchLastReplay() {
+  if (GAME.mode !== 'local' || GAME.tutorial) return toast('Las repeticiones están en los partidos contra la PC, torneos y Mánager');
+  if (!RP.lastClip) return toast('Todavía no hay ninguna jugada para repetir');
+  if (GAME.paused) { GAME.paused = false; showScreen(null); }
+  rpPlay(RP.lastClip);
 }
 function rpStop() {
   RP.on = false; RP.frames = null; RP.view = null;
@@ -4871,17 +4857,21 @@ function syncTagsBtn() { $('#bTags').textContent = '🏷️ Nombres: ' + TAG_MOD
 $('#bTags').onclick = () => {
   const keys = Object.keys(TAG_MODES);
   SAVE.tags = keys[(keys.indexOf(SAVE.tags || 'auto') + 1) % keys.length];
-  storeSave(); syncTagsBtn();
-function syncReplaysBtn() { $('#bReplays').textContent = '🎬 Repeticiones: ' + RP_MODES[SAVE.replays || 'dest']; }
+  storeSave(); syncTagsBtn(); SFX.ui();
+};
+syncTagsBtn();
+if (SAVE.replaysV !== 2) { SAVE.replays = 'dest'; SAVE.replaysV = 2; storeSave(); }
+function syncReplaysBtn() { $('#bReplays').textContent = '🎬 Repeticiones automáticas: ' + RP_MODES[SAVE.replays || 'dest']; }
 $('#bReplays').onclick = () => {
   const keys = Object.keys(RP_MODES);
   SAVE.replays = keys[(keys.indexOf(SAVE.replays || 'dest') + 1) % keys.length];
   storeSave(); syncReplaysBtn(); SFX.ui();
+  toast({ dest: 'Se repetirán solos los mejores puntos (aces, súper remates, bloqueos, jugadones…)', todas: 'Se repetirán todos los puntos', no: 'Sin repeticiones automáticas. Igual puedes tocar «Repetir jugada»' }[SAVE.replays], 3200);
 };
+$('#bWatch').onclick = () => { SFX.ui(); watchLastReplay(); };
+$('#rpBtn').onclick = (e) => { e.stopPropagation(); SFX.ui(); if (RP.lastClip) rpPlay(RP.lastClip); };
 syncReplaysBtn();
-$('#rpBadge').onclick = () => rpSkip(); SFX.ui();
-};
-syncTagsBtn();
+$('#rpBadge').onclick = () => rpSkip();
 $('#pauseBtn').onclick = () => togglePause();
 $('#bMute').onclick = () => toggleMute();
 // ---------- pantalla completa ----------
@@ -4923,6 +4913,59 @@ $('#bEndMenu').onclick = () => leaveToMenu();
 //  BUCLE PRINCIPAL
 // =========================================================
 let last = performance.now(), acc = 0, netInfoT = 0, lastRaf = 0, lastWk = 0;
+// ---------- calidad gráfica: baja sola si el juego va lento ----------
+const QUALITY = {
+  alta: { name: 'Alta', pr: 2, sh: 2048, shadows: true, outlines: true, parts: 1 },
+  media: { name: 'Media', pr: 1.25, sh: 1024, shadows: true, outlines: true, parts: 0.7 },
+  baja: { name: 'Baja', pr: 1, sh: 512, shadows: false, outlines: false, parts: 0.45 },
+};
+const Q_ORDER = ['auto', 'alta', 'media', 'baja'];
+let QL = '';
+const qualityPref = () => SAVE.quality || 'auto';
+function applyQuality(name) {
+  const q = QUALITY[name];
+  if (!q) return;
+  QL = name;
+  renderer.setPixelRatio(Math.min(devicePixelRatio, q.pr));
+  onResize();
+  if (sun.shadow.mapSize.x !== q.sh) { sun.shadow.mapSize.set(q.sh, q.sh); if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; } }
+  if (renderer.shadowMap.enabled !== q.shadows) {
+    renderer.shadowMap.enabled = q.shadows;
+    scene.traverse((o) => { if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => { m.needsUpdate = true; }); });
+  }
+  OUTLINES = q.outlines;
+  scene.traverse((o) => { if (o.userData.ol) o.visible = OUTLINES; });
+  PART_SCALE = q.parts;
+  syncQualityBtn();
+}
+function startQuality() { const p = qualityPref(); applyQuality(p === 'auto' ? SAVE.autoQ || (IS_TOUCH ? 'media' : 'alta') : p); }
+const FPSM = { t: 0, f: 0, low: 0 };
+function autoQuality(rawDt) {
+  if (qualityPref() !== 'auto' || GAME.mode === 'menu' || document.hidden || GAME.paused || rawDt > 0.4) { FPSM.t = 0; FPSM.f = 0; return; }
+  FPSM.t += rawDt; FPSM.f++;
+  if (FPSM.t < 2.5) return;
+  const fps = FPSM.f / FPSM.t;
+  FPSM.t = 0; FPSM.f = 0;
+  if (fps >= 45) { FPSM.low = 0; return; }
+  if (++FPSM.low < 2) return;
+  FPSM.low = 0;
+  const next = QL === 'alta' ? 'media' : QL === 'media' ? 'baja' : null;
+  if (!next) return;
+  SAVE.autoQ = next; storeSave();
+  applyQuality(next);
+  toast('⚙️ Calidad ajustada a ' + QUALITY[next].name + ' para que el juego vaya más fluido', 3000);
+}
+function syncQualityBtn() {
+  const p = qualityPref();
+  $('#bQuality').textContent = '⚙️ Calidad: ' + (p === 'auto' ? 'Automática (' + (QUALITY[QL] ? QUALITY[QL].name : '…') + ')' : QUALITY[p].name);
+}
+$('#bQuality').onclick = () => {
+  const p = qualityPref();
+  SAVE.quality = Q_ORDER[(Q_ORDER.indexOf(p) + 1) % Q_ORDER.length];
+  if (SAVE.quality === 'auto') SAVE.autoQ = null;
+  storeSave(); startQuality(); SFX.ui();
+  toast('⚙️ Calidad: ' + (SAVE.quality === 'auto' ? 'automática (baja sola si el juego va lento)' : QUALITY[SAVE.quality].name), 2200);
+};
 // avanza la simulación (local, anfitrión o demo del menú)
 function simTick(dt, visible) {
   if (!GAME.sim || GAME.mode === 'client') return;
@@ -4963,14 +5006,16 @@ try {
 
 function frame(now) {
   requestAnimationFrame(frame);
-  const dt = Math.min(0.05, (now - last) / 1000);
+  const rawDt = (now - last) / 1000;
+  const dt = Math.min(0.05, rawDt);
   last = now; lastRaf = performance.now();
+  autoQuality(rawDt);
   let v = null, rv = null;
   if (GAME.mode === 'client') {
     clientNetTick(dt);
     v = clientUpdate(dt);
   } else if (GAME.sim) {
-    if (RP.pending && !RP.on && !GAME.paused && performance.now() >= RP.pending.at) rpStart();
+    if (!RP.on) rpCaptureCheck();
     if (RP.on) rv = rpTick(dt);
     if (!RP.on) {
       simTick(dt, true);
@@ -5009,6 +5054,7 @@ function frame(now) {
 
 // ---------- arranque ----------
 if (IS_TOUCH) document.body.classList.add('touch');
+startQuality();
 startDemo();
 showScreen('scrMenu');
 {
