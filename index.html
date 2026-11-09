@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#8fd3ff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Remate Park">
 <title>Remate Park</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,6 +60,11 @@ input.txt:focus{border-color:var(--blue)}
 /* lobby */
 .share{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
 .share input{flex:1;font-size:14px}
+.qrRow{display:flex;gap:12px;align-items:center;background:#f3f6ff;border-radius:16px;padding:8px;margin-bottom:10px}
+#lQr{width:120px;height:120px;flex:none;background:#fff;border-radius:10px;overflow:hidden}
+#lQr svg{width:100%;height:100%;display:block}
+.qrTip{font-size:14px;line-height:1.4}
+.tipSmall{font-size:13px;opacity:.65;text-align:center;margin:6px 0}
 .codeBig{font-size:34px;letter-spacing:6px;color:var(--blue)}
 .teams{display:flex;gap:12px}
 .tcol{flex:1;border-radius:18px;padding:10px;min-height:120px}
@@ -84,6 +93,9 @@ input.txt:focus{border-color:var(--blue)}
 #hint.on{opacity:1}
 body.touch #hint{top:calc(max(12px,env(safe-area-inset-top)) + 96px);bottom:auto;font-size:14px}
 #pauseBtn{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;pointer-events:auto;width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.85);font-size:20px;font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.15);cursor:pointer}
+#fsBtn{position:absolute;top:max(14px,env(safe-area-inset-top));right:68px;pointer-events:auto;width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.85);font-size:22px;font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.15);cursor:pointer}
+.venueRow .chip{font-size:22px;padding:6px 4px;min-width:62px}
+.venueRow .chip small{font-size:12px;opacity:.8}
 #netInfo{position:absolute;top:max(18px,env(safe-area-inset-top));left:14px;background:rgba(29,35,64,.55);color:#fff;border-radius:12px;padding:4px 10px;font-size:13px;display:none}
 #ctrlCard{position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,.9);border-radius:16px;padding:10px 14px;font-size:14px;line-height:1.55;box-shadow:0 4px 0 rgba(0,0,0,.12);transition:opacity .5s}
 #ctrlCard b{display:inline-block;min-width:74px;background:#eef1fa;border-radius:6px;padding:0 6px;margin-right:4px;text-align:center}
@@ -139,6 +151,55 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
 #tutBtns button,#tutEnd button{flex:1}
 .btn.teal{background:#18b6a5;box-shadow:0 6px 0 #0f8478;position:relative}.btn.teal:active{box-shadow:0 2px 0 #0f8478}
 .badge{position:absolute;top:-9px;right:-6px;background:#ff4f9a;color:#fff;font-size:12px;border-radius:10px;padding:2px 8px;transform:rotate(6deg);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.btn.purple{background:#a24bff;box-shadow:0 6px 0 #7230c2}.btn.purple:active{box-shadow:0 2px 0 #7230c2}
+#scrClub .panel{max-width:720px}
+.clubHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.clubHead h2{margin:0;text-align:left;font-size:26px}
+.clubHead small{opacity:.65}
+.clubMoney{display:flex;flex-direction:column;align-items:flex-end;font-weight:700;font-size:18px;white-space:nowrap}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px}
+.tab{flex:1;border:0;border-radius:12px;padding:9px 6px;font-weight:600;font-size:14px;background:#eef1fa;color:var(--ink);cursor:pointer;white-space:nowrap}
+.tab.sel{background:var(--blue);color:#fff}
+.pcard{display:flex;align-items:center;gap:10px;background:#f5f7fd;border-radius:14px;padding:8px 10px;margin:6px 0;cursor:pointer;border:2px solid transparent}
+.pcard.sel{border-color:var(--blue);background:#eaf1ff}
+.povr{width:44px;height:44px;border-radius:12px;background:#1d2340;color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px;flex:none}
+.pinfo2{flex:1;min-width:0}.pinfo2 b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pinfo2 small{opacity:.65;font-size:12px}
+.pact{flex:none}.pact .chip{min-width:84px}
+.abar,.ebar{display:inline-block;height:8px;border-radius:6px;background:#e1e6f3;overflow:hidden;vertical-align:middle}
+.abar{width:110px}.ebar{width:100%;max-width:160px;display:block;margin-top:3px}
+.abar i,.ebar i{display:block;height:100%}
+.attrs{background:#fff;border-radius:12px;padding:8px 10px;margin:-2px 0 8px}
+.arow{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}.arow span{width:84px}.arow b{width:24px}
+.mini{border:0;border-radius:8px;background:#2fd27a;color:#fff;font:600 12px Fredoka,system-ui;padding:4px 8px;cursor:pointer}.mini:disabled{opacity:.4}
+.nextMatch{display:flex;align-items:center;gap:8px;justify-content:center;margin:6px 0}
+.vs{flex:1;background:#f5f7fd;border-radius:16px;padding:10px;text-align:center}
+.vs b{display:block;font-size:16px}
+.ovr{display:inline-block;margin-top:4px;background:var(--a);color:#fff;border-radius:10px;padding:2px 10px;font-weight:700}.ovr.r{background:var(--b)}
+.vsx{font-weight:700;font-size:22px;opacity:.6}
+.meta{text-align:center;font-size:13px;opacity:.7;margin:4px 0 8px}
+.warn{color:#c22d70;font-weight:600;text-align:center}
+.season{text-align:center}.season .big{font-size:34px;font-weight:700;margin:10px 0}
+.mgrIntro{line-height:1.5}
+#mgrDec{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%) translateY(150%);background:rgba(255,255,255,.96);border-radius:20px;padding:10px 12px;z-index:16;width:min(560px,94vw);box-shadow:0 8px 30px rgba(0,0,0,.25);transition:transform .2s}
+#mgrDec.on{transform:translateX(-50%) translateY(0)}
+.decTitle{font-weight:700;font-size:17px;margin-bottom:6px}
+#decOpts{display:flex;flex-wrap:wrap;gap:6px}
+.dopt{flex:1;min-width:110px;border:0;border-radius:14px;padding:9px 8px;background:var(--blue);color:#fff;font:600 15px Fredoka,system-ui;cursor:pointer;box-shadow:0 4px 0 #2453b8}
+.dopt b{background:rgba(255,255,255,.25);border-radius:6px;padding:0 6px;margin-right:4px}
+.dopt small{display:block;font-size:11px;opacity:.85}
+.dopt.auto{background:#8a93b5;box-shadow:0 4px 0 #5e6687}
+.decBar{height:6px;background:#e1e6f3;border-radius:4px;margin-top:8px;overflow:hidden}.decBar i{display:block;height:100%;background:#ff4f9a;width:100%}
+.mcourt{position:relative;width:100%;height:150px;background:#e8f0ff;border:3px solid #fff;border-radius:10px;box-shadow:0 0 0 2px #c9d6f2;margin-bottom:6px}
+.zbtn{position:absolute;transform:translate(-50%,-50%);width:30%;height:42%;border:0;border-radius:10px;background:rgba(58,123,255,.18);font-size:24px;cursor:pointer;color:#1d2340}
+.zbtn:hover{background:rgba(58,123,255,.4)}
+.odot{position:absolute;width:12px;height:12px;margin:-6px;border-radius:50%;background:var(--b);pointer-events:none;box-shadow:0 0 0 2px #fff}
+.mnet{position:absolute;left:0;right:0;bottom:-3px;height:5px;background:#1d2340;font-size:0}
+.zextra{display:flex;gap:6px;width:100%}
+#mgrHud{position:fixed;left:12px;bottom:12px;z-index:13;background:rgba(255,255,255,.9);border-radius:14px;padding:8px 10px;display:none;min-width:170px;box-shadow:0 4px 0 rgba(0,0,0,.12)}
+body.mgrOn #mgrHud{display:block}
+body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important}
+.mrow{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}.mrow span{width:58px;overflow:hidden;white-space:nowrap}.mrow .ebar{width:90px;margin:0}
+#bSubs{margin-top:6px;width:100%}
 @media (max-width:760px){
  #tut{left:10px;right:66px;transform:none;width:auto;padding:8px 12px}
  #tutText{font-size:13px}
@@ -178,6 +239,7 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
     <div><b>Espacio</b> saltar (salta + clic = remate)</div>
     <div><b>Clic der</b> plancha · bloqueo en la red</div>
   </div>
+  <button id="fsBtn" title="Pantalla completa (F)">⛶</button>
   <button id="pauseBtn" title="Pausa (Esc)">II</button>
 </div>
 
@@ -200,6 +262,22 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
   <div id="tutEnd" style="display:none"><button class="btn small green" id="tutPlay">Jugar contra la PC</button><button class="btn small" id="tutMenu">Menú</button></div>
 </div>
 
+<div id="mgrDec"><div class="decTitle" id="decTitle"></div><div id="decOpts"></div><div class="decBar"><i id="decBarI"></i></div></div>
+<div id="mgrHud"><div id="mgrLine"></div><button class="btn small" id="bSubs">🔄 Cambios</button></div>
+
+<section class="screen dim" id="scrClub">
+  <div class="panel wide">
+    <div class="clubHead"><div><h2 id="cTitle">Modo Mánager</h2><small id="cSub"></small></div><div class="clubMoney"><span id="cMoney"></span><span id="cFans"></span></div></div>
+    <div class="tabs" id="clubTabs"><button class="tab" data-tab="match">🏐 Partido</button><button class="tab" data-tab="squad">👥 Plantilla</button><button class="tab" data-tab="market">💰 Fichajes</button><button class="tab" data-tab="stadium">🏟️ Estadio</button><button class="tab" data-tab="league">🏆 Liga</button></div>
+    <div id="clubBody"></div>
+    <button class="btn gray" id="bClubBack">Volver al menú</button>
+  </div>
+</section>
+
+<section class="screen dim" id="scrSubs">
+  <div class="panel"><h2>🔄 Cambios</h2><div id="subsBody"></div><button class="btn gray" id="bSubsClose">Seguir jugando</button></div>
+</section>
+
 <section class="screen on" id="scrMenu">
   <div class="menuWrap">
     <div class="logo">REMATE<br>PARK<small>VÓLEY ARCADE</small></div>
@@ -210,10 +288,11 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
       </div>
       <button class="btn teal" id="bTut">📘 Tutorial: aprende a jugar<span class="badge" id="tutBadge">¡Empieza aquí!</span></button>
       <button class="btn green" data-go="scrSetup">🏐 Jugar contra la PC</button>
+      <button class="btn purple" id="bClub">🏆 Modo Mánager</button>
       <button class="btn" id="bHost">🌐 Crear sala online</button>
       <button class="btn pink" data-go="scrJoin">🔗 Unirme a una sala</button>
       <button class="btn yellow" data-go="scrCustom">🎨 Personalizar jugador</button>
-      <div class="mini"><span id="mStats"></span><button class="link" id="bMute" title="Sonido">🔊</button></div>
+      <div class="mini"><span id="mStats"></span><span><button class="link" id="bFs" title="Pantalla completa (F)">⛶</button><button class="link" id="bMute" title="Sonido">🔊</button></span></div>
     </div>
   </div>
 </section>
@@ -225,6 +304,8 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
     <div class="row" data-opt="size"><button class="chip" data-v="1">1 vs 1</button><button class="chip" data-v="2">2 vs 2</button><button class="chip" data-v="3">3 vs 3</button><button class="chip" data-v="4">4 vs 4</button></div>
     <label class="t">Dificultad</label>
     <div class="row" data-opt="diff"><button class="chip" data-v="0">Fácil</button><button class="chip" data-v="1">Normal</button><button class="chip" data-v="2">Difícil</button></div>
+    <label class="t">Escenario</label>
+    <div class="row venueRow" data-opt="venue"></div>
     <label class="t">Puntos para ganar</label>
     <div class="row" data-opt="pts"><button class="chip" data-v="7">7</button><button class="chip" data-v="11">11</button><button class="chip" data-v="15">15</button><button class="chip" data-v="21">21</button></div>
     <button class="btn green" id="bPlay" style="margin-top:18px">¡A jugar!</button>
@@ -248,6 +329,7 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
     <label class="t">Código de la sala</label>
     <input class="txt" id="jCode" maxlength="6" placeholder="ABCDE" autocomplete="off" style="text-transform:uppercase;letter-spacing:6px;text-align:center;font-size:28px">
     <div id="jStatus"></div>
+    <p class="tipSmall">Abre el link en Chrome o Safari (no dentro de WhatsApp o Instagram). No hace falta estar en la misma red.</p>
     <button class="btn green" id="bJoin">Entrar</button>
     <button class="btn gray" data-go="scrMenu">Volver</button>
   </div>
@@ -257,6 +339,7 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
   <div class="panel wide">
     <h2>Sala <span class="codeBig" id="lCode">-----</span></h2>
     <div class="share"><input class="txt" id="lLink" readonly><button class="btn small" id="bCopy">Copiar link</button></div>
+    <div class="qrRow" id="qrRow"><div id="lQr"></div><div class="qrTip">📱 <b>Escanea este código con la cámara del teléfono</b> para entrar a la sala. Funciona con WiFi o con datos móviles. Deja esta pestaña abierta mientras juegan.</div></div>
     <div class="teams">
       <div class="tcol a"><h3>🟢 Verdes</h3><div id="lTeam0"></div><button class="chip" data-team="0">Cambiarme aquí</button></div>
       <div class="tcol b"><h3>🩷 Rosas</h3><div id="lTeam1"></div><button class="chip" data-team="1">Cambiarme aquí</button></div>
@@ -266,6 +349,8 @@ body.tutOn #score,body.tutOn #touches,body.tutOn #ctrlCard,body.tutOn #hint{disp
       <div class="row" data-lopt="size"><button class="chip" data-v="1">1</button><button class="chip" data-v="2">2</button><button class="chip" data-v="3">3</button><button class="chip" data-v="4">4</button></div>
       <label class="t">Dificultad de la PC</label>
       <div class="row" data-lopt="diff"><button class="chip" data-v="0">Fácil</button><button class="chip" data-v="1">Normal</button><button class="chip" data-v="2">Difícil</button></div>
+      <label class="t">Escenario</label>
+      <div class="row venueRow" data-lopt="venue"></div>
       <label class="t">Puntos</label>
       <div class="row" data-lopt="pts"><button class="chip" data-v="7">7</button><button class="chip" data-v="11">11</button><button class="chip" data-v="15">15</button><button class="chip" data-v="21">21</button></div>
     </div>
@@ -381,7 +466,7 @@ function defaultSave() {
   return {
     name: 'Jugador' + randi(10, 99),
     look: { skin: '#f3c48e', hair: 'spiky', hairColor: '#2b1d14', shirt: '#ffffff', shorts: '#1d2340', hat: 'none' },
-    xp: 0, level: 1, wins: 0, games: 0, streak: 0, best: 0, size: 2, diff: 1, pts: 15, muted: false, seenControls: 0,
+    xp: 0, level: 1, wins: 0, games: 0, streak: 0, best: 0, size: 2, diff: 1, pts: 15, venue: 'parque', muted: false, seenControls: 0,
   };
 }
 function loadSave() {
@@ -552,32 +637,14 @@ function outline(m, s = 1.08) {
   return m;
 }
 
-// ---------- suelo ----------
-const grassTex = canvasTex(256, 256, (g, w, h) => {
-  g.fillStyle = '#5cc451'; g.fillRect(0, 0, w, h);
-  g.fillStyle = '#54b84a'; g.fillRect(0, 0, w, h / 2);
-  for (let i = 0; i < 1400; i++) {
-    g.fillStyle = Math.random() < 0.5 ? 'rgba(255,255,255,.05)' : 'rgba(0,60,0,.06)';
-    g.fillRect(Math.random() * w, Math.random() * h, 2, 3);
-  }
-}, [75, 75]);
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshLambertMaterial({ map: grassTex }));
-ground.rotation.x = -Math.PI / 2;
-ground.receiveShadow = true;
-scene.add(ground);
-
-// cancha: césped más claro y líneas
+// ---------- cancha: líneas (el suelo y el paisaje los pone cada escenario) ----------
+const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
 const court = new THREE.Group();
 scene.add(court);
 {
-  const surf = new THREE.Mesh(new THREE.PlaneGeometry(HALF_W * 2 + 1.2, HALF_L * 2 + 1.2),
-    new THREE.MeshLambertMaterial({ color: 0x8be07a, transparent: true, opacity: 0.35 }));
-  surf.rotation.x = -Math.PI / 2; surf.position.y = 0.005; surf.receiveShadow = true;
-  court.add(surf);
-  const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const line = (w, l, x, z) => {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(w, l), lineMat);
-    m.rotation.x = -Math.PI / 2; m.position.set(x, 0.012, z);
+    m.rotation.x = -Math.PI / 2; m.position.set(x, 0.014, z);
     court.add(m);
   };
   const LW = 0.09;
@@ -620,75 +687,348 @@ const NET_HALF = HALF_W + 0.55;
   }
 }
 
-// ---------- árboles, arbustos, colinas y nubes (instanciados) ----------
-{
-  const blobGeo = new THREE.IcosahedronGeometry(1, 1);
-  const trunkGeo = new THREE.CylinderGeometry(0.28, 0.4, 2.6, 7);
-  const trees = [];
-  for (let i = 0; i < 90; i++) {
-    const a = rand(0, Math.PI * 2), r = rand(21, 85);
-    const x = Math.cos(a) * r * 1.15, z = Math.sin(a) * r;
-    if (Math.abs(x) < 15 && Math.abs(z) < 22) continue;
-    trees.push({ x, z, s: rand(0.9, 1.6) });
-  }
-  // filas de árboles al fondo de cada lado (como un parque)
-  for (const s of [-1, 1]) for (let i = 0; i < 9; i++) trees.push({ x: -26 + i * 6.5 + rand(-1, 1), z: s * rand(26, 30), s: rand(1.1, 1.5) });
-  const trunks = new THREE.InstancedMesh(trunkGeo, toon('#8a5a36'), trees.length);
-  const crowns = new THREE.InstancedMesh(blobGeo, new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonGrad }), trees.length * 4);
-  const shadows = new THREE.InstancedMesh(new THREE.CircleGeometry(1, 16), new THREE.MeshBasicMaterial({ color: 0x2d6b2a, transparent: true, opacity: 0.35, depthWrite: false }), trees.length);
-  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), col = new THREE.Color();
-  const greens = ['#4caf3f', '#5bbf45', '#3f9e3a', '#6cc24a'];
-  let ci = 0;
-  trees.forEach((t, i) => {
-    m4.compose(new THREE.Vector3(t.x, 1.3 * t.s, t.z), q.identity(), new THREE.Vector3(t.s, t.s, t.s));
-    trunks.setMatrixAt(i, m4);
-    shadows.setMatrixAt(i, m4.compose(new THREE.Vector3(t.x + 0.6, 0.02, t.z + 0.4), q.setFromEuler(e.set(-Math.PI / 2, 0, 0)), new THREE.Vector3(2.6 * t.s, 2.2 * t.s, 1)));
-    const base = greens[i % greens.length];
-    for (let k = 0; k < 4; k++) {
-      const off = [[0, 3.6, 0, 2.0], [1.1, 3.0, 0.4, 1.5], [-1.0, 3.1, -0.3, 1.5], [0.2, 4.4, -0.5, 1.4]][k];
-      m4.compose(new THREE.Vector3(t.x + off[0] * t.s, off[1] * t.s, t.z + off[2] * t.s), q.setFromEuler(e.set(rand(0, 3), rand(0, 3), 0)), new THREE.Vector3(off[3] * t.s, off[3] * t.s * 0.9, off[3] * t.s));
-      crowns.setMatrixAt(ci, m4);
-      crowns.setColorAt(ci, col.set(base).offsetHSL(0, 0, rand(-0.04, 0.04)));
-      ci++;
-    }
+// =========================================================
+//  ESCENARIOS (cancha + paisaje + cielo + luces)
+// =========================================================
+const _m4 = new THREE.Matrix4(), _q = new THREE.Quaternion(), _e = new THREE.Euler(), _col = new THREE.Color(), _p3 = new THREE.Vector3(), _s3 = new THREE.Vector3();
+const blobGeo = new THREE.IcosahedronGeometry(1, 1);
+const texCache = {};
+function vtex(key, w, h, draw, rep) {
+  if (!texCache[key]) texCache[key] = canvasTex(w, h, draw);
+  const t = texCache[key].clone();
+  t.needsUpdate = true;
+  if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep[0], rep[1]); }
+  return t;
+}
+const speckle = (g, w, h, n, cols, sz = 2) => { for (let i = 0; i < n; i++) { g.fillStyle = pick(cols); g.fillRect(Math.random() * w, Math.random() * h, sz, sz); } };
+function inst(geo, mat, list, shadow = false) {
+  const im = new THREE.InstancedMesh(geo, mat, list.length);
+  list.forEach((it, i) => {
+    _m4.compose(_p3.set(it.x, it.y || 0, it.z), _q.setFromEuler(_e.set(it.rx || 0, it.ry || 0, it.rz || 0)), _s3.set(it.sx ?? it.s ?? 1, it.sy ?? it.s ?? 1, it.sz ?? it.s ?? 1));
+    im.setMatrixAt(i, _m4);
+    if (it.c !== undefined) im.setColorAt(i, _col.set(it.c));
   });
-  crowns.count = ci;
-  scene.add(trunks, crowns, shadows);
-
-  // arbustos cerca de la cancha
-  const bushes = new THREE.InstancedMesh(blobGeo, new THREE.MeshToonMaterial({ color: 0x47a83c, gradientMap: toonGrad }), 40);
-  for (let i = 0; i < 40; i++) {
-    const s = i % 2 ? 1 : -1;
-    const x = s * rand(10, 16), z = rand(-18, 18), sc = rand(0.6, 1.1);
-    m4.compose(new THREE.Vector3(x, sc * 0.4, z), q.identity(), new THREE.Vector3(sc * 1.3, sc * 0.8, sc));
-    bushes.setMatrixAt(i, m4);
+  im.castShadow = shadow;
+  return im;
+}
+function groundPlane(g, map, color) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshLambertMaterial(map ? { map } : { color }));
+  m.rotation.x = -Math.PI / 2; m.receiveShadow = true;
+  g.add(m);
+  return m;
+}
+function courtPlane(g, w, l, mat, y = 0.006) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, l), mat);
+  m.rotation.x = -Math.PI / 2; m.position.y = y; m.receiveShadow = true;
+  g.add(m);
+  return m;
+}
+// anillo de posiciones alrededor de la cancha (sin tapar la cámara)
+function ringSpots(n, r0, r1, minX = 15, minZ = 22) {
+  const out = [];
+  for (let i = 0; i < n * 3 && out.length < n; i++) {
+    const a = rand(0, Math.PI * 2), r = rand(r0, r1);
+    const x = Math.cos(a) * r * 1.15, z = Math.sin(a) * r;
+    if (Math.abs(x) < minX && Math.abs(z) < minZ) continue;
+    out.push({ x, z });
   }
-  scene.add(bushes);
-
-  // colinas lejanas
-  const hillMat = new THREE.MeshLambertMaterial({ color: 0x7cc767 });
-  for (let i = 0; i < 14; i++) {
-    const a = (i / 14) * Math.PI * 2, r = 125;
-    const h = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), hillMat);
-    h.position.set(Math.cos(a) * r, -2, Math.sin(a) * r);
-    h.scale.set(rand(30, 50), rand(12, 22), rand(20, 30));
-    scene.add(h);
-  }
-  // nubes
-  const cloudMat = new THREE.MeshLambertMaterial({ color: 0xffffff, fog: false, emissive: 0x9fb8cc });
-  const clouds = new THREE.InstancedMesh(blobGeo, cloudMat, 60);
-  let k = 0;
-  for (let c = 0; c < 12; c++) {
+  return out;
+}
+function cloudsLayer(g, color = 0xffffff, emissive = 0x9fb8cc, n = 12) {
+  const list = [];
+  for (let c = 0; c < n; c++) {
     const a = rand(0, Math.PI * 2), r = rand(110, 160), y = rand(28, 50);
     const cx = Math.cos(a) * r, cz = Math.sin(a) * r;
-    for (let j = 0; j < 5; j++) {
-      const s = rand(5, 9);
-      m4.compose(new THREE.Vector3(cx + rand(-10, 10), y + rand(-2, 3), cz + rand(-6, 6)), q.identity(), new THREE.Vector3(s * 1.4, s * 0.8, s));
-      clouds.setMatrixAt(k++, m4);
-    }
+    for (let j = 0; j < 5; j++) { const s = rand(5, 9); list.push({ x: cx + rand(-10, 10), y: y + rand(-2, 3), z: cz + rand(-6, 6), sx: s * 1.4, sy: s * 0.8, sz: s }); }
   }
-  scene.add(clouds);
+  g.add(inst(blobGeo, new THREE.MeshLambertMaterial({ color, fog: false, emissive }), list));
 }
+function hillsLayer(g, color, n = 14, r = 125) {
+  const mat = new THREE.MeshLambertMaterial({ color });
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const h = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), mat);
+    h.position.set(Math.cos(a) * r, -2, Math.sin(a) * r);
+    h.scale.set(rand(30, 50), rand(12, 22), rand(20, 30));
+    g.add(h);
+  }
+}
+
+const VENUES = {
+  parque: {
+    name: 'Parque', emoji: '🌳',
+    sky: ['#3fa7f5', '#8fd3ff', '#dff4ff'], fog: [0xd4efff, 45, 150], hemi: [0xe8f6ff, 0x4f9a3f, 1.15], sun: [0xfff6e5, 1.7, 10, 24, 12],
+    lines: 0xffffff, dust: 0xe9f3dc,
+    build(g) {
+      groundPlane(g, vtex('grass', 256, 256, (c, w, h) => {
+        c.fillStyle = '#5cc451'; c.fillRect(0, 0, w, h); c.fillStyle = '#54b84a'; c.fillRect(0, 0, w, h / 2);
+        speckle(c, w, h, 1400, ['rgba(255,255,255,.05)', 'rgba(0,60,0,.06)']);
+      }, [100, 100]));
+      courtPlane(g, HALF_W * 2 + 1.2, HALF_L * 2 + 1.2, new THREE.MeshLambertMaterial({ color: 0x8be07a, transparent: true, opacity: 0.35 }));
+      const spots = ringSpots(90, 21, 85);
+      for (const s of [-1, 1]) for (let i = 0; i < 9; i++) spots.push({ x: -26 + i * 6.5 + rand(-1, 1), z: s * rand(26, 30) });
+      const trunks = [], crowns = [], shadows = [];
+      const greens = ['#4caf3f', '#5bbf45', '#3f9e3a', '#6cc24a'];
+      spots.forEach((t, i) => {
+        const s = rand(0.9, 1.6);
+        trunks.push({ x: t.x, y: 1.3 * s, z: t.z, s });
+        shadows.push({ x: t.x + 0.6, y: 0.02, z: t.z + 0.4, rx: -Math.PI / 2, sx: 2.6 * s, sy: 2.2 * s, sz: 1 });
+        for (const o of [[0, 3.6, 0, 2.0], [1.1, 3.0, 0.4, 1.5], [-1.0, 3.1, -0.3, 1.5], [0.2, 4.4, -0.5, 1.4]])
+          crowns.push({ x: t.x + o[0] * s, y: o[1] * s, z: t.z + o[2] * s, rx: rand(0, 3), ry: rand(0, 3), sx: o[3] * s, sy: o[3] * s * 0.9, sz: o[3] * s, c: _col.set(greens[i % 4]).offsetHSL(0, 0, rand(-0.04, 0.04)).getHex() });
+      });
+      g.add(inst(new THREE.CylinderGeometry(0.28, 0.4, 2.6, 7), toon('#8a5a36'), trunks));
+      g.add(inst(blobGeo, new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonGrad }), crowns));
+      g.add(inst(new THREE.CircleGeometry(1, 16), new THREE.MeshBasicMaterial({ color: 0x2d6b2a, transparent: true, opacity: 0.35, depthWrite: false }), shadows));
+      const bushes = [];
+      for (let i = 0; i < 40; i++) { const sc = rand(0.6, 1.1); bushes.push({ x: (i % 2 ? 1 : -1) * rand(10, 16), y: sc * 0.4, z: rand(-18, 18), sx: sc * 1.3, sy: sc * 0.8, sz: sc }); }
+      g.add(inst(blobGeo, new THREE.MeshToonMaterial({ color: 0x47a83c, gradientMap: toonGrad }), bushes));
+      hillsLayer(g, 0x7cc767);
+      cloudsLayer(g);
+    },
+  },
+  playa: {
+    name: 'Playa', emoji: '🏖️',
+    sky: ['#1f8fe6', '#7fd0ff', '#fff1d6'], fog: [0xf1ead9, 55, 180], hemi: [0xfff4e0, 0xd9b77a, 1.15], sun: [0xfff0d0, 1.85, 14, 26, 6],
+    lines: 0x1f5fd6, dust: 0xf3dcaa,
+    build(g) {
+      groundPlane(g, vtex('sand', 256, 256, (c, w, h) => {
+        c.fillStyle = '#efd29a'; c.fillRect(0, 0, w, h);
+        speckle(c, w, h, 2600, ['#e4c27f', '#f7e2b5', '#d9b46e', '#fff1cf'], 2);
+        c.strokeStyle = 'rgba(190,150,90,.18)'; c.lineWidth = 2;
+        for (let i = 0; i < 10; i++) { c.beginPath(); for (let x = 0; x <= w; x += 8) c.lineTo(x, i * 26 + Math.sin(x / 20 + i) * 4); c.stroke(); }
+      }, [70, 70]));
+      courtPlane(g, HALF_W * 2 + 1.0, HALF_L * 2 + 1.0, new THREE.MeshLambertMaterial({ color: 0xf6dcaa, transparent: true, opacity: 0.6 }));
+      // mar al fondo (lado del rival visto desde los verdes) con olas
+      const seaTex = vtex('sea', 128, 128, (c, w, h) => {
+        c.fillStyle = '#1aa7d6'; c.fillRect(0, 0, w, h);
+        c.strokeStyle = 'rgba(255,255,255,.35)'; c.lineWidth = 3;
+        for (let i = 0; i < 6; i++) { c.beginPath(); for (let x = 0; x <= w; x += 4) c.lineTo(x, i * 22 + 8 + Math.sin(x / 10) * 3); c.stroke(); }
+      }, [30, 20]);
+      const sea = new THREE.Mesh(new THREE.PlaneGeometry(500, 260), new THREE.MeshLambertMaterial({ map: seaTex, transparent: true, opacity: 0.95 }));
+      sea.rotation.x = -Math.PI / 2; sea.position.set(0, 0.03, -165);
+      g.add(sea);
+      const foam = new THREE.Mesh(new THREE.PlaneGeometry(500, 1.4), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 }));
+      foam.rotation.x = -Math.PI / 2; foam.position.set(0, 0.05, -35.5);
+      g.add(foam);
+      hillsLayer(g, 0x5fae63, 5, 150);
+      // palmeras
+      const trunks = [], leaves = [], cocos = [];
+      const spots = ringSpots(40, 18, 70).filter((p) => p.z > -30);
+      spots.forEach((p) => {
+        const h = rand(5, 8), lean = rand(-0.25, 0.25), ry = rand(0, 6);
+        for (let k = 0; k < 6; k++) trunks.push({ x: p.x + Math.sin(lean) * k * h / 6 * Math.cos(ry), y: k * h / 6 + 0.5, z: p.z + Math.sin(lean) * k * h / 6 * Math.sin(ry), rz: lean, s: 1 - k * 0.06 });
+        const tx = p.x + Math.sin(lean) * h * Math.cos(ry), tz = p.z + Math.sin(lean) * h * Math.sin(ry);
+        for (let k = 0; k < 7; k++) leaves.push({ x: tx, y: h + 0.4, z: tz, ry: (k / 7) * Math.PI * 2 + ry, rz: 0, rx: 0, sx: 1, sy: 1, sz: 1, c: pick(['#3f9e3a', '#4caf3f', '#5bbf45']) });
+        for (let k = 0; k < 3; k++) cocos.push({ x: tx + rand(-0.3, 0.3), y: h, z: tz + rand(-0.3, 0.3), s: 0.22 });
+      });
+      g.add(inst(new THREE.CylinderGeometry(0.22, 0.28, 1.45, 7), toon('#a7784a'), trunks));
+      const leafGeo = new THREE.ConeGeometry(0.55, 3.4, 4, 1);
+      leafGeo.rotateZ(-Math.PI / 2 - 0.35); leafGeo.translate(1.6, -0.5, 0); leafGeo.scale(1, 0.35, 1);
+      g.add(inst(leafGeo, new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonGrad }), leaves));
+      g.add(inst(blobGeo, toon('#6b4a2a'), cocos));
+      // sombrillas y toallas
+      for (let i = 0; i < 10; i++) {
+        const x = (i % 2 ? 1 : -1) * rand(9, 15), z = rand(-14, 16), col = pick(['#ff4f9a', '#ffd23a', '#2fd27a', '#3a7bff', '#ff7a2f']);
+        const pole = mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.4, 6), toon('#ffffff')); pole.position.set(x, 1.2, z); g.add(pole);
+        const top = outline(mesh(new THREE.ConeGeometry(1.3, 0.6, 10), toon(col))); top.position.set(x, 2.45, z); g.add(top);
+        const towel = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 1.8), toon(pick(['#ffffff', col, '#7fd0ff']))); towel.rotation.set(-Math.PI / 2, 0, rand(0, 3)); towel.position.set(x + rand(-1, 1), 0.02, z + rand(0.8, 1.6)); towel.receiveShadow = true; g.add(towel);
+      }
+      cloudsLayer(g, 0xffffff, 0xb8c8d8, 8);
+      return { update(dt, t) { seaTex.offset.y = (t * 0.03) % 1; seaTex.offset.x = Math.sin(t * 0.3) * 0.02; foam.material.opacity = 0.6 + Math.sin(t * 1.3) * 0.25; foam.position.z = -35.5 + Math.sin(t * 1.3) * 0.6; } };
+    },
+  },
+  azotea: {
+    name: 'Azotea', emoji: '🌇',
+    sky: ['#2b1d5c', '#c3478a', '#ffb067'], fog: [0xd98a78, 60, 190], hemi: [0xffc9a8, 0x4a3a66, 1.05], sun: [0xffb36b, 1.65, -16, 14, -10],
+    lines: 0xffffff, dust: 0xc9ccd6,
+    build(g) {
+      // techo del edificio (la calle queda 20 m más abajo)
+      const roof = new THREE.Mesh(new THREE.PlaneGeometry(40, 48), new THREE.MeshLambertMaterial({ map: vtex('concrete', 256, 256, (c, w, h) => {
+        c.fillStyle = '#8e93a0'; c.fillRect(0, 0, w, h);
+        speckle(c, w, h, 2400, ['#7f8491', '#9ba0ac', '#868b98'], 2);
+        c.strokeStyle = 'rgba(60,64,78,.35)'; c.lineWidth = 2; c.strokeRect(0, 0, w, h);
+      }, [8, 10]) }));
+      roof.rotation.x = -Math.PI / 2; roof.receiveShadow = true; g.add(roof);
+      const street = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshLambertMaterial({ color: 0x3a3550 }));
+      street.rotation.x = -Math.PI / 2; street.position.y = -20; g.add(street);
+      courtPlane(g, HALF_W * 2 + 3, HALF_L * 2 + 3, toon('#2f8f6a'), 0.004);
+      courtPlane(g, HALF_W * 2, HALF_L * 2, toon('#3a6fd8'), 0.008);
+      // borde de la azotea
+      for (const [x, z, w, d] of [[0, -24, 40, 0.4], [0, 24, 40, 0.4], [-20, 0, 0.4, 48], [20, 0, 0.4, 48]]) {
+        const wall = mesh(new THREE.BoxGeometry(w, 1.1, d), toon('#5d6272')); wall.position.set(x, 0.55, z); wall.receiveShadow = true; g.add(wall);
+      }
+      // aire acondicionado, tanques de agua
+      for (let i = 0; i < 8; i++) {
+        const b = outline(mesh(new THREE.BoxGeometry(rand(1.2, 2.2), rand(0.8, 1.4), rand(1, 1.8)), toon(pick(['#b9bdc8', '#a3a8b4']))));
+        b.position.set((i % 2 ? 1 : -1) * rand(11, 17), 0.5, rand(-18, 18)); g.add(b);
+      }
+      const tank = outline(mesh(new THREE.CylinderGeometry(1.4, 1.4, 2.6, 14), toon('#8a5a36'))); tank.position.set(-15, 3.4, -19); g.add(tank);
+      const tankTop = mesh(new THREE.ConeGeometry(1.55, 0.9, 14), toon('#5d4030')); tankTop.position.set(-15, 5.1, -19); g.add(tankTop);
+      for (const [x, z] of [[-16, -18], [-14, -18], [-16, -20], [-14, -20]]) { const leg = mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.2, 6), toon('#3a3f4e')); leg.position.set(x, 1.1, z); g.add(leg); }
+      // ciudad: edificios con ventanas encendidas
+      const winTex = vtex('windows', 64, 128, (c, w, h) => {
+        c.fillStyle = '#2a2f4a'; c.fillRect(0, 0, w, h);
+        for (let y = 4; y < h; y += 10) for (let x = 4; x < w; x += 10) { c.fillStyle = Math.random() < 0.45 ? pick(['#ffd27a', '#ffe9a8', '#ffb35c']) : '#1d2236'; c.fillRect(x, y, 6, 6); }
+      }, [2, 3]);
+      const blds = [];
+      for (let i = 0; i < 140; i++) {
+        const a = rand(0, Math.PI * 2), r = rand(45, 150);
+        const x = Math.cos(a) * r, z = Math.sin(a) * r, hgt = rand(10, 55) * (r > 90 ? 1.3 : 1);
+        blds.push({ x, y: hgt / 2 - 20, z, sx: rand(6, 14), sy: hgt + 20, sz: rand(6, 14), ry: rand(0, 1), c: pick(['#ffffff', '#e6dcff', '#ffe0cc', '#d6e4ff']) });
+      }
+      blds.push({ x: 0, y: -10.05, z: 0, sx: 40, sy: 20, sz: 48, c: '#cfc6e8' });
+      g.add(inst(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial({ map: winTex, color: 0xffffff, emissive: 0x2a2140 }), blds));
+      // guirnalda de luces sobre la cancha
+      const bulbs = [];
+      for (const s of [-1, 1]) {
+        const p1 = mesh(new THREE.CylinderGeometry(0.06, 0.06, 4.2, 6), toon('#3a3f4e')); p1.position.set(s * 8, 2.1, -12); g.add(p1);
+        const p2 = mesh(new THREE.CylinderGeometry(0.06, 0.06, 4.2, 6), toon('#3a3f4e')); p2.position.set(s * 8, 2.1, 12); g.add(p2);
+        for (let k = 0; k <= 30; k++) { const f = k / 30; bulbs.push({ x: s * 8, y: 4.1 - Math.sin(f * Math.PI) * 1.2, z: -12 + f * 24, s: 0.09, c: pick(['#ffd27a', '#ff9ec7', '#9fe3ff', '#fff3b0']) }); }
+      }
+      const bulbMesh = inst(new THREE.SphereGeometry(1, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffffff }), bulbs);
+      g.add(bulbMesh);
+      cloudsLayer(g, 0xffc2d6, 0x8a4a7a, 8);
+      return { update(dt, t) { bulbMesh.material.color.setScalar(0.85 + Math.sin(t * 3) * 0.15); } };
+    },
+  },
+  nieve: {
+    name: 'Montaña', emoji: '🏔️',
+    sky: ['#7fa6d1', '#c9dcef', '#f2f6fb'], fog: [0xe6eef7, 32, 125], hemi: [0xf2f7ff, 0xb8c6d6, 1.2], sun: [0xffffff, 1.35, 8, 22, 14],
+    lines: 0xe8413a, dust: 0xffffff,
+    build(g) {
+      groundPlane(g, vtex('snow', 256, 256, (c, w, h) => {
+        c.fillStyle = '#f2f7fd'; c.fillRect(0, 0, w, h);
+        speckle(c, w, h, 1800, ['#e2ebf6', '#ffffff', '#d7e3f2'], 3);
+      }, [60, 60]));
+      courtPlane(g, HALF_W * 2 + 1.0, HALF_L * 2 + 1.0, new THREE.MeshLambertMaterial({ color: 0xdfeefc }));
+      // pinos nevados
+      const cones = [], caps = [], trunks = [];
+      ringSpots(110, 18, 80).forEach((p) => {
+        const s = rand(0.9, 1.7);
+        trunks.push({ x: p.x, y: 0.5 * s, z: p.z, s });
+        for (let k = 0; k < 3; k++) {
+          cones.push({ x: p.x, y: (1.6 + k * 1.3) * s, z: p.z, sx: (1.9 - k * 0.5) * s, sy: 1.8 * s, sz: (1.9 - k * 0.5) * s, c: pick(['#2f6b4a', '#2a5f42', '#357553']) });
+          caps.push({ x: p.x, y: (2.05 + k * 1.3) * s, z: p.z, sx: (1.2 - k * 0.32) * s, sy: 0.9 * s, sz: (1.2 - k * 0.32) * s });
+        }
+      });
+      g.add(inst(new THREE.CylinderGeometry(0.2, 0.25, 1, 6), toon('#6b4a2a'), trunks));
+      g.add(inst(new THREE.ConeGeometry(1, 1, 8), new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonGrad }), cones));
+      g.add(inst(new THREE.ConeGeometry(1, 1, 8), toon('#ffffff'), caps));
+      // montañas lejanas con cumbre nevada
+      for (let i = 0; i < 12; i++) {
+        const a = (i / 12) * Math.PI * 2 + rand(-0.1, 0.1), r = rand(115, 145), hgt = rand(35, 70), w = rand(30, 50);
+        const m = mesh(new THREE.ConeGeometry(w, hgt, 6), new THREE.MeshLambertMaterial({ color: 0x8aa0b8 }), false); m.position.set(Math.cos(a) * r, hgt / 2 - 3, Math.sin(a) * r); g.add(m);
+        const cap = mesh(new THREE.ConeGeometry(w * 0.4, hgt * 0.4, 6), new THREE.MeshLambertMaterial({ color: 0xffffff }), false); cap.position.set(m.position.x, hgt - 3 - hgt * 0.2, m.position.z); g.add(cap);
+      }
+      // nieve que cae
+      const N = 900, pos = new Float32Array(N * 3);
+      for (let i = 0; i < N; i++) { pos[i * 3] = rand(-35, 35); pos[i * 3 + 1] = rand(0, 25); pos[i * 3 + 2] = rand(-35, 35); }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const flakes = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.14, transparent: true, opacity: 0.9, depthWrite: false }));
+      g.add(flakes);
+      return {
+        update(dt, t) {
+          for (let i = 0; i < N; i++) {
+            pos[i * 3 + 1] -= dt * (1.2 + (i % 5) * 0.25);
+            pos[i * 3] += Math.sin(t + i) * dt * 0.4;
+            if (pos[i * 3 + 1] < 0) pos[i * 3 + 1] = 25;
+          }
+          geo.attributes.position.needsUpdate = true;
+        },
+      };
+    },
+  },
+  estadio: {
+    name: 'Estadio', emoji: '🏟️',
+    sky: ['#04071a', '#0b1533', '#1a2a55'], fog: [0x0b1533, 60, 210], hemi: [0x9fb4ff, 0x1d2340, 0.6], sun: [0xffffff, 2.1, 2, 30, 8],
+    lines: 0xffffff, dust: 0xd0d6e6,
+    build(g) {
+      groundPlane(g, null, 0x1b2440);
+      courtPlane(g, HALF_W * 2 + 5, HALF_L * 2 + 6, toon('#2a6fdb'), 0.004);
+      courtPlane(g, HALF_W * 2 + 0.4, HALF_L * 2 + 0.4, new THREE.MeshToonMaterial({ gradientMap: toonGrad, map: vtex('parquet', 128, 256, (c, w, h) => {
+        c.fillStyle = '#d4935a'; c.fillRect(0, 0, w, h);
+        for (let y = 0; y < h; y += 16) for (let x = -32; x < w; x += 32) { c.fillStyle = pick(['#d99a5b', '#cf8d4e', '#e2a76a', '#d4935a']); c.fillRect(x + ((y / 16) % 2) * 16, y, 32, 16); }
+        c.strokeStyle = 'rgba(90,50,20,.35)'; for (let y = 0; y < h; y += 16) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
+      }, [3, 6]) }), 0.008);
+      // gradas con público
+      const steps = [], fans = [];
+      const tiers = 7;
+      for (const side of ['n', 's', 'e', 'w']) {
+        for (let k = 0; k < tiers; k++) {
+          const off = 13 + k * 1.3, y = 0.5 + k * 0.85;
+          const long = side === 'n' || side === 's';
+          const len = long ? 34 + k * 2.6 : 26 + k * 2.6;
+          const x = side === 'e' ? off : side === 'w' ? -off : 0, z = side === 'n' ? -off - 5 : side === 's' ? off + 5 : 0;
+          steps.push({ x, y: y / 2, z, sx: long ? len : 1.3, sy: y, sz: long ? 1.3 : len, c: k % 2 ? '#2b3a66' : '#334678' });
+          const n = Math.floor(len / 0.9);
+          for (let i = 0; i < n; i++) {
+            if (Math.random() < 0.18) continue;
+            const along = -len / 2 + 0.45 + i * 0.9;
+            fans.push({ x: long ? along : x, y: y + 0.45, z: long ? z : along, sx: 0.5, sy: 0.75, sz: 0.4, c: pick(['#ff4f9a', '#2fd27a', '#ffd23a', '#ffffff', '#3a7bff', '#ff7a2f', '#a24bff']), base: y + 0.45, ph: rand(0, 6) });
+          }
+        }
+      }
+      g.add(inst(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial({ color: 0xffffff }), steps));
+      const fanMesh = inst(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial({ color: 0xffffff }), fans);
+      g.add(fanMesh);
+      // torres de luz
+      for (const [x, z] of [[-16, -22], [16, -22], [-16, 22], [16, 22]]) {
+        const pole = mesh(new THREE.CylinderGeometry(0.25, 0.35, 18, 8), toon('#3a3f4e')); pole.position.set(x, 9, z); g.add(pole);
+        const lamp = mesh(new THREE.BoxGeometry(3, 1.6, 0.5), new THREE.MeshBasicMaterial({ color: 0xfff8e0 })); lamp.position.set(x, 18.3, z); lamp.lookAt(0, 0, 0); g.add(lamp);
+        const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: blobTex, color: 0xfff3c4, transparent: true, opacity: 0.85, depthWrite: false })); glow.position.set(x, 18.3, z); glow.scale.setScalar(9); g.add(glow);
+      }
+      // estrellas
+      const N = 500, sp = new Float32Array(N * 3);
+      for (let i = 0; i < N; i++) { const a = rand(0, Math.PI * 2), e = rand(0.15, 1.3), r = 180; sp[i * 3] = Math.cos(a) * Math.cos(e) * r; sp[i * 3 + 1] = Math.sin(e) * r; sp[i * 3 + 2] = Math.sin(a) * Math.cos(e) * r; }
+      const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+      g.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xffffff, size: 0.9, fog: false })));
+      return {
+        hype: 0,
+        update(dt, t) {
+          // el público salta (más cuando hay punto)
+          this.hype = Math.max(0, this.hype - dt * 0.5);
+          const amp = 0.06 + this.hype * 0.5;
+          for (let i = 0; i < fans.length; i += 1) {
+            const f = fans[i];
+            const y = f.base + Math.max(0, Math.sin(t * (6 + this.hype * 4) + f.ph)) * amp;
+            _m4.compose(_p3.set(f.x, y, f.z), _q.identity(), _s3.set(0.5, 0.75, 0.4));
+            fanMesh.setMatrixAt(i, _m4);
+          }
+          fanMesh.instanceMatrix.needsUpdate = true;
+        },
+      };
+    },
+  },
+};
+const VENUE_IDS = Object.keys(VENUES);
+const VENUE = { id: '', group: null, fx: null };
+const skyCache = {};
+function setVenue(id) {
+  if (!VENUES[id]) id = 'parque';
+  if (VENUE.id === id) return;
+  const v = VENUES[id];
+  if (VENUE.group) {
+    scene.remove(VENUE.group);
+    VENUE.group.traverse((o) => { if (o.geometry && o.geometry !== blobGeo) o.geometry.dispose(); });
+  }
+  const g = new THREE.Group();
+  VENUE.fx = v.build(g) || null;
+  scene.add(g);
+  VENUE.group = g; VENUE.id = id;
+  if (!skyCache[id]) skyCache[id] = canvasTex(4, 256, (c, w, h) => {
+    const gr = c.createLinearGradient(0, 0, 0, h);
+    gr.addColorStop(0, v.sky[0]); gr.addColorStop(0.55, v.sky[1]); gr.addColorStop(1, v.sky[2]);
+    c.fillStyle = gr; c.fillRect(0, 0, w, h);
+  });
+  scene.background = skyCache[id];
+  scene.fog.color.setHex(v.fog[0]); scene.fog.near = v.fog[1]; scene.fog.far = v.fog[2];
+  hemi.color.setHex(v.hemi[0]); hemi.groundColor.setHex(v.hemi[1]); hemi.intensity = v.hemi[2];
+  sun.color.setHex(v.sun[0]); sun.intensity = v.sun[1]; sun.position.set(v.sun[2], v.sun[3], v.sun[4]);
+  lineMat.color.setHex(v.lines);
+  DUST = v.dust;
+}
+function updateVenue(dt, t) { if (VENUE.fx && VENUE.fx.update) VENUE.fx.update(dt, t); }
+function venueHype(x) { if (VENUE.fx && 'hype' in VENUE.fx) VENUE.fx.hype = Math.min(1.5, VENUE.fx.hype + x); }
 
 // ---------- balón ----------
 const ballTex = canvasTex(256, 128, (g, w, h) => {
@@ -943,7 +1283,7 @@ function buildHat(head, look, teamColor) {
 // Esqueleto: root → rig (inclinación total) → pelvis → torso (brazos con codo, cabeza) + piernas con rodilla
 const THIGH = 0.27, SHIN = 0.28;
 const legH = (h, k) => THIGH * Math.cos(h) + SHIN * Math.cos(h + k);
-const DUST = 0xe9f3dc;
+let DUST = 0xe9f3dc;
 class CharView {
   constructor(info) {
     this.id = info.id;
@@ -1259,7 +1599,7 @@ const tagLayer = $('#tags');
 function makeTag(info, isMe) {
   const d = document.createElement('div');
   d.className = 'tag' + (isMe ? ' me' : '');
-  d.innerHTML = `<span class="dot" style="background:${TEAM_CSS[info.team]}"></span>${escapeHtml(info.name)}${info.cpu ? '<i>CPU</i>' : ''}`;
+  d.innerHTML = `<span class="dot" style="background:${TEAM_CSS[info.team]}"></span>${escapeHtml(info.name)}${info.ovr ? '<i>★' + info.ovr + '</i>' : info.cpu ? '<i>CPU</i>' : ''}`;
   tagLayer.appendChild(d);
   return d;
 }
@@ -1275,6 +1615,23 @@ function worldToScreen(x, y, z) {
 // =========================================================
 const ANIMS = ['idle', 'bump', 'dig', 'set', 'toss', 'spike', 'serve', 'tip', 'whiff', 'block', 'dive', 'lie', 'cheer', 'sad', 'jump', 'land'];
 function emptyInput() { return { mx: 0, mz: 0, ax: 0, az: 0, jumpSeq: 0, hitSeq: 0, setSeq: 0, diveSeq: 0 }; }
+function skillFrom(attr, energy = 100) {
+  const f = (v) => clamp((v - 30) / 65, 0, 1);
+  const tired = energy < 55 ? (55 - energy) / 110 : 0;
+  return {
+    react: lerp(0.36, 0.11, f(attr.defensa)) + tired * 0.12,
+    speed: lerp(0.8, 1.03, f(attr.veloc)) - tired * 0.18,
+    timing: lerp(0.5, 0.13, (f(attr.recep) + f(attr.coloc)) / 2) + tired * 0.25,
+    aim: lerp(1.4, 0.4, f(attr.remate)),
+    spikeP: lerp(0.45, 0.97, f(attr.remate)),
+    spikePow: lerp(0.76, 1.05, f(attr.remate)),
+    blockP: lerp(0.1, 0.75, f(attr.bloqueo)),
+    digP: lerp(0.2, 0.9, f(attr.defensa)),
+    jumpServe: lerp(0, 0.5, f(attr.saque)),
+    jumpV: lerp(7.9, 8.9, f(attr.salto)),
+  };
+}
+const ATTR_FOR = { bump: 'recep', dig: 'defensa', set: 'coloc', spike: 'remate', tip: 'remate', over: 'coloc' };
 const gradeOf = (q) => (q >= 0.8 ? 'perfect' : q >= 0.5 ? 'good' : 'bad');
 const FORM = { 1: [[0, 4.2]], 2: [[-2.1, 4], [2.1, 4]], 3: [[-2.7, 2.6], [2.7, 2.6], [0, 5.6]], 4: [[-2.4, 2.2], [2.4, 2.2], [-2.4, 5.8], [2.4, 5.8]] };
 function formation(team, idx, n) {
@@ -1305,6 +1662,7 @@ class Sim {
       hitBuf: 0, bufKind: 'hit', hitCool: 0, blocking: false,
       input: emptyInput(), seq: { hit: 0, set: 0, dive: 0, jump: 0 }, lag: 0,
       ai: r.cpu ? { tx: 0, tz: 0, trajT: -1, hitH: 0.85, serveT: 1, rolls: {} } : null,
+      attr: r.attr || null, energy: r.energy ?? 100, skill: r.attr ? skillFrom(r.attr, r.energy ?? 100) : null, forceTip: false,
       stats: { pts: 0, kills: 0, aces: 0, blocks: 0, perfects: 0, digs: 0, errors: 0 },
     }));
     this.score = [0, 0];
@@ -1407,7 +1765,7 @@ class Sim {
     let mx = +inp.mx || 0, mz = +inp.mz || 0;
     const ml = Math.hypot(mx, mz);
     if (ml > 1) { mx /= ml; mz /= ml; }
-    const spd = MOVE_SPEED * (p.cpu ? this.diff.speed : 1);
+    const spd = MOVE_SPEED * (p.cpu ? (p.skill ? p.skill.speed : this.diff.speed) : 1);
     if (p.diveT > 0) {
       p.diveT -= dt;
       const k = Math.max(0, p.diveT / 0.4);
@@ -1455,7 +1813,7 @@ class Sim {
   }
 
   jump(p) {
-    p.vy = JUMP_V; p.onGround = false;
+    p.vy = p.skill ? p.skill.jumpV : JUMP_V; p.onGround = false;
     const nearNet = Math.abs(p.z) < 1.7;
     p.blocking = nearNet;
     const oppBall = this.ball.touchTeam !== p.team && this.ball.z * TEAM_SIDE[p.team] < 0;
@@ -1532,7 +1890,7 @@ class Sim {
     const b = this.ball, side = TEAM_SIDE[p.team];
     const air = !p.onGround;
     const h = hy - p.y, ideal = air ? 1.55 : 1.7;
-    const q = clamp(1.08 - Math.abs(h - ideal) / 1.4, 0, 1);
+    const q = clamp(1.08 - Math.abs(h - ideal) / 1.4 + (p.attr ? (p.attr.saque - 60) / 220 : 0), 0, 1);
     const grade = gradeOf(q);
     let ax = p.input.ax, az = p.input.az;
     if (az * side > -0.6) az = -side * Math.max(2, Math.abs(az)); // apuntó a su propio lado: se refleja
@@ -1579,6 +1937,7 @@ class Sim {
     const aimOwn = az * side > 0.2;
     let type;
     if (p.diveT > 0 || p.lieT > 0 || kind === 'dig') type = 'dig';
+    else if (p.forceTip && air) type = 'tip';
     else if (kind === 'set' && h >= 0.9) type = 'set';
     else if (air && h >= 0.8 && !aimOwn && Math.abs(b.z) < 5.5) type = 'spike';
     else if (air) type = aimOwn ? 'set' : 'tip';
@@ -1590,6 +1949,8 @@ class Sim {
     if (type === 'bump' || type === 'dig') q -= clamp((speedIn - 15) / 40, 0, 0.25);
     if (type === 'dig') q *= 0.92;
     if (fireIn && type !== 'spike') q -= 0.2; // recibir un súper remate es más difícil
+    if (p.attr) q += (p.attr[ATTR_FOR[type]] - 60) / 220; // las estadísticas del jugador cuentan
+    p.forceTip = false;
     q = clamp(q, 0, 1);
     const grade = gradeOf(q);
     const errBase = { bump: 1.7, dig: 2.2, set: 1.1, spike: 2.0, tip: 1.0, over: 1.5 }[type];
@@ -1601,7 +1962,7 @@ class Sim {
     b.fire = isSuper;
     b.lastHitT = this.time;
     if (type === 'spike') {
-      this.launchDirect(b, tx, 0, tz, (18 + q * 8 + (p.y > 1.1 ? 2 : 0)) * (p.cpu ? this.diff.spikePow : 1) * (isSuper ? 1.15 : 1), grade !== 'bad');
+      this.launchDirect(b, tx, 0, tz, (18 + q * 8 + (p.y > 1.1 ? 2 : 0)) * (p.cpu ? (p.skill ? p.skill.spikePow : this.diff.spikePow) : 1) * (isSuper ? 1.15 : 1), grade !== 'bad');
     } else if (type === 'tip') {
       this.launchArc(b, tx, 0, tz, Math.max(b.y + 0.5, NET_H + 0.8));
     } else if (tz * side > 0) { // pase a su propio lado
@@ -1778,7 +2139,7 @@ function teamPlan(sim, team) {
   if (c && c.time === sim.time) return c;
   const b = sim.ball, side = TEAM_SIDE[team], mates = sim.team(team);
   const tc = b.touchTeam === team ? b.touches : 0;
-  const plan = { time: sim.time, tc, known: sim.time - sim.lastTrajT >= sim.diff.react, mine: false, receiver: null, setter: null, attacker: null, spike: false, ix: 0, iz: 0, it: 0 };
+  const plan = { time: sim.time, tc, known: sim.time - sim.lastTrajT >= (sim.teamReact ? sim.teamReact[team] : sim.diff.react), mine: false, receiver: null, setter: null, attacker: null, spike: false, ix: 0, iz: 0, it: 0 };
   const land = predictBall(b, 0.5);
   plan.mine = !b.held && land.z * side > -0.05 && tc < 3;
   if (plan.mine) {
@@ -1791,7 +2152,7 @@ function teamPlan(sim, team) {
     let best = null, bestE = 1e9;
     for (const m of mates) {
       if (m.lieT > 0) continue;
-      let e = Math.hypot(m.x - ip.x, m.z - ip.z) / (MOVE_SPEED * (m.cpu ? sim.diff.speed : 1));
+      let e = Math.hypot(m.x - ip.x, m.z - ip.z) / (MOVE_SPEED * (m.cpu ? (m.skill ? m.skill.speed : sim.diff.speed) : 1));
       if (mates.length > 1 && tc >= 1 && m.id === b.lastPid) e += 3;
       if (!m.cpu) e -= 0.25; // si el humano está cerca, es suya
       if (e < bestE) { bestE = e; best = m; }
@@ -1804,6 +2165,9 @@ function teamPlan(sim, team) {
       plan.attacker = mates.filter((m) => m !== plan.setter && m !== best)[0] || best;
     } else if (tc === 1) {
       plan.attacker = others.sort((a, c2) => Math.abs(a.z) - Math.abs(c2.z))[0] || best;
+      // decisión del mánager: a quién se coloca
+      const mg = sim.mgr;
+      if (mg && mg.team === team && mg.attackerId != null) { const ch = mates.find((m) => m.id === mg.attackerId); if (ch && ch !== best) plan.attacker = ch; }
     }
   }
   sim._plan[team] = plan;
@@ -1825,7 +2189,7 @@ function openSpot(sim, team, err) {
 }
 
 function aiStep(sim, p, dt) {
-  const inp = p.input, ai = p.ai, b = sim.ball, side = TEAM_SIDE[p.team], D = sim.diff, team = p.team;
+  const inp = p.input, ai = p.ai, b = sim.ball, side = TEAM_SIDE[p.team], D = p.skill || sim.diff, team = p.team;
   const mates = sim.team(team), idx = mates.indexOf(p), n = mates.length;
   const press = (k) => { inp[k + 'Seq'] = (inp[k + 'Seq'] + 1) | 0; };
   const home = formation(team, idx, n);
@@ -1840,11 +2204,13 @@ function aiStep(sim, p, dt) {
   if (sim.phase === 'serve') {
     if (p === sim.server) {
       tx = p.x; tz = p.z;
+      const ms = sim.mgrServe && sim.mgrServe.team === p.team ? sim.mgrServe : null;
+      if (b.held && ms && !ms.decided) { moveTo(p, inp, p.x, p.z); return; } // esperando la decisión del mánager
       if (b.held) {
         ai.serveT -= dt;
         if (ai.serveT <= 0) {
-          ai.serveAim = { x: rand(-HALF_W + 0.9, HALF_W - 0.9), z: -side * rand(3.5, HALF_L - 1) };
-          ai.jumpServe = Math.random() < D.jumpServe;
+          ai.serveAim = ms && ms.aim ? { x: ms.aim.x + randn() * 0.5, z: ms.aim.z + randn() * 0.5 } : { x: rand(-HALF_W + 0.9, HALF_W - 0.9), z: -side * rand(3.5, HALF_L - 1) };
+          ai.jumpServe = ms ? !!ms.jump : Math.random() < D.jumpServe;
           ai.serveH = (ai.jumpServe ? 1.55 : 1.7) + randn() * D.timing * 0.5;
           ai.sJumped = false;
           ai.serveT = 99;
@@ -1929,7 +2295,7 @@ function aiStep(sim, p, dt) {
 
 // elige a dónde apuntar y qué botón usar según el toque
 function setAim(sim, p, inp, plan) {
-  const side = TEAM_SIDE[p.team], D = sim.diff, b = sim.ball, mates = sim.team(p.team), n = mates.length;
+  const side = TEAM_SIDE[p.team], D = p.skill || sim.diff, b = sim.ball, mates = sim.team(p.team), n = mates.length;
   const tc = plan.tc;
   if (tc === 0) {
     if (n === 1) { inp.ax = clamp(p.x, -2, 2); inp.az = side * 1.8; }
@@ -1943,6 +2309,13 @@ function setAim(sim, p, inp, plan) {
     return b.y - p.y >= 0.9 ? 'set' : 'hit';
   }
   if (!p.onGround) {
+    const mg = sim.mgr;
+    if (mg && mg.team === p.team && mg.attackerId === p.id && (mg.zone || mg.tip)) {
+      const z = mg.zone || { x: rand(-2, 2), z: -side * 2.2 };
+      inp.ax = z.x + randn() * D.aim * 0.45; inp.az = z.z + randn() * D.aim * 0.45;
+      if (mg.tip) p.forceTip = true;
+      return 'hit';
+    }
     const s = openSpot(sim, p.team, D.aim);
     inp.ax = s.x; inp.az = s.z;
     return 'hit';
@@ -1995,6 +2368,7 @@ addEventListener('keydown', (e) => {
   if (e.repeat) return;
   if (e.code === 'Escape' || e.code === 'KeyP') { togglePause(); return; }
   if (e.code === 'KeyM') { toggleMute(); return; }
+  if (e.code === 'KeyF') { toggleFullscreen(); return; }
   if (!playing()) return;
   if (e.code === 'Space') press('jump');
   if (e.code === 'KeyE' || e.code === 'KeyK') press('set');
@@ -2302,7 +2676,8 @@ function handleEvent(e) {
     case 'whistle': SFX.whistle(); break;
     case 'point': {
       const mine = e.team === GAME.myTeam;
-      SFX.point(mine); SFX.cheer(mine ? 1 : 0.5);
+      SFX.point(mine); SFX.cheer(mine ? 1 : 0.5); venueHype(1.2);
+      if (GAME.manager) mgrOnPoint();
       showBanner(REASON_TXT[e.reason] || '¡PUNTO!', 'Punto para los ' + TEAM_NAME[e.team], TEAM_CSS[e.team]);
       if (e.rally >= 8) setTimeout(() => toast(`¡Jugada de ${e.rally} toques!`), 700);
       if (e.over) { GAME.slowmo = local ? 1.0 : 0; confetti(0, TEAM_SIDE[e.team] * 4, 160); }
@@ -2422,6 +2797,7 @@ const NET = {
   role: 'off', peer: null, conns: new Map(), hostConn: null, code: '',
   lobby: [], settings: { size: 2, diff: 1, pts: 15 }, nextId: 1, started: false,
   snapT: 0, pingT: 0, sendT: 0, evQueue: [], snaps: [], tiOff: null, rtt: 0.1,
+  relays: [], relayConns: new Map(), via: '', welcomed: false, lastHostMsg: 0,
 };
 
 function genCode() {
@@ -2432,6 +2808,10 @@ function genCode() {
 }
 function netReset() {
   const peer = NET.peer;
+  if (NET.role === 'host') sendAll({ t: 'hostbye' });
+  try { if (NET.hostConn && NET.hostConn.relay) NET.hostConn.close(); } catch (e) { /* ignorar */ }
+  for (const cl of NET.relays) { try { cl.end(); } catch (e) { /* ignorar */ } }
+  NET.relays = []; NET.relayConns.clear(); NET.welcomed = false; NET.via = '';
   NET.role = 'off'; NET.peer = null; NET.hostConn = null;
   NET.conns.clear(); NET.lobby = []; NET.started = false; NET.snaps = []; NET.evQueue = []; NET.tiOff = null;
   try { if (peer) peer.destroy(); } catch (e) { /* ignorar */ }
@@ -2466,22 +2846,132 @@ function linkFor(code) {
   return u.toString();
 }
 
+// ---------- relevo (plan B): si la conexión directa WebRTC falla, los mensajes
+// viajan por un servidor MQTT público (funciona entre cualquier red: datos móviles, WiFi…)
+const RELAY_BROKERS = ['wss://broker.emqx.io:8084/mqtt', 'wss://broker.hivemq.com:8884/mqtt'];
+const LIB_MQTT = 'https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js';
+const LIB_QR = 'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js';
+const scriptCache = {};
+function loadScript(src) {
+  if (!scriptCache[src]) {
+    scriptCache[src] = new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = src; s.async = true;
+      s.onload = res;
+      s.onerror = () => { delete scriptCache[src]; rej(new Error('no se pudo cargar ' + src)); };
+      document.head.appendChild(s);
+    });
+  }
+  return scriptCache[src];
+}
+const rTopic = (code, k) => `rematepark/v1/${code}/${k}`;
+function relayConnectOne(i) {
+  return loadScript(LIB_MQTT).then(() => new Promise((res, rej) => {
+    let done = false;
+    const cl = window.mqtt.connect(RELAY_BROKERS[i], { clientId: 'rp_' + Math.random().toString(36).slice(2, 12), clean: true, connectTimeout: 7000, reconnectPeriod: 2500, keepalive: 30 });
+    cl.on('connect', () => { if (!done) { done = true; res(cl); } });
+    cl.on('error', () => { /* reintenta solo */ });
+    setTimeout(() => { if (!done) { done = true; try { cl.end(true); } catch (e) { /* ignorar */ } rej(new Error('relay timeout')); } }, 8000);
+  }));
+}
+const waitFor = (fn, ms) => new Promise((res) => {
+  const t0 = performance.now();
+  const iv = setInterval(() => {
+    if (fn()) { clearInterval(iv); res(true); } else if (performance.now() - t0 > ms) { clearInterval(iv); res(false); }
+  }, 100);
+});
+// anfitrión: escucha en todos los servidores de relevo a la vez
+function hostRelayStart(code) {
+  RELAY_BROKERS.forEach((_, i) => {
+    relayConnectOne(i).then((cl) => {
+      if (NET.role !== 'host' || NET.code !== code) { cl.end(true); return; }
+      NET.relays.push(cl);
+      cl.subscribe(rTopic(code, 'h'));
+      cl.on('message', (tp, payload) => {
+        let m;
+        try { m = JSON.parse(payload.toString()); } catch (e) { return; }
+        if (m && typeof m.f === 'string') hostRelayMsg(cl, m.f.slice(0, 16), m.d);
+      });
+      renderLobby();
+    }).catch(() => { /* ese servidor no responde: queda el otro */ });
+  });
+}
+function hostRelayMsg(cl, cid, d) {
+  const key = 'relay:' + cid;
+  let v = NET.relayConns.get(key);
+  if (!v) {
+    if (!d || d.t !== 'hello') return;
+    v = {
+      peer: key, open: true, relay: true, lastT: 0,
+      send(msg) { if (this.open) cl.publish(rTopic(NET.code, 'c/' + cid), JSON.stringify(msg)); },
+      close() { this.open = false; },
+    };
+    NET.relayConns.set(key, v);
+  }
+  v.lastT = performance.now();
+  if (d && d.t === 'bye') { v.open = false; NET.relayConns.delete(key); hostDrop(v); return; }
+  hostOnData(v, d);
+}
+// cliente: abre la "conexión" por el relevo
+async function clientRelayJoin(code) {
+  setJoinStatus('Probando conexión por servidor de relevo…');
+  const cid = Math.random().toString(36).slice(2, 12);
+  for (let i = 0; i < RELAY_BROKERS.length; i++) {
+    let cl;
+    try { cl = await relayConnectOne(i); } catch (e) { continue; }
+    if (NET.role !== 'client' || NET.code !== code) { cl.end(true); return; }
+    const conn = {
+      open: true, relay: true,
+      send(msg) { if (this.open) cl.publish(rTopic(code, 'h'), JSON.stringify({ f: cid, d: msg })); },
+      close() { try { this.send({ t: 'bye' }); } catch (e) { /* ignorar */ } this.open = false; setTimeout(() => { try { cl.end(true); } catch (e) { /* ignorar */ } }, 200); },
+    };
+    cl.subscribe(rTopic(code, 'c/' + cid));
+    cl.on('message', (tp, payload) => {
+      if (NET.hostConn !== conn) return;
+      let m;
+      try { m = JSON.parse(payload.toString()); } catch (e) { return; }
+      NET.lastHostMsg = performance.now();
+      clientOnData(m);
+    });
+    NET.hostConn = conn; NET.via = 'relevo'; NET.welcomed = false;
+    NET.lastHostMsg = performance.now();
+    conn.send({ t: 'hello', name: SAVE.name, look: SAVE.look });
+    if (await waitFor(() => NET.welcomed, 6000)) { setJoinStatus('¡Conectado (por relevo)!'); return; }
+    conn.close();
+    if (NET.hostConn === conn) NET.hostConn = null;
+  }
+  if (NET.role === 'client' && NET.code === code) setJoinStatus('No se pudo conectar. Revisa el código, que la sala siga abierta en el otro dispositivo y tu internet.');
+}
+// latidos: el anfitrión avisa que sigue vivo y detecta amigos caídos; el cliente detecta anfitrión caído
+setInterval(() => {
+  const now = performance.now();
+  if (NET.role === 'host') {
+    if (GAME.mode !== 'host') sendAll({ t: 'ping', ts: now });
+    for (const [key, v] of NET.relayConns) if (now - v.lastT > 12000) { v.open = false; NET.relayConns.delete(key); hostDrop(v); }
+  } else if (NET.role === 'client' && NET.welcomed && NET.hostConn && now - NET.lastHostMsg > 12000) {
+    toast('Se perdió la conexión con el anfitrión');
+    leaveToMenu();
+  }
+}, 2000);
+
 // ---------- anfitrión ----------
 function hostCreate() {
-  if (!window.Peer) { toast('No se pudo cargar el modo online (revisa tu internet)'); return; }
   netReset();
   NET.role = 'host';
   NET.code = genCode();
-  NET.settings = { size: SAVE.size, diff: SAVE.diff, pts: SAVE.pts };
+  NET.settings = { size: SAVE.size, diff: SAVE.diff, pts: SAVE.pts, venue: SAVE.venue };
   NET.lobby = [{ id: 0, name: SAVE.name, look: SAVE.look, team: 0 }];
   NET.nextId = 1;
   GAME.myId = 0;
   showScreen('scrLobby');
   setLobbyStatus('Creando sala…');
   renderLobby();
+  hostRelayStart(NET.code);
+  loadScript(LIB_QR).then(renderLobby).catch(() => { /* sin QR */ });
+  if (!window.Peer) { setLobbyStatus('Sala lista (por relevo). Comparte el código, el link o el QR.'); return; }
   const peer = new Peer(PEER_PREFIX + NET.code, PEER_OPTS);
   NET.peer = peer;
-  peer.on('open', () => { setLobbyStatus('Comparte el código o el link. Los huecos vacíos los juega la PC.'); renderLobby(); });
+  peer.on('open', () => { setLobbyStatus('Comparte el código, el link o el QR. Los huecos vacíos los juega la PC.'); renderLobby(); });
   peer.on('connection', (conn) => {
     conn.on('data', (d) => hostOnData(conn, d));
     conn.on('close', () => hostDrop(conn));
@@ -2489,7 +2979,7 @@ function hostCreate() {
   });
   peer.on('error', (err) => {
     if (err.type === 'unavailable-id') { hostCreate(); return; }
-    setLobbyStatus('Error de red: ' + err.type);
+    if (NET.peer === peer) setLobbyStatus('La conexión directa no está disponible; tus amigos entrarán por relevo.');
   });
   peer.on('disconnected', () => { try { if (NET.peer === peer) peer.reconnect(); } catch (e) { /* ignorar */ } });
 }
@@ -2555,7 +3045,7 @@ function hostStart() {
     humans[t].forEach((h) => roster.push({ id: h.id, name: h.name, team: t, cpu: false, look: h.look }));
     for (let i = humans[t].length; i < size; i++) roster.push({ id: cpuId++, name: cpuName(used), team: t, cpu: true, look: randomLook() });
   }
-  const settings = { size, diff: s.diff, pts: s.pts };
+  const settings = { size, diff: s.diff, pts: s.pts, venue: s.venue };
   NET.started = true;
   sendAll({ t: 'start', roster, settings });
   broadcastLobby();
@@ -2576,34 +3066,48 @@ function hostNetTick(dt) {
 function clientJoin(code) {
   code = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   if (code.length < 4) { setJoinStatus('Escribe el código de la sala'); return; }
-  if (!window.Peer) { setJoinStatus('No se pudo cargar el modo online (revisa tu internet)'); return; }
   netReset();
   NET.role = 'client'; NET.code = code;
   setJoinStatus('Conectando…');
+  let fellBack = false;
+  // plan B: si la conexión directa no abre, se usa el relevo
+  const fallback = () => {
+    if (fellBack || NET.role !== 'client' || NET.code !== code || NET.welcomed) return;
+    fellBack = true;
+    const peer = NET.peer;
+    NET.peer = null;
+    if (NET.hostConn && !NET.hostConn.relay) NET.hostConn = null;
+    try { if (peer) peer.destroy(); } catch (e) { /* ignorar */ }
+    clientRelayJoin(code);
+  };
+  if (!window.Peer || new URLSearchParams(location.search).has('relevo')) { fallback(); return; }
   const peer = new Peer(PEER_OPTS);
   NET.peer = peer;
-  let opened = false;
-  const to = setTimeout(() => { if (!opened && NET.peer === peer) setJoinStatus('No se pudo conectar. Revisa el código e inténtalo otra vez.'); }, 15000);
+  const to = setTimeout(fallback, 7000);
   peer.on('open', () => {
     const conn = peer.connect(PEER_PREFIX + code, { reliable: true, serialization: 'json' });
-    NET.hostConn = conn;
-    conn.on('open', () => { opened = true; clearTimeout(to); conn.send({ t: 'hello', name: SAVE.name, look: SAVE.look }); setJoinStatus('¡Conectado!'); });
+    NET.hostConn = conn; NET.via = 'directa';
+    conn.on('open', () => { clearTimeout(to); conn.send({ t: 'hello', name: SAVE.name, look: SAVE.look }); setJoinStatus('¡Conectado!'); });
     conn.on('data', clientOnData);
-    conn.on('close', () => { if (NET.peer === peer) { toast('Se cerró la conexión con el anfitrión'); leaveToMenu(); } });
-    conn.on('error', () => { if (NET.peer === peer) setJoinStatus('Error de conexión'); });
+    conn.on('close', () => { if (NET.peer === peer && NET.hostConn === conn) { toast('Se cerró la conexión con el anfitrión'); leaveToMenu(); } });
+    conn.on('error', fallback);
+    setTimeout(() => {
+      const pc = conn.peerConnection;
+      if (pc) pc.addEventListener('iceconnectionstatechange', () => { if (pc.iceConnectionState === 'failed') fallback(); });
+    }, 0);
   });
-  peer.on('error', (err) => {
-    clearTimeout(to);
-    setJoinStatus(err.type === 'peer-unavailable' ? 'No existe una sala con ese código' : 'Error de red: ' + err.type);
-  });
+  peer.on('error', () => { clearTimeout(to); fallback(); });
 }
 function clientOnData(d) {
   if (!d || typeof d !== 'object') return;
+  NET.lastHostMsg = performance.now();
   switch (d.t) {
-    case 'welcome': GAME.myId = d.id; NET.code = d.code; showScreen('scrLobby'); renderLobby(); break;
+    case 'welcome': GAME.myId = d.id; NET.code = d.code; NET.welcomed = true; showScreen('scrLobby'); renderLobby(); break;
+    case 'hostbye': if (NET.role === 'client') { toast('El anfitrión cerró la sala'); leaveToMenu(); } break;
     case 'full': setJoinStatus('La sala está llena (máx. 8)'); break;
     case 'lobby':
       NET.lobby = d.players; NET.settings = d.settings; NET.started = d.started;
+      if (GAME.mode === 'menu' && d.settings.venue) setVenue(d.settings.venue);
       renderLobby();
       break;
     case 'start':
@@ -2716,7 +3220,7 @@ function clientUpdate(dt) {
 }
 function clientNetTick(dt) {
   NET.sendT += dt; NET.pingT += dt;
-  if (NET.sendT >= 1 / 30 && NET.hostConn && NET.hostConn.open) {
+  if (NET.sendT >= (NET.via === 'relevo' ? 1 / 20 : 1 / 30) && NET.hostConn && NET.hostConn.open) {
     NET.sendT = 0;
     try { NET.hostConn.send({ t: 'in', i: readLocalInput() }); } catch (e) { /* ignorar */ }
   }
@@ -2732,6 +3236,11 @@ function setJoinStatus(s) { $('#jStatus').textContent = s; }
 function renderLobby() {
   $('#lCode').textContent = NET.code || '-----';
   $('#lLink').value = NET.code ? linkFor(NET.code) : '';
+  const qrBox = $('#lQr');
+  if (NET.code && window.qrcode && qrBox.dataset.code !== NET.code) {
+    try { const q = window.qrcode(0, 'M'); q.addData(linkFor(NET.code)); q.make(); qrBox.innerHTML = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }); qrBox.dataset.code = NET.code; } catch (e) { /* sin QR */ }
+  }
+  $('#qrRow').style.display = NET.code && NET.role === 'host' ? '' : 'none';
   for (const t of [0, 1]) {
     const box = $('#lTeam' + t);
     const ps = NET.lobby.filter((p) => p.team === t);
@@ -2745,7 +3254,7 @@ function renderLobby() {
   $('#bStart').style.display = host ? '' : 'none';
   $$('[data-lopt]').forEach((row) => {
     const k = row.dataset.lopt;
-    row.querySelectorAll('.chip').forEach((c) => c.classList.toggle('sel', +c.dataset.v === NET.settings[k]));
+    row.querySelectorAll('.chip').forEach((c) => c.classList.toggle('sel', c.dataset.v === String(NET.settings[k])));
   });
   if (!host) setLobbyStatus(NET.started ? 'Hay un partido en curso: entrarás en el siguiente.' : 'Esperando a que el anfitrión empiece…');
 }
@@ -2775,7 +3284,7 @@ function refreshMenu() {
 function syncChips() {
   $$('[data-opt]').forEach((row) => {
     const k = row.dataset.opt;
-    row.querySelectorAll('.chip').forEach((c) => c.classList.toggle('sel', +c.dataset.v === SAVE[k]));
+    row.querySelectorAll('.chip').forEach((c) => c.classList.toggle('sel', c.dataset.v === String(SAVE[k])));
   });
 }
 function toggleMute() {
@@ -2800,12 +3309,14 @@ function startLocal() {
   const roster = [{ id: 0, name: SAVE.name, team: 0, cpu: false, look: SAVE.look }];
   for (let i = 1; i < size; i++) roster.push({ id: i, name: cpuName(used), team: 0, cpu: true, look: randomLook() });
   for (let i = 0; i < size; i++) roster.push({ id: 10 + i, name: cpuName(used), team: 1, cpu: true, look: randomLook() });
-  startMatch('local', roster, { size, diff: SAVE.diff, pts: SAVE.pts }, 0);
+  startMatch('local', roster, { size, diff: SAVE.diff, pts: SAVE.pts, venue: SAVE.venue }, 0);
 }
 function startMatch(mode, roster, settings, myId) {
-  Object.assign(GAME, { mode, roster, settings, myId, paused: false, ended: false, slowmo: 0, hitStop: 0, tutorial: false });
+  Object.assign(GAME, { mode, roster, settings, myId, paused: false, ended: false, slowmo: 0, hitStop: 0, tutorial: false, manager: false });
+  document.body.classList.remove('mgrOn'); if (typeof closeDecision === 'function') closeDecision();
   document.body.classList.remove('tutOn'); tutMark.visible = false; FX.cue = null;
   GAME.myTeam = roster.find((r) => r.id === myId)?.team ?? 0;
+  setVenue(settings.venue || 'parque');
   GAME.sim = mode === 'client' ? null : new Sim(roster, settings);
   if (mode === 'client') {
     CV.players = []; CV.byId.clear(); CV.pred = null; CV.predHist = []; CV.rid = -1; CV.jumpSeq = INPUT.seq.jump;
@@ -2834,12 +3345,14 @@ function onMatchEnd() {
   if (GAME.ended) return;
   GAME.ended = true;
   const res = GAME.sim.results();
+  if (GAME.manager) { closeDecision(); mgrAfterMatch(res); return; }
   if (GAME.mode === 'host') { sendAll({ t: 'end', res }); NET.started = false; broadcastLobby(); }
   showEndScreen(res);
 }
 function leaveToMenu() {
   netReset();
-  Object.assign(GAME, { mode: 'menu', paused: false, myId: -1, ended: false, tutorial: false });
+  Object.assign(GAME, { mode: 'menu', paused: false, myId: -1, ended: false, tutorial: false, manager: false });
+  document.body.classList.remove('mgrOn'); closeDecision();
   document.body.classList.remove('tutOn'); tutMark.visible = false; FX.cue = null;
   $('#hud').classList.remove('on');
   $('#touchUI').classList.remove('on');
@@ -3234,7 +3747,7 @@ function startTutorial() {
     { id: 1, name: 'Sol (coach)', team: 0, cpu: false, look: { skin: '#d8a06b', hair: 'buns', hairColor: '#e8c25a', shirt: '#ffd23a', shorts: '#1d2340', hat: 'visor' } },
     { id: 2, name: 'Rui (coach)', team: 1, cpu: false, look: { skin: '#b47a4c', hair: 'spiky', hairColor: '#2b1d14', shirt: '#3a7bff', shorts: '#ffffff', hat: 'band' } },
   ];
-  startMatch('local', roster, { size: 1, diff: 1, pts: 99 }, 0);
+  startMatch('local', roster, { size: 1, diff: 1, pts: 99, venue: SAVE.venue }, 0);
   GAME.sim.drill = true;
   GAME.sim.phase = 'rally';
   GAME.tutorial = true;
@@ -3246,6 +3759,485 @@ $('#tutExit').onclick = () => { SFX.ui(); leaveToMenu(); };
 $('#tutPlay').onclick = () => { SFX.ui(); leaveToMenu(); showScreen('scrSetup'); };
 $('#tutMenu').onclick = () => { SFX.ui(); leaveToMenu(); };
 
+// =========================================================
+//  MODO MÁNAGER: club, plantilla, fichajes, estadio y liga
+// =========================================================
+const ATTRS = [['saque', 'SAQ', 'Saque'], ['recep', 'REC', 'Recepción'], ['coloc', 'COL', 'Colocación'], ['remate', 'REM', 'Remate'], ['bloqueo', 'BLQ', 'Bloqueo'], ['defensa', 'DEF', 'Defensa'], ['veloc', 'VEL', 'Velocidad'], ['salto', 'SAL', 'Salto']];
+const ROLES = {
+  Rematador: { remate: 12, salto: 8, coloc: -8 },
+  Colocador: { coloc: 14, recep: 4, remate: -6, bloqueo: -4 },
+  'Líbero': { recep: 12, defensa: 12, veloc: 6, remate: -12, bloqueo: -10, salto: -6 },
+  Central: { bloqueo: 14, salto: 8, recep: -6, defensa: -4 },
+  Universal: {},
+};
+const SURNAMES = ['López', 'Silva', 'Rojas', 'Vega', 'Mora', 'Cruz', 'Ríos', 'Paz', 'Soto', 'Luna', 'Díaz', 'Ruiz', 'Sosa', 'Castro', 'Reyes', 'Ortiz', 'Blanco', 'Prieto', 'Campos', 'Ibarra'];
+const CLUB_NAMES = ['Tiburones', 'Halcones', 'Cóndores', 'Delfines', 'Pumas', 'Volcanes', 'Rayos', 'Coyotes', 'Piratas', 'Titanes', 'Lobos', 'Águilas', 'Jaguares', 'Huracanes', 'Gaviotas', 'Toros'];
+const CLUB_PLACES = ['del Sur', 'de la Costa', 'del Valle', 'de la Sierra', 'Dorados', 'Azules', 'del Norte', 'Urbanos', 'del Río', 'de Arena'];
+const DIVISIONS = ['Liga Barrio', 'Liga Pro', 'Liga Élite'];
+const DIV_OVR = [[44, 58], [56, 70], [68, 84]];
+const STADIUM = [
+  { venue: 'parque', name: 'Parque municipal', cost: 0, mult: 1 },
+  { venue: 'playa', name: 'Cancha de playa', cost: 2500, mult: 1.3 },
+  { venue: 'azotea', name: 'Azotea de la ciudad', cost: 5000, mult: 1.6 },
+  { venue: 'nieve', name: 'Pista de montaña', cost: 9000, mult: 1.9 },
+  { venue: 'estadio', name: 'Estadio nocturno', cost: 15000, mult: 2.4 },
+];
+const WEEKS = 5;
+const ovrOf = (p) => Math.round(ATTRS.reduce((a, [k]) => a + p.attr[k], 0) / ATTRS.length);
+const priceOf = (p) => Math.max(400, Math.round(((ovrOf(p) - 35) * 85) / 50) * 50);
+const trainCost = (v) => 100 + v * 3;
+const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
+const fmt = (n) => Math.round(n).toLocaleString('es');
+
+function genPlayer(target, role) {
+  role = role || pick(Object.keys(ROLES));
+  const attr = {};
+  for (const [k] of ATTRS) attr[k] = clamp(Math.round(target + randn() * 6 + (ROLES[role][k] || 0)), 25, 97);
+  return { id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: pick(CPU_NAMES) + ' ' + pick(SURNAMES), role, look: randomLook(), attr, energy: 100 };
+}
+function newClub(name) {
+  const squad = [genPlayer(52, 'Rematador'), genPlayer(50, 'Colocador'), genPlayer(50, 'Central'), genPlayer(49, 'Líbero'), genPlayer(47, 'Universal'), genPlayer(46, 'Rematador')];
+  const club = { name, money: 2500, fans: 120, stadium: 0, venue: 'parque', division: 0, season: 1, week: 0, squad, lineup: squad.slice(0, 4).map((p) => p.id), trophies: 0, market: [], rivals: [], me: null };
+  newSeason(club);
+  refreshMarket(club);
+  return club;
+}
+function newSeason(club) {
+  const [lo, hi] = DIV_OVR[club.division];
+  club.rivals = shuffle(CLUB_NAMES).slice(0, WEEKS).map((n, i) => ({ name: n + ' ' + pick(CLUB_PLACES), ovr: Math.round(lerp(lo, hi, i / (WEEKS - 1)) + rand(-2, 2)), pts: 0, w: 0, l: 0 }));
+  club.rivals = shuffle(club.rivals);
+  club.me = { pts: 0, w: 0, l: 0 };
+  club.week = 0; club.seasonOver = false; club.result = null;
+  for (const p of club.squad) p.energy = 100;
+}
+function refreshMarket(club) {
+  const [lo, hi] = DIV_OVR[club.division];
+  club.market = Array.from({ length: 5 }, () => genPlayer(rand(lo - 3, hi + 3)));
+}
+const clubOvr = (club) => Math.round(club.lineup.map((id) => club.squad.find((p) => p.id === id)).filter(Boolean).reduce((a, p) => a + ovrOf(p), 0) / Math.max(1, club.lineup.length));
+function standings(club) {
+  return [{ name: club.name, me: true, ovr: clubOvr(club), ...club.me }, ...club.rivals].sort((a, b) => b.pts - a.pts || b.w - a.w || b.ovr - a.ovr);
+}
+function saveClub() { storeSave(); }
+
+// ---------- pantalla del club ----------
+let clubTab = 'match', clubOpen = null;
+function openClub() {
+  showScreen('scrClub');
+  if (SAVE.club) setVenue(SAVE.club.venue);
+  renderClub(SAVE.club ? clubTab : 'new');
+}
+function bar(v, col) { return `<span class="abar"><i style="width:${clamp(v, 0, 100)}%;background:${col || (v >= 75 ? '#2fd27a' : v >= 55 ? '#ffc93a' : '#ff8a5a')}"></i></span>`; }
+function energyBar(e) { return `<span class="ebar" title="Energía ${Math.round(e)}%"><i style="width:${clamp(e, 0, 100)}%;background:${e > 60 ? '#2fd27a' : e > 35 ? '#ffc93a' : '#ff5a5a'}"></i></span>`; }
+function playerCard(p, opts = {}) {
+  const top = ATTRS.slice().sort((a, b) => p.attr[b[0]] - p.attr[a[0]]).slice(0, 3).map(([k, s]) => `${s} ${p.attr[k]}`).join(' · ');
+  return `<div class="pcard ${opts.sel ? 'sel' : ''}" data-act="${opts.act || ''}" data-id="${p.id}">
+    <div class="povr">${ovrOf(p)}</div>
+    <div class="pinfo2"><b>${escapeHtml(p.name)}</b><small>${p.role} · ${top}</small>${opts.energy ? energyBar(p.energy) : ''}</div>
+    <div class="pact">${opts.right || ''}</div></div>`;
+}
+function renderClub(tab) {
+  clubTab = tab;
+  const club = SAVE.club, body = $('#clubBody');
+  $('#clubTabs').style.display = club ? '' : 'none';
+  $$('#clubTabs .tab').forEach((t) => t.classList.toggle('sel', t.dataset.tab === tab));
+  if (!club) {
+    $('#cTitle').textContent = 'Modo Mánager';
+    $('#cSub').textContent = 'Funda tu club de vóley';
+    $('#cMoney').textContent = ''; $('#cFans').textContent = '';
+    body.innerHTML = `<p class="mgrIntro">Ficha jugadores, entrénalos, mejora tu estadio y gana la liga. Tu equipo juega solo, pero <b>tú decides en los momentos clave</b>: a quién se le coloca el balón, a qué zona se ataca y cómo se saca. ¡Y entre puntos puedes hacer cambios!</p>
+      <label class="t">Nombre de tu club</label><input class="txt" id="cNewName" maxlength="18" value="${escapeHtml((SAVE.name || 'Mi') + ' VC')}">
+      <button class="btn green" data-act="found" style="margin-top:12px">⚽ Fundar club</button>`;
+    return;
+  }
+  $('#cTitle').textContent = club.name;
+  $('#cSub').textContent = `${DIVISIONS[club.division]} · Temporada ${club.season} · ${club.trophies ? '🏆×' + club.trophies : 'sin títulos aún'}`;
+  $('#cMoney').textContent = '💰 ' + fmt(club.money);
+  $('#cFans').textContent = '👥 ' + fmt(club.fans);
+  const lineup = club.lineup.map((id) => club.squad.find((p) => p.id === id)).filter(Boolean);
+  let h = '';
+  if (tab === 'match') {
+    if (club.seasonOver) {
+      const tbl = standings(club), pos = tbl.findIndex((t) => t.me) + 1;
+      h = `<div class="season"><div class="big">${pos === 1 ? '🏆 ¡CAMPEONES!' : `Terminaste ${pos}º`}</div><p>${club.result || ''}</p>
+        <button class="btn green" data-act="newseason">Empezar temporada ${club.season + 1}</button></div>`;
+    } else {
+      const rival = club.rivals[club.week];
+      h = `<div class="nextMatch"><div class="vs"><b>${escapeHtml(club.name)}</b><span class="ovr">${clubOvr(club)}</span></div><div class="vsx">VS</div><div class="vs"><b>${escapeHtml(rival.name)}</b><span class="ovr r">${rival.ovr}</span></div></div>
+        <div class="meta">Jornada ${club.week + 1}/${WEEKS} · ${DIVISIONS[club.division]} · ${VENUES[club.venue].emoji} ${VENUES[club.venue].name} · partido a 11 puntos</div>
+        <label class="t">Titulares (${lineup.length}/4)</label>${lineup.map((p) => playerCard(p, { energy: true })).join('')}
+        ${lineup.length !== 4 ? '<p class="warn">Elige 4 titulares en la pestaña Plantilla.</p>' : ''}
+        <button class="btn green" data-act="play" ${lineup.length !== 4 ? 'disabled' : ''}>🏐 ¡Jugar partido!</button>
+        <p class="tipSmall">Durante el partido el tiempo se frena en las jugadas clave para que decidas. Si no eliges, decide tu equipo.</p>`;
+    }
+  } else if (tab === 'squad') {
+    h = `<p class="tipSmall">Toca ✓ para elegir titulares (4). Toca un jugador para ver y <b>entrenar</b> sus estadísticas. La energía se recupera descansando en el banco.</p>`;
+    for (const p of club.squad.slice().sort((a, b) => ovrOf(b) - ovrOf(a))) {
+      const starter = club.lineup.includes(p.id);
+      h += playerCard(p, { energy: true, sel: clubOpen === p.id, act: 'open', right: `<button class="chip ${starter ? 'sel' : ''}" data-act="starter" data-id="${p.id}">${starter ? '✓ Titular' : 'Banco'}</button>` });
+      if (clubOpen === p.id) {
+        h += `<div class="attrs">${ATTRS.map(([k, , name]) => `<div class="arow"><span>${name}</span>${bar(p.attr[k])}<b>${p.attr[k]}</b><button class="mini" data-act="train" data-id="${p.id}" data-k="${k}" ${p.attr[k] >= 97 ? 'disabled' : ''}>+2 · 💰${trainCost(p.attr[k])}</button></div>`).join('')}
+          <button class="btn small gray" data-act="sell" data-id="${p.id}">Vender por 💰${fmt(priceOf(p) * 0.6)}</button></div>`;
+      }
+    }
+  } else if (tab === 'market') {
+    h = `<p class="tipSmall">Plantilla: ${club.squad.length}/8. El mercado cambia cada jornada.</p>`;
+    club.market.forEach((p, i) => {
+      h += playerCard(p, { right: `<button class="btn small green" data-act="buy" data-i="${i}">Fichar 💰${fmt(priceOf(p))}</button>` });
+    });
+    h += `<button class="btn small" data-act="refresh" style="margin-top:8px">🔄 Renovar mercado (💰150)</button>`;
+  } else if (tab === 'stadium') {
+    h = `<p class="tipSmall">Un estadio mejor atrae más público: más dinero por partido. Puedes jugar de local en cualquier escenario que tengas.</p>`;
+    STADIUM.forEach((s, i) => {
+      const owned = i <= club.stadium, next = i === club.stadium + 1, cur = club.venue === s.venue;
+      h += `<div class="pcard ${cur ? 'sel' : ''}"><div class="povr">${VENUES[s.venue].emoji}</div><div class="pinfo2"><b>${s.name}</b><small>Taquilla ×${s.mult}</small></div><div class="pact">${owned ? (cur ? '<b>En uso</b>' : `<button class="btn small" data-act="usevenue" data-i="${i}">Usar</button>`) : next ? `<button class="btn small green" data-act="build" data-i="${i}">Construir 💰${fmt(s.cost)}</button>` : `<small>🔒 💰${fmt(s.cost)}</small>`}</div></div>`;
+    });
+  } else if (tab === 'league') {
+    h = `<table class="st"><tr><th>#</th><th>Equipo</th><th>Nivel</th><th>G</th><th>P</th><th>Pts</th></tr>${standings(club).map((t, i) => `<tr class="${t.me ? 'me' : ''}"><td>${i + 1}</td><td>${escapeHtml(t.name)}</td><td>${t.ovr}</td><td>${t.w}</td><td>${t.l}</td><td><b>${t.pts}</b></td></tr>`).join('')}</table>
+      <p class="tipSmall">Jornada ${Math.min(club.week + 1, WEEKS)}/${WEEKS}. El campeón sube de división (rivales más fuertes y mejores premios).</p>`;
+  }
+  body.innerHTML = h;
+}
+function clubAction(el) {
+  const act = el.dataset.act, club = SAVE.club;
+  const pid = el.dataset.id, p = club && club.squad.find((q) => q.id === pid);
+  switch (act) {
+    case 'found': {
+      const name = ($('#cNewName').value || 'Mi Club').trim().slice(0, 18);
+      SAVE.club = newClub(name); saveClub(); SFX.levelUp(); setVenue(SAVE.club.venue);
+      toast('¡Club fundado! Revisa tu plantilla y juega tu primer partido');
+      return renderClub('match');
+    }
+    case 'open': clubOpen = clubOpen === pid ? null : pid; return renderClub('squad');
+    case 'starter': {
+      if (club.lineup.includes(pid)) club.lineup = club.lineup.filter((id) => id !== pid);
+      else if (club.lineup.length >= 4) return toast('Ya tienes 4 titulares: pasa uno al banco primero');
+      else club.lineup.push(pid);
+      saveClub(); SFX.ui(); return renderClub('squad');
+    }
+    case 'train': {
+      const k = el.dataset.k, cost = trainCost(p.attr[k]);
+      if (club.money < cost) return toast('No te alcanza el dinero');
+      club.money -= cost; p.attr[k] = Math.min(97, p.attr[k] + 2);
+      saveClub(); SFX.perfect(); return renderClub('squad');
+    }
+    case 'sell': {
+      if (club.squad.length <= 4) return toast('Necesitas al menos 4 jugadores');
+      club.money += Math.round(priceOf(p) * 0.6);
+      club.squad = club.squad.filter((q) => q.id !== pid);
+      club.lineup = club.lineup.filter((id) => id !== pid);
+      clubOpen = null; saveClub(); SFX.ui(); toast(`${p.name} vendido`);
+      return renderClub('squad');
+    }
+    case 'buy': {
+      const np = club.market[+el.dataset.i];
+      if (!np) return;
+      if (club.squad.length >= 8) return toast('Plantilla llena (8). Vende a alguien primero');
+      if (club.money < priceOf(np)) return toast('No te alcanza el dinero');
+      club.money -= priceOf(np);
+      club.squad.push(np); club.market.splice(+el.dataset.i, 1);
+      if (club.lineup.length < 4) club.lineup.push(np.id);
+      saveClub(); SFX.levelUp(); toast(`¡${np.name} fichado!`);
+      return renderClub('market');
+    }
+    case 'refresh':
+      if (club.money < 150) return toast('No te alcanza el dinero');
+      club.money -= 150; refreshMarket(club); saveClub(); SFX.ui();
+      return renderClub('market');
+    case 'build': {
+      const i = +el.dataset.i, s = STADIUM[i];
+      if (club.money < s.cost) return toast('No te alcanza el dinero');
+      club.money -= s.cost; club.stadium = i; club.venue = s.venue;
+      saveClub(); SFX.levelUp(); setVenue(s.venue); confetti(0, 0, 100);
+      toast(`¡${s.name} construido!`);
+      return renderClub('stadium');
+    }
+    case 'usevenue': club.venue = STADIUM[+el.dataset.i].venue; saveClub(); setVenue(club.venue); return renderClub('stadium');
+    case 'newseason': club.season++; newSeason(club); refreshMarket(club); saveClub(); return renderClub('match');
+    case 'play': return startManagerMatch();
+  }
+}
+$('#clubBody').addEventListener('click', (e) => {
+  const el = e.target.closest('[data-act]');
+  if (!el || el.disabled) return;
+  e.stopPropagation();
+  SFX.resume();
+  clubAction(el);
+});
+$('#clubTabs').addEventListener('click', (e) => { const t = e.target.closest('.tab'); if (t) { SFX.ui(); renderClub(t.dataset.tab); } });
+$('#bClub').onclick = () => { SFX.resume(); SFX.ui(); openClub(); };
+$('#bClubBack').onclick = () => { SFX.ui(); showScreen('scrMenu'); };
+
+// ---------- partido del mánager: tu equipo juega solo y tú decides ----------
+const MGR = { dec: null, lastTraj: -1, lastRid: -1, slotClub: [], rival: null, hudT: 0 };
+const ZONES = [
+  { k: 'fl', label: '↖', x: -3, z: -2.2 }, { k: 'fc', label: '⬆', x: 0, z: -2.2 }, { k: 'fr', label: '↗', x: 3, z: -2.2 },
+  { k: 'bl', label: '⇖', x: -3, z: -6.2 }, { k: 'bc', label: '⇑', x: 0, z: -6.6 }, { k: 'br', label: '⇗', x: 3, z: -6.2 },
+];
+function startManagerMatch() {
+  const club = SAVE.club, rival = club.rivals[club.week];
+  const roster = [];
+  club.lineup.forEach((id, i) => {
+    const p = club.squad.find((q) => q.id === id);
+    roster.push({ id: i, name: p.name, team: 0, cpu: true, look: p.look, attr: p.attr, energy: p.energy, ovr: ovrOf(p) });
+  });
+  ['Colocador', 'Rematador', 'Central', 'Líbero'].forEach((role, i) => {
+    const g = genPlayer(rival.ovr, role);
+    roster.push({ id: 10 + i, name: g.name, team: 1, cpu: true, look: g.look, attr: g.attr, energy: 100, ovr: ovrOf(g) });
+  });
+  MGR.slotClub = club.lineup.slice();
+  MGR.rival = rival; MGR.dec = null; MGR.lastTraj = -1; MGR.lastRid = -1;
+  startMatch('local', roster, { size: 4, diff: club.division, pts: 11, venue: club.venue }, -1);
+  GAME.manager = true;
+  const avg = (t) => GAME.sim.team(t).reduce((a, p) => a + p.skill.react, 0) / 4;
+  GAME.sim.teamReact = [avg(0), avg(1)];
+  document.body.classList.add('mgrOn');
+  showBanner(escapeHtml(club.name), 'vs ' + escapeHtml(rival.name), TEAM_CSS[0]);
+  mgrHud(true);
+}
+function predictedSetter(sim) {
+  const b = sim.ball, ip = predictBall(b, 1.7);
+  let best = null, be = 1e9;
+  for (const m of sim.team(0)) {
+    if (m.id === b.lastPid || m.lieT > 0) continue;
+    const e = Math.hypot(m.x - ip.x, m.z - ip.z) / (m.skill ? m.skill.speed : 1);
+    if (e < be) { be = e; best = m; }
+  }
+  return best;
+}
+// abre un panel de decisión (el tiempo se frena mientras eliges)
+function openDecision(kind) {
+  const sim = GAME.sim;
+  const box = $('#mgrDec'), opts = $('#decOpts');
+  let title = '', html = '';
+  if (kind === 'attack') {
+    const setter = predictedSetter(sim);
+    const atk = sim.team(0).filter((p) => p !== setter);
+    title = `🏐 ${setter ? escapeHtml(setter.name.split(' ')[0]) + ' coloca' : 'Colocación'}: ¿quién remata?`;
+    html = atk.map((p, i) => `<button class="dopt" data-a="${p.id}"><b>${i + 1}</b> ${escapeHtml(p.name.split(' ')[0])}<small>REM ${p.attr.remate} · ⚡${Math.round(p.energy)}</small></button>`).join('') + `<button class="dopt auto" data-a="auto"><b>${atk.length + 1}</b> 🤖 Auto</button>`;
+  } else if (kind === 'zone' || kind === 'szone') {
+    title = kind === 'zone' ? '🎯 ¿A qué zona ataca?' : '🎯 ¿A qué zona sacas?';
+    const opp = sim.team(1);
+    const dots = opp.map((o) => `<i class="odot" style="left:${clamp((o.x + HALF_W) / (HALF_W * 2), 0, 1) * 100}%;top:${clamp(1 - (-o.z) / HALF_L, 0, 1) * 100}%"></i>`).join('');
+    html = `<div class="mcourt">${ZONES.map((z, i) => `<button class="zbtn" data-z="${i}" style="left:${(z.x + HALF_W) / (HALF_W * 2) * 100}%;top:${(1 - (-z.z) / HALF_L) * 100}%">${z.label}</button>`).join('')}${dots}<span class="mnet">RED</span></div>
+      <div class="zextra">${kind === 'zone' ? '<button class="dopt" data-z="tip">🪶 Finta</button>' : ''}<button class="dopt auto" data-z="auto">🤖 Auto</button></div>`;
+  } else if (kind === 'serve') {
+    title = `🏐 Saca ${escapeHtml(sim.server.name.split(' ')[0])} (SAQ ${sim.server.attr ? sim.server.attr.saque : '?'}): ¿cómo?`;
+    html = `<button class="dopt" data-s="safe"><b>1</b> 🎯 Seguro<small>flotante, casi nunca falla</small></button><button class="dopt" data-s="power"><b>2</b> 💥 Potente<small>en salto, más riesgo</small></button><button class="dopt auto" data-s="auto"><b>3</b> 🤖 Auto</button>`;
+  }
+  $('#decTitle').innerHTML = title;
+  opts.innerHTML = html;
+  const tt = kind === 'zone' || kind === 'szone' ? 3.5 : 4.2;
+  MGR.dec = { kind, t: tt, max: tt, data: MGR.dec ? MGR.dec.data : {} };
+  if (kind === 'attack' || kind === 'serve') MGR.dec.data = {};
+  box.classList.add('on');
+  SFX.ui();
+}
+function closeDecision() { MGR.dec = null; $('#mgrDec').classList.remove('on'); }
+function decide(el) {
+  const sim = GAME.sim, d = MGR.dec;
+  if (!d || !sim) return;
+  SFX.set();
+  if (d.kind === 'attack') {
+    const a = el.dataset.a;
+    if (a === 'auto') { sim.mgr = null; return closeDecision(); }
+    d.data.attackerId = +a;
+    sim.mgr = { team: 0, attackerId: +a, zone: null, tip: false };
+    return openDecision('zone');
+  }
+  if (d.kind === 'zone') {
+    const z = el.dataset.z;
+    if (sim.mgr) { if (z === 'tip') sim.mgr.tip = true; else if (z !== 'auto') sim.mgr.zone = ZONES[+z]; }
+    return closeDecision();
+  }
+  if (d.kind === 'serve') {
+    const s = el.dataset.s;
+    if (s === 'auto') { sim.mgrServe.decided = true; sim.mgrServe.jump = Math.random() < (sim.server.skill ? sim.server.skill.jumpServe : 0.2); return closeDecision(); }
+    sim.mgrServe.jump = s === 'power';
+    return openDecision('szone');
+  }
+  if (d.kind === 'szone') {
+    const z = el.dataset.z;
+    if (z !== 'auto') sim.mgrServe.aim = ZONES[+z];
+    sim.mgrServe.decided = true;
+    return closeDecision();
+  }
+}
+function autoDecision() {
+  const sim = GAME.sim, d = MGR.dec;
+  if (d && sim && (d.kind === 'serve' || d.kind === 'szone') && sim.mgrServe) {
+    if (d.kind === 'serve') sim.mgrServe.jump = Math.random() < (sim.server.skill ? sim.server.skill.jumpServe : 0.2);
+    sim.mgrServe.decided = true;
+  }
+  closeDecision();
+}
+$('#mgrDec').addEventListener('click', (e) => { const el = e.target.closest('[data-a],[data-z],[data-s]'); if (el) decide(el); });
+addEventListener('keydown', (e) => {
+  if (!MGR.dec || !/^Digit[1-9]$/.test(e.code)) return;
+  const btns = $$('#decOpts [data-a], #decOpts [data-s]');
+  const b = btns[+e.code.slice(5) - 1];
+  if (b) decide(b);
+});
+// se llama cada cuadro durante un partido del mánager
+function mgrUpdate(dt) {
+  const sim = GAME.sim;
+  if (!sim) return;
+  const b = sim.ball;
+  if (sim.phase === 'serve' && sim.serveTeam === 0 && b.held && MGR.lastRid !== sim.resetId) {
+    MGR.lastRid = sim.resetId;
+    sim.mgrServe = { team: 0, decided: false };
+    openDecision('serve');
+  }
+  if (sim.phase === 'rally' && b.touchTeam === 0 && b.touches === 1 && MGR.lastTraj !== sim.lastTrajT && !MGR.dec) {
+    MGR.lastTraj = sim.lastTrajT;
+    if (sim.team(0).length > 1) openDecision('attack');
+  }
+  if (sim.mgr && (b.touchTeam !== 0 || sim.phase !== 'rally')) sim.mgr = null;
+  if (MGR.dec) {
+    if ((MGR.dec.kind === 'attack' || MGR.dec.kind === 'zone') && (sim.phase !== 'rally' || b.touchTeam !== 0 || b.touches >= 3)) closeDecision();
+    else {
+      MGR.dec.t -= dt;
+      $('#decBarI').style.width = clamp(MGR.dec.t / MGR.dec.max, 0, 1) * 100 + '%';
+      if (MGR.dec.t <= 0) autoDecision();
+    }
+  }
+  MGR.hudT -= dt;
+  if (MGR.hudT <= 0) { MGR.hudT = 0.4; mgrHud(); }
+}
+function mgrHud(force) {
+  const sim = GAME.sim;
+  if (!sim) return;
+  $('#mgrLine').innerHTML = sim.team(0).map((p) => `<div class="mrow"><span>${escapeHtml(p.name.split(' ')[0])}</span>${energyBar(p.energy)}</div>`).join('');
+  const canSub = sim.phase === 'point' || (sim.phase === 'serve' && sim.ball.held) || sim.phase === 'intro';
+  $('#bSubs').disabled = !canSub || SAVE.club.squad.length <= 4;
+}
+// cansancio: cada punto jugado gasta energía (y baja el rendimiento)
+function mgrOnPoint() {
+  for (const p of GAME.sim.players) {
+    if (!p.attr) continue;
+    p.energy = Math.max(8, p.energy - rand(1.4, 2.4));
+    p.skill = skillFrom(p.attr, p.energy);
+  }
+}
+// cambios entre puntos
+let subSel = null;
+function openSubs() {
+  const sim = GAME.sim, club = SAVE.club;
+  GAME.paused = true;
+  subSel = null;
+  const bench = club.squad.filter((p) => !MGR.slotClub.includes(p.id));
+  $('#subsBody').innerHTML = `<label class="t">En la cancha (elige quién sale)</label>${sim.team(0).map((p) => `<div class="pcard" data-out="${p.id}"><div class="povr">${p.attr ? ovrOf(p) : '?'}</div><div class="pinfo2"><b>${escapeHtml(p.name)}</b>${energyBar(p.energy)}</div></div>`).join('')}
+    <label class="t">Banco (elige quién entra)</label>${bench.length ? bench.map((p) => `<div class="pcard" data-in="${p.id}"><div class="povr">${ovrOf(p)}</div><div class="pinfo2"><b>${escapeHtml(p.name)}</b><small>${p.role}</small>${energyBar(p.energy)}</div></div>`).join('') : '<p class="tipSmall">No tienes suplentes. Ficha jugadores en el club.</p>'}`;
+  showScreen('scrSubs');
+}
+$('#subsBody').addEventListener('click', (e) => {
+  const out = e.target.closest('[data-out]'), inn = e.target.closest('[data-in]');
+  if (out) { subSel = +out.dataset.out; $$('#subsBody [data-out]').forEach((c) => c.classList.toggle('sel', c === out)); SFX.ui(); }
+  if (inn) {
+    if (subSel == null) return toast('Primero elige quién sale');
+    doSub(subSel, inn.dataset.in);
+    closeSubs();
+  }
+});
+function doSub(slot, clubId) {
+  const club = SAVE.club, sim = GAME.sim;
+  const bp = club.squad.find((p) => p.id === clubId), sp = sim.byId(slot);
+  const outP = club.squad.find((p) => p.id === MGR.slotClub[slot]);
+  if (outP) outP.energy = sp.energy;
+  Object.assign(sp, { name: bp.name, look: bp.look, attr: bp.attr, energy: bp.energy, skill: skillFrom(bp.attr, bp.energy) });
+  MGR.slotClub[slot] = clubId;
+  GAME.chars.get(slot).dispose();
+  const cv = new CharView({ id: slot, team: 0, look: bp.look });
+  GAME.chars.set(slot, cv);
+  GAME.tags.get(slot).remove();
+  GAME.tags.set(slot, makeTag({ name: bp.name, team: 0, cpu: true, ovr: ovrOf(bp) }, false));
+  toast(`🔄 Entra ${bp.name}`);
+  SFX.whistle();
+}
+function closeSubs() { GAME.paused = false; showScreen(null); mgrHud(); }
+$('#bSubs').onclick = () => { SFX.ui(); openSubs(); };
+$('#bSubsClose').onclick = () => { SFX.ui(); closeSubs(); };
+
+// resultado del partido: dinero, hinchas, liga y mejoras de los jugadores
+function mgrAfterMatch(res) {
+  setTimeout(() => {
+    if (!GAME.manager) return;
+    const club = SAVE.club, won = res.winner === 0, rival = club.rivals[club.week], sim = GAME.sim;
+    const mult = STADIUM[club.stadium].mult;
+    const gate = Math.round(club.fans * 3 * mult), prize = won ? 600 + club.division * 400 : 150;
+    const income = 300 + gate + prize;
+    const fansGain = won ? 18 + club.division * 10 : 4;
+    club.money += income; club.fans += fansGain;
+    if (won) { club.me.w++; club.me.pts += 3; rival.l++; } else { club.me.l++; rival.w++; rival.pts += 3; }
+    // los demás partidos de la jornada
+    const others = shuffle(club.rivals.filter((r) => r !== rival));
+    for (let i = 0; i + 1 < others.length; i += 2) {
+      const a = others[i], c = others[i + 1];
+      const pa = 1 / (1 + Math.exp(-(a.ovr - c.ovr) / 6));
+      const [w, l] = Math.random() < pa ? [a, c] : [c, a];
+      w.w++; w.pts += 3; l.l++;
+    }
+    // energía y progreso de los jugadores
+    const ups = [];
+    const inField = new Set(MGR.slotClub);
+    for (const p of club.squad) {
+      if (!inField.has(p.id)) p.energy = Math.min(100, p.energy + 35);
+    }
+    MGR.slotClub.forEach((cid, slot) => {
+      const p = club.squad.find((q) => q.id === cid), sp = sim.byId(slot);
+      if (!p || !sp) return;
+      p.energy = clamp(sp.energy + 12, 10, 100);
+      const st = sp.stats, gains = [];
+      const up = (k, n = 1) => { if (p.attr[k] < 97) { p.attr[k] = Math.min(97, p.attr[k] + n); gains.push(ATTRS.find((a) => a[0] === k)[1] + '+' + n); } };
+      if (st.kills >= 2) up('remate');
+      if (st.blocks >= 1) up('bloqueo');
+      if (st.digs >= 2) up('defensa');
+      if (st.aces >= 1) up('saque');
+      if (st.perfects >= 5) up(p.role === 'Colocador' ? 'coloc' : 'recep');
+      if (Math.random() < 0.25) up(pick(ATTRS)[0]);
+      if (gains.length) ups.push(`${escapeHtml(p.name)}: ${gains.join(', ')}`);
+    });
+    club.week++;
+    if (club.week >= WEEKS) {
+      club.seasonOver = true;
+      const tbl = standings(club), pos = tbl.findIndex((t) => t.me) + 1;
+      if (pos === 1) {
+        club.trophies++; club.money += 3000 + club.division * 2000;
+        const up2 = club.division < DIVISIONS.length - 1;
+        if (up2) club.division++;
+        club.result = `¡Ganaste la ${DIVISIONS[club.division - (up2 ? 1 : 0)]}! Premio de 💰${fmt(3000 + (club.division - (up2 ? 1 : 0)) * 2000)}${up2 ? ` y subes a la ${DIVISIONS[club.division]}` : ''}.`;
+      } else club.result = 'Sigue fichando y entrenando para ser campeón la próxima temporada.';
+    }
+    refreshMarket(club);
+    SAVE.xp += won ? 110 : 60;
+    while (SAVE.xp >= xpNeed(SAVE.level)) { SAVE.xp -= xpNeed(SAVE.level); SAVE.level++; }
+    saveClub();
+    // pantalla de resultado
+    $('#eTitle').textContent = won ? '¡VICTORIA!' : 'Derrota';
+    $('#eTitle').style.color = won ? TEAM_CSS[0] : '#8a93b5';
+    $('#eScore').innerHTML = `<span style="background:${TEAM_CSS[0]}">${res.score[0]}</span> - <span style="background:${TEAM_CSS[1]}">${res.score[1]}</span>`;
+    const val = (s) => s.pts * 3 + s.kills * 2 + s.aces * 2 + s.blocks * 3 + s.perfects + s.digs - s.errors * 2;
+    const mvp = res.players.slice().sort((a, b) => val(b.stats) - val(a.stats))[0];
+    const names = new Map(sim.players.map((p) => [p.id, p.name]));
+    $('#eMvp').innerHTML = `⭐ MVP: <b style="color:${TEAM_CSS[mvp.team]}">${escapeHtml(names.get(mvp.id) || mvp.name)}</b>`;
+    const rows = res.players.slice().sort((a, b) => a.team - b.team || b.stats.pts - a.stats.pts);
+    $('#eTable').innerHTML = '<tr><th>Jugador</th>' + ST_COLS.map((c) => `<th>${c[1]}</th>`).join('') + '</tr>' +
+      rows.map((p) => `<tr class="${p.team === 0 ? 'me' : ''}"><td><span style="color:${TEAM_CSS[p.team]}">●</span> ${escapeHtml(names.get(p.id) || p.name)}</td>` + ST_COLS.map((c) => `<td>${p.stats[c[0]]}</td>`).join('') + '</tr>').join('');
+    $('#eLvl').textContent = club.seasonOver ? '🏆' : club.week;
+    $('#eXpGain').textContent = `+💰${fmt(income)} · +${fansGain} hinchas`;
+    $('#eXp').style.width = (club.week / WEEKS) * 100 + '%';
+    const pos = standings(club).findIndex((t) => t.me) + 1;
+    $('#eXpTxt').textContent = club.seasonOver ? 'Temporada terminada' : `Jornada ${club.week}/${WEEKS} · vas ${pos}º en la liga`;
+    $('#eUnlocks').innerHTML = (ups.length ? '<div class="unlock">📈 Mejoraron: ' + ups.join(' · ') + '</div>' : '') + (club.seasonOver ? `<div class="unlock">${pos === 1 ? '🏆 ¡CAMPEONES!' : 'Terminaste ' + pos + 'º'} — ${club.result}</div>` : '');
+    const again = $('#bAgain');
+    again.disabled = false; again.textContent = 'Volver al club';
+    $('#bToLobby').style.display = 'none';
+    $('#bEndMenu').textContent = 'Menú';
+    if (won) SFX.cheer(1.2);
+    showScreen('scrEnd');
+  }, 1800);
+}
+
 // ---------- demo de fondo en el menú ----------
 function startDemo(keepNet) {
   const used = new Set(), roster = [];
@@ -3254,6 +4246,7 @@ function startDemo(keepNet) {
   GAME.roster = roster; GAME.myTeam = 0;
   const myId = GAME.myId;
   GAME.myId = -1;
+  setVenue(SAVE.venue || 'parque');
   GAME.sim = new Sim(roster, { size: 2, diff: 2, pts: 999 });
   buildCharacters(roster);
   GAME.myId = myId;
@@ -3264,11 +4257,17 @@ document.addEventListener('click', (e) => {
   const go = e.target.closest('[data-go]');
   if (go) { SFX.resume(); SFX.ui(); showScreen(go.dataset.go); }
   const chip = e.target.closest('[data-opt] .chip');
-  if (chip) { SAVE[chip.parentElement.dataset.opt] = +chip.dataset.v; storeSave(); syncChips(); SFX.ui(); }
+  if (chip) {
+    const k = chip.parentElement.dataset.opt, v = chip.dataset.v;
+    SAVE[k] = isNaN(+v) ? v : +v; storeSave(); syncChips(); SFX.ui();
+    if (k === 'venue') setVenue(v);
+  }
   const lchip = e.target.closest('[data-lopt] .chip');
   if (lchip && NET.role === 'host') {
     const k = lchip.parentElement.dataset.lopt;
-    NET.settings[k] = +lchip.dataset.v; SAVE[k] = +lchip.dataset.v; storeSave();
+    const v = lchip.dataset.v;
+    NET.settings[k] = isNaN(+v) ? v : +v; SAVE[k] = NET.settings[k]; storeSave();
+    if (k === 'venue') setVenue(v);
     broadcastLobby(); SFX.ui();
   }
   const tchip = e.target.closest('[data-team]');
@@ -3290,7 +4289,7 @@ $('#bCopy').onclick = async () => {
   catch (e) { $('#lLink').select(); toast('Copia el link de la caja'); }
 };
 $('#bStart').onclick = () => {
-  if (!NET.peer || !NET.peer.open) { toast('La sala aún se está creando…'); return; }
+  if (!(NET.peer && NET.peer.open) && !NET.relays.length) { toast('La sala aún se está creando…'); return; }
   SFX.resume(); hostStart();
 };
 $('#bLeave').onclick = () => { SFX.ui(); leaveToMenu(); };
@@ -3298,7 +4297,29 @@ $('#bResume').onclick = () => togglePause();
 $('#bQuit').onclick = () => leaveToMenu();
 $('#pauseBtn').onclick = () => togglePause();
 $('#bMute').onclick = () => toggleMute();
+// ---------- pantalla completa ----------
+function toggleFullscreen() {
+  const d = document, el = d.documentElement;
+  if (d.fullscreenElement || d.webkitFullscreenElement) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (!req) { toast('En iPhone: toca Compartir y luego "Añadir a pantalla de inicio"; ábrelo desde ahí para jugar a pantalla completa', 5000); return; }
+  try {
+    const p = req.call(el, { navigationUI: 'hide' });
+    if (p && p.then) p.then(() => { try { if (IS_TOUCH && screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (e) { /* sin bloqueo */ } }).catch(() => toast('Tu navegador no permitió la pantalla completa'));
+  } catch (e) { toast('Tu navegador no permitió la pantalla completa'); }
+}
+function syncFsIcon() {
+  const on = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  for (const b of [$('#fsBtn'), $('#bFs')]) { b.textContent = on ? '🗗' : '⛶'; b.title = on ? 'Salir de pantalla completa (F)' : 'Pantalla completa (F)'; }
+}
+document.addEventListener('fullscreenchange', syncFsIcon);
+document.addEventListener('webkitfullscreenchange', syncFsIcon);
+$('#fsBtn').onclick = () => toggleFullscreen();
+$('#bFs').onclick = () => toggleFullscreen();
+// chips de escenario
+for (const row of $$('.venueRow')) row.innerHTML = VENUE_IDS.map((id) => '<button class="chip" data-v="' + id + '">' + VENUES[id].emoji + '<small>' + VENUES[id].name + '</small></button>').join('');
 $('#bAgain').onclick = () => {
+  if (GAME.manager) { leaveToMenu(); openClub(); return; }
   if (GAME.mode === 'local') startLocal();
   else if (GAME.mode === 'host') hostStart();
 };
@@ -3320,6 +4341,7 @@ function simTick(dt, visible) {
   let sdt = dt;
   if (GAME.hitStop > 0) { GAME.hitStop -= dt; sdt *= 0.12; }
   if (GAME.slowmo > 0) { GAME.slowmo -= dt; sdt *= 0.35; }
+  if (GAME.manager && MGR.dec) sdt *= 0.14;
   if (GAME.paused && GAME.mode === 'local') sdt = 0;
   if (GAME.mode === 'local' || GAME.mode === 'host') {
     const me = GAME.sim.byId(GAME.myId);
@@ -3361,6 +4383,7 @@ function frame(now) {
   } else if (GAME.sim) {
     simTick(dt, true);
     if (GAME.tutorial && !GAME.paused) TUT.update(dt);
+    if (GAME.manager && !GAME.paused) mgrUpdate(dt);
     v = simView(GAME.sim);
   }
   if (v) {
@@ -3381,10 +4404,10 @@ function frame(now) {
     netInfoT = 0.5;
     const ni = $('#netInfo');
     if (GAME.mode === 'host') ni.textContent = `Sala ${NET.code} · ${NET.conns.size} amigo${NET.conns.size === 1 ? '' : 's'}`;
-    else ni.textContent = `Sala ${NET.code} · ping ${Math.round(NET.rtt * 1000)} ms`;
+    else ni.textContent = `Sala ${NET.code} · ping ${Math.round(NET.rtt * 1000)} ms · ${NET.via}`;
   }
   updateCamera(dt, v || { players: [], ball: { x: 0, y: 0, z: 0 } });
-  updateParts(dt); updateConfetti(dt); updateShock(dt); updateGroundRings(dt);
+  updateParts(dt); updateConfetti(dt); updateShock(dt); updateGroundRings(dt); updateVenue(dt, now / 1000);
   renderer.render(scene, camera);
 }
 
