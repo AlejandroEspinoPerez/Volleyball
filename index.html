@@ -115,6 +115,13 @@ body.replay #lbTop,body.replay #lbBot{height:9vh}
 #rpBtn{position:fixed;right:16px;bottom:calc(max(16px,env(safe-area-inset-bottom)) + 70px);z-index:14;border:0;border-radius:16px;padding:10px 16px;background:rgba(29,35,64,.82);color:#fff;font:700 16px Fredoka,system-ui;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(10px);transition:.25s}
 #rpBtn.on{opacity:1;pointer-events:auto;transform:none}
 body.touch #rpBtn{bottom:auto;top:calc(max(12px,env(safe-area-inset-top)) + 100px);right:14px}
+#rpSave{position:fixed;right:16px;bottom:calc(max(16px,env(safe-area-inset-bottom)) + 120px);z-index:14;border:0;border-radius:16px;padding:8px 14px;background:rgba(29,35,64,.82);color:#fff;font:700 14px Fredoka,system-ui;cursor:pointer;opacity:0;pointer-events:none;transition:.25s}
+#rpSave.on{opacity:1;pointer-events:auto}
+body.touch #rpSave{bottom:auto;top:calc(max(12px,env(safe-area-inset-top)) + 150px);right:14px}
+body.replay #rpSave{display:none}
+body.recording #rpBadge small{visibility:hidden}
+body.recording #rpBadge .rec{color:#ff3b3b;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
 body.replay #rpBtn{display:none}
 #rpBadge{position:fixed;left:16px;top:calc(9vh + 12px);z-index:31;color:#fff;font-weight:700;font-size:18px;text-shadow:0 2px 6px rgba(0,0,0,.6);display:none;cursor:pointer}
 #rpBadge .rec{color:#ff3b3b;animation:blink 1s infinite}
@@ -255,6 +262,34 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
  #ctrlCard{display:none}
  .teams{flex-direction:column}
 }
+/* modo Pro: medidor de potencia */
+#charge{position:absolute;width:70px;height:70px;margin:-35px 0 0 -35px;pointer-events:none;display:none}
+#charge.on{display:block}
+#charge i{position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--c,#2fd27a) calc(var(--p,0) * 1turn),rgba(29,35,64,.28) 0);-webkit-mask:radial-gradient(circle,transparent 22px,#000 23px);mask:radial-gradient(circle,transparent 22px,#000 23px);filter:drop-shadow(0 2px 0 rgba(0,0,0,.3))}
+#charge i:after{content:'';position:absolute;left:50%;top:0;width:3px;height:12px;margin-left:-1px;background:#fff;transform-origin:1px 35px;transform:rotate(306deg);border-radius:2px}
+#charge span{position:absolute;left:50%;top:74px;transform:translateX(-50%);white-space:nowrap;font-weight:700;font-size:13px;color:#fff;text-shadow:0 2px 0 var(--ink)}
+#charge.over{animation:shk .07s infinite}
+@keyframes shk{0%{transform:translate(2px,0)}50%{transform:translate(-2px,1px)}100%{transform:translate(0,-2px)}}
+#plays{position:absolute;left:14px;top:calc(max(12px,env(safe-area-inset-top)) + 70px);display:none;flex-direction:column;gap:6px;pointer-events:auto}
+#plays.on{display:flex}
+#plays small{color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;text-shadow:0 2px 0 rgba(0,0,0,.35)}
+#plays button{border:0;border-radius:14px;padding:6px 12px;font:600 14px Fredoka,sans-serif;background:rgba(255,255,255,.85);color:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.15);text-align:left;min-width:128px}
+#plays button kbd{float:right;margin-left:8px;font:700 11px Fredoka,sans-serif;background:#eef1fa;border-radius:5px;padding:1px 5px}
+#plays button.sel{background:#ffe14d;transform:scale(1.06)}
+body.touch #plays{top:auto;bottom:calc(max(16px,env(safe-area-inset-bottom)) + 170px)}
+body.touch #plays kbd{display:none}
+body.replay #plays,body.tutOn #plays,body.mgrOn #plays{display:none!important}
+.mgrid .btn.wideB{grid-column:1/-1}
+.perkGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.perk{border:3px solid #dfe5f5;background:#fff;border-radius:14px;padding:8px;text-align:left;font-family:inherit;color:var(--ink);cursor:pointer}
+.perk b{display:block;font-size:15px}.perk small{font-size:12px;opacity:.75;line-height:1.25;display:block}
+.perk.sel{border-color:#2fd27a;background:#effcf4}.perk.lock{opacity:.45}
+.slots{font-size:13px;margin:8px 0 0;opacity:.8}
+.seaHead{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:6px}
+table.st td.nem{color:#e0245e}
+.lastRes{font-size:13px;line-height:1.6;margin:6px 0;opacity:.85}
+.friends .fr{display:flex;justify-content:space-between;padding:7px 10px;border-radius:12px;background:#f3f6fd;margin:5px 0;font-size:15px}
+.optHint{font-size:12px;opacity:.7;margin:4px 2px 0;line-height:1.35}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
@@ -282,6 +317,8 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
     <div><b>Espacio</b> saltar (salta + clic = remate)</div>
     <div><b>Clic der</b> plancha · bloqueo en la red</div>
   </div>
+  <div id="charge"><i></i><span></span></div>
+  <div id="plays"><small>JUGADA</small><button data-play="1">⚡ Rápida<kbd>1</kbd></button><button data-play="2">⬆️ Alta a punta<kbd>2</kbd></button><button data-play="3">🎯 Zaguero<kbd>3</kbd></button></div>
   <button id="fsBtn" title="Pantalla completa (F)">⛶</button>
   <button id="pauseBtn" title="Pausa (Esc)">II</button>
 </div>
@@ -323,14 +360,23 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
 
 <div id="lbTop"></div><div id="lbBot"></div>
 <button id="rpBtn">🎬 Repetir jugada</button>
+<button id="rpSave">💾 Guardar video</button>
 <div id="rpBadge"><span class="rec">●</span> REPETICIÓN <b id="rpTitle"></b><small>toca para saltar</small></div>
 
 <section class="screen dim" id="scrGoals">
   <div class="panel wide">
     <h2>🎯 Retos y logros</h2>
-    <div class="tabs" id="goalTabs"><button class="tab sel" data-gt="daily">🎯 Retos de hoy</button><button class="tab" data-gt="ach">🏅 Logros</button></div>
+    <div class="tabs" id="goalTabs"><button class="tab sel" data-gt="daily">🎯 Retos de hoy</button><button class="tab" data-gt="ach">🏅 Logros</button><button class="tab" data-gt="friends">👥 Amigos</button></div>
     <div id="goalsBody"></div>
     <button class="btn gray" data-go="scrMenu">Volver</button>
+  </div>
+</section>
+
+<section class="screen dim" id="scrSeason">
+  <div class="panel wide">
+    <h2 id="seaTitle">📅 Temporada</h2>
+    <div id="seaBody"></div>
+    <button class="btn gray" data-go="scrMenu">Volver al menú</button>
   </div>
 </section>
 
@@ -356,6 +402,7 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
         <button class="btn orange" id="bCup">🏆 Torneo</button>
         <button class="btn purple" id="bClub">💼 Mánager</button>
         <button class="btn gold" id="bGoals">🎯 Retos<span class="badge" id="goalBadge"></span></button>
+        <button class="btn green wideB" id="bSeason">📅 Temporada<span class="badge" id="seaBadge" style="display:none"></span></button>
         <button class="btn" id="bHost">🌐 Crear sala</button>
         <button class="btn pink" data-go="scrJoin">🔗 Unirme</button>
       </div>
@@ -374,6 +421,9 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
     <div class="row" data-opt="diff"><button class="chip" data-v="0">Fácil</button><button class="chip" data-v="1">Normal</button><button class="chip" data-v="2">Difícil</button></div>
     <label class="t">Escenario</label>
     <div class="row venueRow" data-opt="venue"></div>
+    <label class="t">Controles</label>
+    <div class="row" data-opt="ctrl"><button class="chip" data-v="clasico">🎮 Clásico</button><button class="chip" data-v="pro">⚡ Pro</button></div>
+    <p class="optHint" id="ctrlHint"></p>
     <label class="t">Puntos para ganar</label>
     <div class="row" data-opt="pts"><button class="chip" data-v="7">7</button><button class="chip" data-v="11">11</button><button class="chip" data-v="15">15</button><button class="chip" data-v="21">21</button></div>
     <button class="btn green" id="bPlay" style="margin-top:18px">¡A jugar!</button>
@@ -387,6 +437,8 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
     <label class="t">Nombre</label>
     <input class="txt" id="cName" maxlength="12" autocomplete="off">
     <div id="custRows"></div>
+    <label class="t">⭐ Habilidades</label>
+    <div id="perkBox"></div>
     <button class="btn green" data-go="scrMenu" style="margin-top:16px">Listo</button>
   </div>
 </section>
@@ -436,6 +488,9 @@ body.mgrOn #ctrlCard,body.mgrOn #touchUI,body.mgrOn #hint{display:none!important
     <button class="btn green" id="bWatch">▶ Ver la última jugada</button>
     <button class="btn" id="bReplays">🎬 Repeticiones automáticas: Solo las mejores</button>
     <button class="btn" id="bQuality">⚙️ Calidad: Automática</button>
+    <button class="btn" id="bCtrl">🎮 Controles: Clásico</button>
+    <button class="btn" id="bClip">💾 Guardar la última jugada en video</button>
+    <button class="btn" id="bVib">📳 Vibración: Sí</button>
     <button class="btn gray" id="bQuit">Salir al menú</button>
   </div>
 </section>
@@ -551,6 +606,7 @@ function loadSave() {
 }
 const SAVE = loadSave();
 if (!SAVE.look.cel) SAVE.look.cel = 'punos';
+if (!SAVE.ctrl) SAVE.ctrl = 'clasico';
 function storeSave() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(SAVE)); } catch (e) { /* ignorar */ } }
 const xpNeed = (lv) => 250 + lv * 150;
 
@@ -602,6 +658,11 @@ const SFX = (() => {
     hit(p = 0.5) { tone(200 + p * 140, 0.12, 'sine', 0.5, 70); noise(0.06, 0.35 + p * 0.4, 'bandpass', 1600 + p * 1600, 1.2); },
     spike() { tone(95, 0.25, 'sine', 0.7, 40); noise(0.14, 0.9, 'bandpass', 2600, 0.8); tone(320, 0.1, 'square', 0.12, 80); },
     set() { tone(540, 0.08, 'sine', 0.25, 320); noise(0.04, 0.2, 'highpass', 3000); },
+    bump(p = 0.6) { tone(150 + p * 50, 0.13, 'sine', 0.55, 60); noise(0.07, 0.4 + p * 0.2, 'lowpass', 900, 0.8); },
+    dig() { tone(110, 0.16, 'sine', 0.5, 50); noise(0.1, 0.45, 'lowpass', 600, 0.7); noise(0.25, 0.15, 'bandpass', 1800, 0.6, 0.03, 0.02); },
+    tip() { tone(620, 0.06, 'triangle', 0.18, 420); noise(0.03, 0.15, 'highpass', 4000); },
+    crack() { noise(0.05, 0.9, 'highpass', 5200, 0.7); tone(1800, 0.04, 'square', 0.06, 900); },
+    hype() { [392, 494, 587, 784].forEach((f, i) => tone(f, 0.14, 'square', 0.06, null, i * 0.06)); noise(1.6, 0.22, 'bandpass', 1400, 0.6, 0, 0.15); },
     bounce(v = 1) { tone(120, 0.15, 'sine', 0.45 * v, 50); noise(0.08, 0.3 * v, 'lowpass', 700); },
     net() { noise(0.3, 0.45, 'bandpass', 900, 3); tone(140, 0.2, 'triangle', 0.15, 90); },
     block() { tone(160, 0.2, 'square', 0.18, 70); noise(0.12, 0.7, 'bandpass', 1300, 1); },
@@ -2018,7 +2079,7 @@ function worldToScreen(x, y, z) {
 // =========================================================
 const ANIM_DUR = { bump: 0.55, whiff: 0.4, set: 0.55, dig: 0.6, serve: 0.6, spike: 0.6, tip: 0.6, land: 0.3 };
 const ANIMS = ['idle', 'bump', 'dig', 'set', 'toss', 'spike', 'serve', 'tip', 'whiff', 'block', 'dive', 'lie', 'cheer', 'sad', 'jump', 'land'];
-function emptyInput() { return { mx: 0, mz: 0, ax: 0, az: 0, jumpSeq: 0, hitSeq: 0, setSeq: 0, diveSeq: 0 }; }
+function emptyInput() { return { mx: 0, mz: 0, ax: 0, az: 0, jumpSeq: 0, hitSeq: 0, setSeq: 0, diveSeq: 0, pw: -1, play: 0, plSeq: 0 }; }
 function skillFrom(attr, energy = 100) {
   const f = (v) => clamp((v - 30) / 65, 0, 1);
   const tired = energy < 55 ? (55 - energy) / 110 : 0;
@@ -2047,7 +2108,7 @@ function formation(team, idx, n) {
 const faceNet = (team) => (team === 0 ? Math.PI : 0);
 
 // gravedad efectiva: el balón con fuego (súper) lleva liftado y cae en picada
-const gOf = (b) => (b.fire ? G * 1.4 : G);
+const gOf = (b) => (b.fire ? G * 1.4 : b.top ? G * 1.3 : G);
 // dónde estará el balón cuando baje a la altura yT
 function predictBall(b, yT = BALL_R) {
   if (b.held) return { x: b.x, z: b.z, t: 99, y: b.y };
@@ -2058,17 +2119,20 @@ function predictBall(b, yT = BALL_R) {
 }
 const apexOf = (b) => (b.vy > 0 ? b.y + (b.vy * b.vy) / (2 * gOf(b)) : b.y);
 
+const PERK_IDS = ['bomba', 'felina', 'mago', 'martillo', 'muelles', 'muro'];
 class Sim {
   constructor(roster, settings) {
     this.settings = Object.assign({ size: 2, diff: 1, pts: 15 }, settings);
     this.diff = DIFF[this.settings.diff] || DIFF[1];
+    this.assist = clamp(+this.settings.assist || 0, 0, 0.15); this.assistTeam = 1; // la PC rival afloja un poco si pierdes mucho
     this.players = roster.map((r) => ({
       id: r.id, name: r.name, team: r.team, cpu: !!r.cpu, look: r.look,
       x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, ry: 0, onGround: true,
       anim: 'idle', animT: 0, lockT: 0, diveT: 0, lieT: 0, diveDX: 0, diveDZ: 0,
       hitBuf: 0, bufKind: 'hit', hitCool: 0, blocking: false,
-      input: emptyInput(), seq: { hit: 0, set: 0, dive: 0, jump: 0 }, lag: 0,
+      input: emptyInput(), seq: { hit: 0, set: 0, dive: 0, jump: 0, pl: 0 }, lag: 0,
       ai: r.cpu ? { tx: 0, tz: 0, trajT: -1, hitH: 0.85, serveT: 1, rolls: {} } : null,
+      perks: Array.isArray(r.perks) ? r.perks.filter((k) => PERK_IDS.includes(k)).slice(0, 3) : null,
       attr: r.attr || null, energy: r.energy ?? 100, skill: r.attr ? skillFrom(r.attr, r.energy ?? 100) : null, forceTip: false,
       stats: { pts: 0, kills: 0, aces: 0, blocks: 0, perfects: 0, digs: 0, errors: 0 },
     }));
@@ -2079,9 +2143,25 @@ class Sim {
     this.phase = 'intro'; this.phaseT = 0; this.time = 0;
     this.events = []; this.ballHist = []; this.resetId = 0; this.lastTrajT = 0; this.netT = 0;
     this.winner = -1; this.rallyHits = 0; this.longestRally = 0; this._plan = [null, null];
+    this.streak = [0, 0];
+    this.call = [0, 0]; this.autoCall = [2, 2]; this.lastPlay = [2, 2]; // jugadas pedidas / elegidas por la PC
     this.prepServe();
   }
   emit(e) { this.events.push(e); }
+  // pequeño extra de calidad: habilidades del jugador, racha del equipo, ayuda oculta
+  bonus(p, type) {
+    let q = 0;
+    const pk = p.perks;
+    if (pk) {
+      if (type === 'serve' && pk.includes('bomba')) q += 0.08;
+      if ((type === 'bump' || type === 'dig') && pk.includes('felina')) q += 0.07;
+      if ((type === 'set' || type === 'over') && pk.includes('mago')) q += 0.1;
+    }
+    if (this.streak && this.streak[p.team] >= 3) q += 0.04;
+    if (p.cpu && this.assist && p.team === this.assistTeam) q -= this.assist;
+    return q;
+  }
+  perkK(p, id, k) { return p.perks && p.perks.includes(id) ? k : 1; }
   team(t) { return this.players.filter((p) => p.team === t); }
   byId(id) { return this.players.find((p) => p.id === id); }
   setAnim(p, a) { p.anim = a; p.animT = 0; }
@@ -2090,7 +2170,7 @@ class Sim {
     for (const team of [0, 1]) {
       const arr = this.team(team);
       arr.forEach((p, i) => {
-        const f = formation(team, i, arr.length);
+        const f = formation(team, (i + this.serverIdx[team]) % arr.length, arr.length); // rotación: cada cambio de saque, todos cambian de puesto
         Object.assign(p, { x: f.x, z: f.z, y: 0, vx: 0, vy: 0, vz: 0, onGround: true, anim: 'idle', animT: 0, lockT: 0, diveT: 0, lieT: 0, hitBuf: 0, blocking: false, ry: faceNet(team) });
       });
     }
@@ -2099,7 +2179,7 @@ class Sim {
     this.server = srv; this.serverId = srv.id;
     srv.x = clamp(formation(t, this.serverIdx[t] % n, n).x * 0.6, -3, 3);
     srv.z = TEAM_SIDE[t] * (HALF_L + 0.8);
-    Object.assign(this.ball, { held: true, vx: 0, vy: 0, vz: 0, touchTeam: -1, touches: 0, lastPid: -1, lastKind: '', lastTeam: -1, dead: false, fire: false, chain: 0 });
+    Object.assign(this.ball, { held: true, vx: 0, vy: 0, vz: 0, touchTeam: -1, touches: 0, lastPid: -1, lastKind: '', lastTeam: -1, dead: false, fire: false, chain: 0, float: 0, top: 0 });
     this.holdBall();
     this.resetId++;
     this.rallyHits = 0;
@@ -2169,11 +2249,12 @@ class Sim {
     }
     const jumpP = inp.jumpSeq !== p.seq.jump, hitP = inp.hitSeq !== p.seq.hit, setP = inp.setSeq !== p.seq.set, diveP = inp.diveSeq !== p.seq.dive;
     p.seq.jump = inp.jumpSeq; p.seq.hit = inp.hitSeq; p.seq.set = inp.setSeq; p.seq.dive = inp.diveSeq;
+    if (!p.cpu && inp.plSeq !== p.seq.pl) { p.seq.pl = inp.plSeq; if (inp.play >= 1 && inp.play <= 3) { this.call[p.team] = inp.play; this.emit({ type: 'call', team: p.team, play: inp.play, pid: p.id }); } }
     const isServer = this.phase === 'serve' && p === this.server;
     let mx = +inp.mx || 0, mz = +inp.mz || 0;
     const ml = Math.hypot(mx, mz);
     if (ml > 1) { mx /= ml; mz /= ml; }
-    const spd = MOVE_SPEED * (p.cpu ? (p.skill ? p.skill.speed : this.diff.speed) : 1);
+    const spd = MOVE_SPEED * (p.cpu ? (p.skill ? p.skill.speed : this.diff.speed) : 1) * (p.cpu && this.assist && p.team === this.assistTeam ? 1 - this.assist * 0.5 : 1);
     if (p.diveT > 0) {
       p.diveT -= dt;
       const k = Math.max(0, p.diveT / 0.4);
@@ -2221,7 +2302,7 @@ class Sim {
   }
 
   jump(p) {
-    p.vy = p.skill ? p.skill.jumpV : JUMP_V; p.onGround = false;
+    p.vy = (p.skill ? p.skill.jumpV : JUMP_V) * this.perkK(p, 'muelles', 1.06); p.onGround = false;
     const nearNet = Math.abs(p.z) < 1.7;
     p.blocking = nearNet;
     const oppBall = this.ball.touchTeam !== p.team && this.ball.z * TEAM_SIDE[p.team] < 0;
@@ -2266,7 +2347,7 @@ class Sim {
     if (bz * TEAM_SIDE[p.team] < -0.35) return false; // no se puede pasar la red
     const d = Math.hypot(bx - p.x, bz - p.z), h = by - p.y;
     const low = p.diveT > 0 || p.lieT > 0;
-    if (d > REACH + (low ? 0.55 : 0) + (p.onGround ? 0 : 0.12)) return false;
+    if (d > REACH + (low ? 0.55 + (p.perks && p.perks.includes('felina') ? 0.25 : 0) : 0) + (p.onGround ? 0 : 0.12)) return false;
     return low ? h > -0.25 && h < 1.3 : h > -0.05 && h < 2.35;
   }
   tryHit(p, now = false) {
@@ -2297,17 +2378,27 @@ class Sim {
   serveHit(p, hy) {
     const b = this.ball, side = TEAM_SIDE[p.team];
     const air = !p.onGround;
+    const pro = !p.cpu && p.input.pw >= 0, pw = pro ? clamp(p.input.pw, 0, 1.5) : 0.6, over = pro && pw > 1.05;
     const h = hy - p.y, ideal = air ? 1.55 : 1.7;
-    const q = clamp(1.08 - Math.abs(h - ideal) / 1.4 + (p.attr ? (p.attr.saque - 60) / 220 : 0), 0, 1);
+    const q = clamp(1.08 - Math.abs(h - ideal) / 1.4 + (p.attr ? (p.attr.saque - 60) / 220 : 0) - (over ? 0.4 : 0) + this.bonus(p, 'serve'), 0, 1);
     const grade = gradeOf(q);
     let ax = p.input.ax, az = p.input.az;
     if (az * side > -0.6) az = -side * Math.max(2, Math.abs(az)); // apuntó a su propio lado: se refleja
     const err = grade === 'perfect' ? 0 : (1 - q) * (air ? 2.4 : 1.6);
     const tx = ax + randn() * err, tz = az + randn() * err;
     const isSuper = air && grade === 'perfect' && (!p.cpu || Math.random() < [0.1, 0.2, 0.35][this.settings.diff]);
-    b.fire = isSuper;
-    if (air) this.launchDirect(b, tx, 0, tz, (15 + q * 6) * (isSuper ? 1.15 : 1), grade !== 'bad');
-    else this.launchArc(b, tx, 0, tz, Math.max(3.7, b.y + 1.3));
+    b.fire = isSuper; b.float = 0; b.top = 0;
+    let st = '';
+    const powK = pro ? lerp(0.78, 1.2, Math.min(pw, 1)) : 1;
+    if (air) this.launchDirect(b, tx, 0, tz, (15 + q * 6) * (isSuper ? 1.15 : 1) * powK * this.perkK(p, 'bomba', 1.08), grade !== 'bad' && !over);
+    else if (pro && b.vy > -2.6) { // golpe arriba del lanzamiento: flotante (tenso, sin giro y baila)
+      st = 'float';
+      this.launchArc(b, tx, 0, tz, Math.max(3.1, b.y + 0.6));
+      b.float = 1; b.floatPh = rand(0, 6.28);
+    } else if (pro) { // golpe al bajar: con efecto (rápido y cae de golpe)
+      st = 'top'; b.top = 1;
+      this.launchDirect(b, tx, 0, tz, lerp(11.5, 17.5, Math.min(pw, 1)) * this.perkK(p, 'bomba', 1.08), grade !== 'bad' && !over);
+    } else this.launchArc(b, tx, 0, tz, Math.max(3.7, b.y + 1.3));
     Object.assign(b, { touchTeam: p.team, touches: 0, lastPid: p.id, lastKind: 'serve', lastTeam: p.team, fire: isSuper, chain: 0, lastHitT: this.time });
     this.setAnim(p, 'serve');
     p.lockT = 0.25; p.hitCool = 0.3;
@@ -2315,7 +2406,7 @@ class Sim {
     if (grade === 'perfect') p.stats.perfects++;
     this.phase = 'rally'; this.phaseT = 0;
     this.lastTrajT = this.time;
-    this.emit({ type: 'hit', kind: air ? 'jserve' : 'serve', grade, pid: p.id, team: p.team, x: r2(b.x), y: r2(b.y), z: r2(b.z), sp: r2(Math.hypot(b.vx, b.vy, b.vz)), sup: isSuper ? 1 : 0 });
+    this.emit({ type: 'hit', kind: air ? 'jserve' : 'serve', grade, pid: p.id, team: p.team, x: r2(b.x), y: r2(b.y), z: r2(b.z), sp: r2(Math.hypot(b.vx, b.vy, b.vz)), sup: isSuper ? 1 : 0, st, pw: pro ? r2(pw) : -1 });
   }
 
   // el balón pega en el cuerpo de un jugador que no lo golpeó: rebota hacia arriba (cuenta como toque)
@@ -2326,7 +2417,7 @@ class Sim {
     if (b.touches > 3) { this.awardPoint(1 - p.team, 'touches', p.id); return; }
     const sp = Math.hypot(b.vx, b.vy, b.vz);
     b.vx = -b.vx * 0.12 + rand(-1.4, 1.4); b.vz = -b.vz * 0.12 + side * rand(0.3, 1.4); b.vy = rand(3.6, 5.6);
-    Object.assign(b, { lastPid: p.id, lastKind: 'body', lastTeam: p.team, chain: 0, fire: false, lastHitT: this.time });
+    Object.assign(b, { lastPid: p.id, lastKind: 'body', lastTeam: p.team, chain: 0, fire: false, lastHitT: this.time, float: 0, top: 0 });
     this.lastTrajT = this.time; this.rallyHits++;
     if (p.onGround && p.diveT <= 0) this.setAnim(p, 'whiff');
     this.emit({ type: 'hit', kind: 'body', grade: 'bad', pid: p.id, team: p.team, x: r2(b.x), y: r2(b.y), z: r2(b.z), sp: r2(sp) });
@@ -2337,16 +2428,19 @@ class Sim {
     if (b.lastKind === 'serve' && b.lastTeam === p.team) { this.awardPoint(1 - p.team, 'fault', p.id); return; } // no se puede tocar el propio saque
     if (b.touchTeam === p.team) b.touches++; else { b.touchTeam = p.team; b.touches = 1; }
     if (b.touches > 3) { this.awardPoint(1 - p.team, 'touches', p.id); return; }
-    if (b.touches === 1) b.chain = 0;
+    if (b.touches === 1) { b.chain = 0; const r = Math.random(); this.autoCall[p.team] = r < 0.28 ? 1 : r < 0.82 ? 2 : 3; }
     const chainBefore = b.chain || 0, fireIn = !!b.fire;
     const h = hy - p.y;
     const d = Math.max(0, Math.hypot(b.x - p.x, b.z - p.z) - (p.cpu ? 0.3 : 0));
     const air = !p.onGround && p.y > 0.2;
     const ax = p.input.ax, az = p.input.az;
     const aimOwn = az * side > 0.2;
-    let type;
+    const pro = !p.cpu && p.input.pw >= 0, pw = pro ? clamp(p.input.pw, 0, 1.5) : 0.6, over = pro && pw > 1.05;
+    b.float = 0; b.top = 0;
+    let type, feint = false;
     if (p.diveT > 0 || p.lieT > 0 || kind === 'dig') type = 'dig';
     else if (p.forceTip && air) type = 'tip';
+    else if (kind === 'set' && air && !aimOwn && h >= 0.6) { type = 'tip'; feint = true; } // finta: en el aire con COLOCAR
     else if (kind === 'set' && h >= 0.9) type = 'set';
     else if (air && h >= 0.8 && !aimOwn && Math.abs(b.z) < 5.5) type = 'spike';
     else if (air) type = aimOwn ? 'set' : 'tip';
@@ -2359,11 +2453,16 @@ class Sim {
     if (type === 'dig') q *= 0.92;
     if (fireIn && type !== 'spike') q -= 0.2; // recibir un súper remate es más difícil
     if (p.attr) q += (p.attr[ATTR_FOR[type]] - 60) / 220; // las estadísticas del jugador cuentan
+    if (pro) { // Pro: la potencia elegida importa
+      if (over) q -= 0.3 + (pw - 1.05) * 0.8;
+      else if (type !== 'spike' && type !== 'tip') q += pw >= 0.3 && pw <= 0.85 ? 0.06 : -0.08;
+    }
+    q += this.bonus(p, type);
     p.forceTip = false;
     q = clamp(q, 0, 1);
     const grade = gradeOf(q);
     const errBase = { bump: 1.7, dig: 2.2, set: 1.1, spike: 2.0, tip: 1.0, over: 1.5 }[type];
-    const err = grade === 'perfect' ? 0.05 : (1 - q) * errBase;
+    const err = (grade === 'perfect' ? 0.05 : (1 - q) * errBase) * (pro && type === 'spike' ? 0.7 + 0.8 * Math.min(pw, 1) : 1) * (over ? 1.8 : 1);
     const tx = ax + randn() * err, tz = az + randn() * err;
     // combo: recepción + colocación perfectas + remate perfecto = SÚPER REMATE
     const isSuper = type === 'spike' && chainBefore >= 2 && grade === 'perfect' && (!p.cpu || Math.random() < [0.12, 0.25, 0.4][this.settings.diff]);
@@ -2371,13 +2470,15 @@ class Sim {
     b.fire = isSuper;
     b.lastHitT = this.time;
     if (type === 'spike') {
-      this.launchDirect(b, tx, 0, tz, (18 + q * 8 + (p.y > 1.1 ? 2 : 0)) * (p.cpu ? (p.skill ? p.skill.spikePow : this.diff.spikePow) : 1) * (isSuper ? 1.15 : 1), grade !== 'bad');
+      this.launchDirect(b, tx, 0, tz, (18 + q * 8 + (p.y > 1.1 ? 2 : 0)) * (p.cpu ? (p.skill ? p.skill.spikePow : this.diff.spikePow) : 1) * (isSuper ? 1.15 : 1) * (pro ? lerp(0.72, 1.22, Math.min(pw, 1)) : 1) * this.perkK(p, 'martillo', 1.08), grade !== 'bad' && !over);
     } else if (type === 'tip') {
       this.launchArc(b, tx, 0, tz, Math.max(b.y + 0.5, NET_H + 0.8));
     } else if (tz * side > 0) { // pase a su propio lado
       const nearNet = Math.abs(tz) < 3.2;
-      const ty = type === 'set' ? (nearNet ? 2.5 : 1.7) : 1.0;
-      this.launchArc(b, tx, ty, tz, Math.max(b.y, ty) + (type === 'set' ? 1.6 : 2.3) + (1 - q) * 0.6);
+      // altura de la colocación: jugada pedida (PC) o potencia (Pro)
+      const ty = type === 'set' ? (p.input.sty != null ? p.input.sty : nearNet ? 2.5 : 1.7) : 1.0;
+      const add = type === 'set' ? (p.input.sh != null ? p.input.sh : pro ? lerp(0.75, 2.3, Math.min(pw, 1)) : 1.6) : 2.3 * (pro ? lerp(0.8, 1.15, Math.min(pw, 1)) : 1);
+      this.launchArc(b, tx, ty, tz, Math.max(b.y, ty) + add + (1 - q) * 0.6);
     } else { // pelota libre al otro lado
       this.launchArc(b, tx, 0, tz, Math.max(b.y, NET_H) + (type === 'set' ? 1.4 : 1.9));
     }
@@ -2389,7 +2490,8 @@ class Sim {
     if (type === 'dig' || (type === 'bump' && speedIn > 16)) p.stats.digs++;
     this.rallyHits++;
     this.lastTrajT = this.time;
-    this.emit({ type: 'hit', kind: type, grade, pid: p.id, team: p.team, x: r2(b.x), y: r2(b.y), z: r2(b.z), sp: r2(Math.hypot(b.vx, b.vy, b.vz)), sup: isSuper ? 1 : 0, chain: b.chain });
+    this.emit({ type: 'hit', kind: type, grade, pid: p.id, team: p.team, x: r2(b.x), y: r2(b.y), z: r2(b.z), sp: r2(Math.hypot(b.vx, b.vy, b.vz)), sup: isSuper ? 1 : 0, chain: b.chain, ft: feint ? 1 : 0, over: over ? 1 : 0, play: type === 'set' && p.cpu ? p.input.play || 0 : 0 });
+    if (type === 'set') this.lastPlay[p.team] = p.cpu ? p.input.play || 2 : Math.abs(tz) < 2 && (p.input.sh || 1.6) < 1.1 ? 1 : Math.abs(tz) > 2.8 ? 3 : 2;
   }
 
   clearsNet(b, tz) {
@@ -2445,6 +2547,7 @@ class Sim {
     for (let i = 0; i < sub; i++) {
       const pz = b.z;
       b.vy -= gOf(b) * h;
+      if (b.float) { b.vx += Math.sin(this.time * 6.5 + b.floatPh) * 4.2 * h; b.vy += Math.cos(this.time * 4.7 + b.floatPh) * 1.4 * h; }
       b.x += b.vx * h; b.y += b.vy * h; b.z += b.vz * h;
       // rebote en el cuerpo de un jugador
       // (solo remates fuertes y rasantes contra un humano que no intentó golpear)
@@ -2464,12 +2567,12 @@ class Sim {
           const destTeam = b.z > 0 ? 0 : 1;
           for (const p of this.players) {
             if (p.team !== destTeam || !p.blocking || p.onGround || Math.abs(p.z) > 1.7) continue;
-            if (Math.abs(b.x - p.x) < 0.85 && b.y > p.y + 1.0 && b.y < p.y + 2.3) {
+            if (Math.abs(b.x - p.x) < (p.perks && p.perks.includes('muro') ? 1.1 : 0.85) && b.y > p.y + 1.0 && b.y < p.y + 2.3) {
               b.z = Math.sign(pz) * (BALL_R + 0.05);
               if (Math.random() < 0.75) { b.vz = -b.vz * rand(0.3, 0.5); b.vy = -rand(1.5, 4); }
               else { b.vz = b.vz * 0.15; b.vy = rand(3, 5); b.z = -b.z; } // toque de bloqueo hacia arriba
               b.vx = b.vx * 0.4 + rand(-1.5, 1.5);
-              Object.assign(b, { touchTeam: p.team, touches: 0, lastPid: p.id, lastKind: 'block', lastTeam: p.team, fire: false, chain: 0, lastHitT: this.time });
+              Object.assign(b, { touchTeam: p.team, touches: 0, lastPid: p.id, lastKind: 'block', lastTeam: p.team, fire: false, chain: 0, lastHitT: this.time, float: 0, top: 0 });
               this.lastTrajT = this.time;
               this.emit({ type: 'block', pid: p.id, team: p.team, x: r2(b.x), y: r2(b.y), z: r2(b.z) });
               blocked = true;
@@ -2491,7 +2594,7 @@ class Sim {
           const v = -b.vy, hs = Math.hypot(b.vx, b.vz);
           b.vy = v * 0.5; b.vx *= 0.7; b.vz *= 0.7;
           if (v > 2) this.emit({ type: 'bounce', x: r2(b.x), z: r2(b.z), v: r2(v), hs: r2(hs), f: b.fire ? 1 : 0 });
-          b.fire = false;
+          b.fire = false; b.float = 0; b.top = 0;
         }
       }
     }
@@ -2516,6 +2619,7 @@ class Sim {
     if (this.phase !== 'rally') return;
     if (this.drill) { if (!this.ball.dead) { this.ball.dead = true; this.emit({ type: 'drillFault', reason, pid }); } return; }
     this.score[w]++;
+    this.streak[w]++; this.streak[1 - w] = 0;
     this.phase = 'point'; this.phaseT = 0;
     const p = this.byId(pid);
     if (p && p.team === w) {
@@ -2525,13 +2629,15 @@ class Sim {
       if (reason === 'blockpt') p.stats.blocks++;
     } else if (p && (reason === 'out' || reason === 'touches')) p.stats.errors++;
     this.longestRally = Math.max(this.longestRally, this.rallyHits);
-    if (w !== this.serveTeam) { this.serveTeam = w; this.serverIdx[w]++; }
+    const rot = w !== this.serveTeam;
+    if (rot) { this.serveTeam = w; this.serverIdx[w]++; }
     const tgt = this.settings.pts, [a, c] = this.score, hi = Math.max(a, c);
     const done = (hi >= tgt && Math.abs(a - c) >= 2) || hi >= tgt + 4;
     if (done) this.winner = a > c ? 0 : 1;
     const matchPoint = !done && hi >= tgt - 1 && a !== c;
     for (const q of this.players) if (q.onGround && q.diveT <= 0) this.setAnim(q, q.team === w ? 'cheer' : 'sad');
-    this.emit({ type: 'point', team: w, reason, pid, score: [a, c], over: done, matchPoint, rally: this.rallyHits });
+    const deuce = !done && a === c && a >= tgt - 1;
+    this.emit({ type: 'point', team: w, reason, pid, score: [a, c], over: done, matchPoint, rally: this.rallyHits, streak: this.streak[w], deuce, rot: rot ? 1 : 0 });
   }
 
   separate() {
@@ -2550,7 +2656,7 @@ class Sim {
   snapshot() {
     const b = this.ball;
     return {
-      t: 's', ti: r2(this.time), ph: this.phase, pt: r2(this.phaseT), sc: this.score, st: this.serveTeam, sv: this.serverId, rid: this.resetId,
+      t: 's', ti: r2(this.time), ph: this.phase, pt: r2(this.phaseT), sc: this.score, st: this.serveTeam, sv: this.serverId, rid: this.resetId, sk: this.streak,
       b: [r2(b.x), r2(b.y), r2(b.z), r2(b.vx), r2(b.vy), r2(b.vz), b.held ? 1 : 0, b.touchTeam, b.touches, b.fire ? 1 : 0],
       p: this.players.map((p) => [p.id, r2(p.x), r2(p.y), r2(p.z), r2(p.ry), ANIMS.indexOf(p.anim), r2(p.animT), r2(p.vx), r2(p.vz)]),
     };
@@ -2623,12 +2729,12 @@ function aiStep(sim, p, dt) {
   const inp = p.input, ai = p.ai, b = sim.ball, side = TEAM_SIDE[p.team], D = p.skill || sim.diff, team = p.team;
   const mates = sim.team(team), idx = mates.indexOf(p), n = mates.length;
   const press = (k) => { inp[k + 'Seq'] = (inp[k + 'Seq'] + 1) | 0; };
-  const home = formation(team, idx, n);
+  const home = formation(team, (idx + sim.serverIdx[team]) % n, n);
   let tx = home.x * 0.85 + b.x * 0.15, tz = home.z;
   // nueva trayectoria: nuevas decisiones al azar
   if (ai.trajT !== sim.lastTrajT) {
     ai.trajT = sim.lastTrajT;
-    ai.rolls = { dig: Math.random(), spike: Math.random(), block: Math.random(), jit: randn() };
+    ai.rolls = { dig: Math.random(), spike: Math.random(), block: Math.random(), jit: randn(), read: Math.random() };
     ai.hitH = null; ai.jumped = false; ai.dove = false;
   }
 
@@ -2704,13 +2810,17 @@ function aiStep(sim, p, dt) {
     } else if (plan.tc === 0 && plan.setter === p) {
       const ss = SETTER_SPOT(team); tx = ss.x; tz = ss.z;
     } else if (plan.tc <= 1 && plan.attacker === p) {
-      tx = home.x >= 0 ? 2.3 : -2.3; tz = side * 3.3;
+      // el atacante se prepara según la jugada
+      const play = sim.call[team] || sim.autoCall[team] || 2;
+      if (plan.tc === 1 && play === 1) { tx = clamp(b.x * 0.3, -1.2, 1.2); tz = side * 2.3; }
+      else if (plan.tc === 1 && play === 3) { tx = clamp(home.x, -1.6, 1.6); tz = side * 5.0; }
+      else { tx = home.x >= 0 ? 2.6 : -2.6; tz = side * 3.3; }
     }
   } else if (!b.held) {
     // defensa y bloqueo
     const oppTc = b.touchTeam === 1 - team ? b.touches : 0;
     const ballOpp = b.z * side < 0;
-    const homeZ = (m) => Math.abs(formation(team, mates.indexOf(m), n).z) + Math.abs(m.x - b.x) * 0.01;
+    const homeZ = (m) => Math.abs(formation(team, (mates.indexOf(m) + sim.serverIdx[team]) % n, n).z) + Math.abs(m.x - b.x) * 0.01;
     const front = mates.slice().sort((a, c2) => homeZ(a) - homeZ(c2));
     const nBlock = n >= 4 ? 2 : n >= 2 ? 1 : 0;
     const blocker = front.slice(0, nBlock).includes(p);
@@ -2719,7 +2829,9 @@ function aiStep(sim, p, dt) {
       tx = clamp((Math.abs(pr.z) < 3 ? pr.x : b.x) + (nBlock === 2 ? (front.indexOf(p) ? 0.5 : -0.5) : 0), -HALF_W + 0.4, HALF_W - 0.4);
       tz = side * 0.5;
       const att = sim.team(1 - team).find((o) => !o.onGround && Math.abs(o.z) < 3.5 && o.vy < 5.5);
-      if (att && p.onGround && Math.abs(p.z) < 1.6 && b.y > 2 && Math.abs(b.z) < 3.5 && ai.rolls.block < D.blockP && !ai.jumped) {
+      const lp = sim.lastPlay[1 - team], readOk = ai.rolls.read < (lp === 1 ? 0.3 : lp === 3 ? 0.45 : 0.6);
+      const blockP = Math.min(0.97, D.blockP * (readOk ? 1.3 : 0.6));
+      if (att && p.onGround && Math.abs(p.z) < 1.6 && b.y > 2 && Math.abs(b.z) < 3.5 && ai.rolls.block < blockP && !ai.jumped) {
         press('jump'); ai.jumped = true;
       }
     } else if (ballOpp && oppTc >= 2) {
@@ -2733,6 +2845,7 @@ function aiStep(sim, p, dt) {
 function setAim(sim, p, inp, plan) {
   const side = TEAM_SIDE[p.team], D = p.skill || sim.diff, b = sim.ball, mates = sim.team(p.team), n = mates.length;
   const tc = plan.tc;
+  inp.sty = undefined; inp.sh = undefined; inp.play = 0;
   if (tc === 0) {
     if (n === 1) { inp.ax = clamp(p.x, -2, 2); inp.az = side * 1.8; }
     else { const s = plan.setter && plan.setter !== p ? plan.setter : null; const ss = SETTER_SPOT(p.team); inp.ax = s ? clamp(s.x, -2, 2) : ss.x; inp.az = ss.z; }
@@ -2741,7 +2854,13 @@ function setAim(sim, p, inp, plan) {
   }
   if (tc === 1) {
     const att = plan.attacker && plan.attacker !== p ? plan.attacker : (n === 1 ? p : mates.find((m) => m !== p) || p);
-    inp.ax = clamp(att.x, -3.3, 3.3); inp.az = side * 1.05;
+    // jugada: la pedida por un humano del equipo o la que eligió la PC
+    const play = n === 1 ? 2 : sim.call[p.team] || sim.autoCall[p.team] || 2;
+    sim.call[p.team] = 0;
+    inp.play = play;
+    if (play === 1) { inp.ax = clamp(p.x * 0.35 + att.x * 0.25, -1.6, 1.6); inp.az = side * 0.95; inp.sty = 2.6; inp.sh = 0.8; } // rápida: baja y veloz junto al colocador
+    else if (play === 3) { inp.ax = clamp(att.x, -1.8, 1.8); inp.az = side * 3.4; inp.sty = 2.6; inp.sh = 1.5; } // zaguero: desde atrás
+    else { inp.ax = (att.x >= 0 ? 1 : -1) * 3.0; inp.az = side * 1.1; inp.sh = 2.0; } // alta a punta
     return b.y - p.y >= 0.9 ? 'set' : 'hit';
   }
   if (!p.onGround) {
@@ -2795,9 +2914,69 @@ function buildCharacters(roster) {
 // =========================================================
 //  CONTROLES
 // =========================================================
-const INPUT = { keys: {}, mouse: { nx: 0, ny: 0, has: false }, aim: { x: 0, z: -4 }, joy: { x: 0, y: 0 }, seq: { jump: 0, hit: 0, set: 0, dive: 0 }, auto: IS_TOUCH };
+const INPUT = { keys: {}, mouse: { nx: 0, ny: 0, has: false }, aim: { x: 0, z: -4 }, joy: { x: 0, y: 0 }, seq: { jump: 0, hit: 0, set: 0, dive: 0 }, auto: IS_TOUCH, pw: -1, play: 0, plSeq: 0 };
 const press = (k) => { INPUT.seq[k]++; SFX.resume(); };
 const playing = () => (GAME.mode === 'local' || GAME.mode === 'host' || GAME.mode === 'client') && !GAME.paused;
+// ---------- modo Pro: mantener para cargar la potencia, soltar para golpear ----------
+const PRO = { on: false, t: 0, src: null };
+const isPro = () => SAVE.ctrl === 'pro' && !GAME.tutorial && !GAME.manager;
+const chargeOf = (t) => (t <= 0.5 ? t / 0.5 : 1 + (t - 0.5));
+function myServeToss() {
+  const v = GAME.mode === 'client' ? CV : GAME.sim;
+  if (!v) return false;
+  const b = GAME.mode === 'client' ? CV.ball : GAME.sim.ball;
+  return v.phase === 'serve' && v.serverId === GAME.myId && b.held;
+}
+function hitDown(src) {
+  if (!playing()) return;
+  if (!isPro()) { INPUT.pw = -1; press('hit'); return; }
+  if (myServeToss()) { INPUT.pw = 0.6; press('hit'); return; } // lanzar el balón del saque no se carga
+  if (PRO.on) return;
+  PRO.on = true; PRO.t = 0; PRO.src = src;
+}
+function hitUp(src) {
+  if (!PRO.on || (src && PRO.src !== src)) return;
+  PRO.on = false;
+  if (!playing()) return;
+  INPUT.pw = Math.min(1.5, chargeOf(PRO.t));
+  press('hit');
+}
+// ---------- jugadas: le dices al colocador (PC) qué balón quieres ----------
+const PLAYS = { 1: { n: 'RÁPIDA', ico: '⚡' }, 2: { n: 'ALTA A PUNTA', ico: '⬆️' }, 3: { n: 'ZAGUERO', ico: '🎯' } };
+function callPlay(n) {
+  if (!playing() || !$('#plays').classList.contains('on')) return;
+  INPUT.play = n; INPUT.plSeq++;
+  SFX.ui();
+  $$('#plays button').forEach((b) => b.classList.toggle('sel', +b.dataset.play === n));
+}
+$$('#plays button').forEach((b) => b.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); callPlay(+b.dataset.play); }));
+function playsTick(v) {
+  const el = $('#plays');
+  let on = false;
+  if (v && playing() && GAME.mode !== 'menu' && !GAME.tutorial && !GAME.manager && (v.phase === 'rally' || v.phase === 'serve')) {
+    const mates = v.players.filter((p) => p.team === GAME.myTeam);
+    const b = v.ball, tc = b.touchTeam === GAME.myTeam ? b.touches : 0;
+    on = mates.length >= 2 && tc < 2;
+  }
+  if (!on && INPUT.play) { INPUT.play = 0; $$('#plays button').forEach((b) => b.classList.remove('sel')); }
+  el.classList.toggle('on', on);
+}
+function chargeTick(dt) {
+  const el = $('#charge');
+  if (PRO.on && !playing()) PRO.on = false;
+  if (!PRO.on) { if (el.classList.contains('on')) el.classList.remove('on', 'over'); return; }
+  PRO.t += dt;
+  if (PRO.t >= 1.0) { hitUp(PRO.src); return; } // demasiado: se suelta solo
+  const me = currentPlayers().find((p) => p.id === GAME.myId);
+  if (!me) return;
+  const sc = worldToScreen(me.x, me.y + 3.0, me.z);
+  const p = chargeOf(PRO.t), over = p > 1.05;
+  el.style.left = sc.x + 'px'; el.style.top = sc.y + 'px';
+  el.style.setProperty('--p', Math.min(1, p).toFixed(3));
+  el.style.setProperty('--c', over ? '#ff3b3b' : p > 0.85 ? '#ffc93a' : p >= 0.3 ? '#2fd27a' : '#5aa9ff');
+  el.querySelector('span').textContent = over ? '¡DEMASIADO!' : p > 0.85 ? 'FUERTE' : p >= 0.3 ? 'CONTROLADO' : 'SUAVE';
+  el.classList.add('on'); el.classList.toggle('over', over);
+}
 
 addEventListener('keydown', (e) => {
   if (e.target.tagName === 'INPUT') return;
@@ -2812,10 +2991,14 @@ addEventListener('keydown', (e) => {
   if (!playing()) return;
   if (e.code === 'Space') press('jump');
   if (e.code === 'KeyE' || e.code === 'KeyK') press('set');
-  if (e.code === 'KeyJ' || e.code === 'Enter') press('hit');
+  if (e.code === 'KeyJ' || e.code === 'Enter') hitDown('k');
+  if (e.code === 'Digit1' || e.code === 'Numpad1') callPlay(1);
+  if (e.code === 'Digit2' || e.code === 'Numpad2') callPlay(2);
+  if (e.code === 'Digit3' || e.code === 'Numpad3') callPlay(3);
   if (e.code === 'KeyL' || e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyQ') press('dive');
 });
-addEventListener('keyup', (e) => { INPUT.keys[e.code] = false; });
+addEventListener('keyup', (e) => { INPUT.keys[e.code] = false; if (e.code === 'KeyJ' || e.code === 'Enter') hitUp('k'); });
+addEventListener('mouseup', (e) => { if (e.button === 0) hitUp('m'); });
 addEventListener('blur', () => { INPUT.keys = {}; });
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 canvas.addEventListener('mousemove', (e) => {
@@ -2827,7 +3010,7 @@ canvas.addEventListener('mousedown', (e) => {
   SFX.resume();
   if (rpSkip()) return;
   if (!playing()) return;
-  if (e.button === 0) press('hit');
+  if (e.button === 0) hitDown('m');
   if (e.button === 2) press('dive');
   if (e.button === 1) { e.preventDefault(); press('set'); }
 });
@@ -2861,8 +3044,8 @@ canvas.style.cursor = 'crosshair';
   zone.addEventListener('pointercancel', end);
   const bind = (sel, k) => {
     const el = $(sel);
-    el.addEventListener('pointerdown', (e) => { e.preventDefault(); if (rpSkip()) return; el.classList.add('down'); if (playing()) press(k); });
-    const up = () => el.classList.remove('down');
+    el.addEventListener('pointerdown', (e) => { e.preventDefault(); if (rpSkip()) return; el.classList.add('down'); if (!playing()) return; if (k === 'hit') hitDown('t'); else press(k); });
+    const up = () => { el.classList.remove('down'); if (k === 'hit') hitUp('t'); };
     el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); el.addEventListener('pointerleave', up);
   };
   bind('#tbHit', 'hit'); bind('#tbJump', 'jump'); bind('#tbSet', 'set'); bind('#tbDive', 'dive');
@@ -2918,7 +3101,7 @@ function readLocalInput() {
   const l = Math.hypot(rx, ry);
   if (l > 1) { rx /= l; ry /= l; }
   const side = TEAM_SIDE[GAME.myTeam];
-  return { mx: rx * side, mz: -ry * side, ax: r2(INPUT.aim.x), az: r2(INPUT.aim.z), jumpSeq: INPUT.seq.jump, hitSeq: INPUT.seq.hit, setSeq: INPUT.seq.set, diveSeq: INPUT.seq.dive };
+  return { mx: rx * side, mz: -ry * side, ax: r2(INPUT.aim.x), az: r2(INPUT.aim.z), jumpSeq: INPUT.seq.jump, hitSeq: INPUT.seq.hit, setSeq: INPUT.seq.set, diveSeq: INPUT.seq.dive, pw: isPro() ? r2(INPUT.pw) : -1, play: INPUT.play, plSeq: INPUT.plSeq };
 }
 
 // =========================================================
@@ -2974,6 +3157,7 @@ function popText(x, y, z, text, cls) {
   setTimeout(() => d.remove(), 1000);
 }
 let toastT = null;
+function buzz(p) { if (IS_TOUCH && SAVE.vib !== false && navigator.vibrate) try { navigator.vibrate(p); } catch (e) { /* sin vibración */ } }
 function toast(msg, ms = 2600) {
   const t = $('#toast');
   t.textContent = msg; t.classList.add('on');
@@ -3063,8 +3247,13 @@ function handleEvent(e) {
         SFX.spike(); shockwave(e.x, e.y, e.z); sparks(e.x, e.y, e.z, 16, 0xffffff);
         GAME.shake = Math.max(GAME.shake, 0.12 + (e.sp || 20) / 180);
         if (local && e.grade === 'perfect' && !RP.on) GAME.hitStop = 0.08;
+        if (e.grade === 'perfect') SFX.crack();
       } else if (e.kind === 'set') SFX.set();
+      else if (e.kind === 'bump') SFX.bump(e.grade === 'perfect' ? 1 : 0.6);
+      else if (e.kind === 'dig') SFX.dig();
+      else if (e.kind === 'tip') SFX.tip();
       else SFX.hit(e.grade === 'perfect' ? 0.9 : 0.5);
+      if (e.pid === GAME.myId && !RP.on) buzz(e.sup ? [40, 40, 90] : strong ? 32 : e.grade === 'perfect' ? 18 : 10);
       if (e.sup) {
         SFX.perfect(); fireBurst(e.x, e.y, e.z, 26); screenFlash(0.4);
         GAME.shake = Math.max(GAME.shake, 0.45);
@@ -3079,6 +3268,12 @@ function handleEvent(e) {
         if (e.kind === 'dig') track('digs');
       }
       if (e.kind === 'body') popText(e.x, e.y + 0.4, e.z, '¡REBOTE!', 'bad');
+      if (e.st === 'float') { FX.spin = 0; popText(e.x, e.y + 1.0, e.z, '〰️ FLOTANTE', 'good'); }
+      else if (e.st === 'top') { FX.spin = 28; FX.randomAxis = false; popText(e.x, e.y + 1.0, e.z, '🌀 CON EFECTO', 'good'); }
+      if (e.ft) popText(e.x, e.y + 1.0, e.z, '🤫 ¡FINTA!', 'perfect');
+      if (e.play && e.kind === 'set' && PLAYS[e.play]) popText(e.x, e.y + 0.9, e.z, PLAYS[e.play].ico + ' ' + PLAYS[e.play].n, e.team === GAME.myTeam ? 'good' : 'bad');
+      if (e.kind === 'set' && e.team === GAME.myTeam && INPUT.play) { INPUT.play = 0; $$('#plays button').forEach((x) => x.classList.remove('sel')); }
+      if (e.over && e.pid === GAME.myId) popText(e.x, e.y + 1.2, e.z, '¡TE PASASTE!', 'bad');
       if (e.pid === GAME.myId && e.kind !== 'body') {
         popText(e.x, e.y + 0.6, e.z, GRADE_TXT[e.grade], e.grade);
         if (e.grade === 'perfect') { SFX.perfect(); sparks(e.x, e.y, e.z, 14); }
@@ -3100,9 +3295,13 @@ function handleEvent(e) {
       }
       break;
     }
+    case 'call':
+      if (e.team === GAME.myTeam && e.pid !== GAME.myId) toast(`${PLAYS[e.play].ico} Tu compañero pide ${PLAYS[e.play].n.toLowerCase()}`, 1600);
+      break;
     case 'block':
       if (!RP.on) { const cv = GAME.chars.get(e.pid); if (cv) cv.setContact(e); }
       SFX.block(); sparks(e.x, e.y, e.z, 18, 0xffe14d); GAME.shake = Math.max(GAME.shake, 0.15);
+      if (e.pid === GAME.myId && !RP.on) buzz(45);
       FX.squash = 1; FX.spin = -12; FX.randomAxis = false;
       FX.netA = 0.7; FX.netX = e.x;
       popText(e.x, e.y + 0.5, e.z, '¡BLOQUEO!', 'perfect');
@@ -3135,8 +3334,15 @@ function handleEvent(e) {
       if (!RP.on) rpConsider(e);
       showBanner(REASON_TXT[e.reason] || '¡PUNTO!', 'Punto para los ' + TEAM_NAME[e.team], TEAM_CSS[e.team]);
       if (e.rally >= 8) setTimeout(() => toast(`¡Jugada de ${e.rally} toques!`), 700);
+      if (e.team === GAME.myTeam && !RP.on) buzz(25);
+      if (e.rot && e.team === GAME.myTeam && !e.over && !RP.on && (GAME.settings && GAME.settings.size >= 2) && !GAME.manager) setTimeout(() => toast('🔄 Rotación: tu equipo cambia de puestos', 1600), 900);
       if (e.over) { GAME.slowmo = local ? 1.0 : 0; confetti(0, TEAM_SIDE[e.team] * 4, 160); }
       else if (e.matchPoint) setTimeout(() => showBanner('PUNTO DE PARTIDO', '', '#ffe14d'), 1500);
+      else if (e.deuce) setTimeout(() => showBanner('⚖️ ¡EMPATE!', 'gana quien saque 2 de ventaja', '#ffe14d'), 1500);
+      else if (e.streak === 3 || e.streak === 5 || e.streak === 8) setTimeout(() => {
+        showBanner(e.streak >= 5 ? '🔥 ¡IMPARABLES!' : '🔥 ¡EN RACHA!', `${e.streak} puntos seguidos de los ${TEAM_NAME[e.team]}`, TEAM_CSS[e.team]);
+        SFX.hype();
+      }, 1400);
       FX.cue = null;
       break;
     }
@@ -3148,8 +3354,23 @@ const _tagV = new THREE.Vector3();
 // =========================================================
 //  DIBUJAR UN ESTADO (sirve igual para local, anfitrión o cliente)
 // =========================================================
+// indicador de recepción: el aro de tus pies dice si llegas bien al balón (verde), justo (amarillo) o no llegas (rojo)
+function receptionHint(v) {
+  if (GAME.mode === 'menu' || RP.on || v.phase !== 'rally') return;
+  const me = v.players.find((p) => p.id === GAME.myId), b = v.ball;
+  if (!me || b.held || me.y > 0.1) return;
+  const side = TEAM_SIDE[me.team], tc = b.touchTeam === me.team ? b.touches : 0;
+  if (tc >= 2 || (b.z * side > 0 && b.vz * side > 0)) return;
+  const ip = predictBall(b, 0.95);
+  if (ip.z * side <= 0 || ip.t > 2.5) return;
+  const mates = v.players.filter((p) => p.team === me.team && p.id !== me.id);
+  const dMe = Math.hypot(me.x - ip.x, me.z - ip.z);
+  if (mates.some((m) => Math.hypot(m.x - ip.x, m.z - ip.z) < dMe - 0.3)) return; // la recibe otro
+  const c = GAME.chars.get(me.id);
+  if (c) c.foot.material.color.setHex(dMe < 0.75 ? 0x2fe06a : dMe < 1.3 ? 0xffd23a : 0xff4a3a);
+}
 function simView(sim) {
-  return { phase: sim.phase, phaseT: sim.phaseT, score: sim.score, serveTeam: sim.serveTeam, serverId: sim.serverId, ball: sim.ball, players: sim.players };
+  return { phase: sim.phase, phaseT: sim.phaseT, score: sim.score, serveTeam: sim.serveTeam, serverId: sim.serverId, ball: sim.ball, players: sim.players, streak: sim.streak };
 }
 const _axis = new THREE.Vector3();
 function renderView(v, dt) {
@@ -3158,6 +3379,17 @@ function renderView(v, dt) {
     const c = GAME.chars.get(p.id);
     if (c) c.update(dt, p, b.x, b.y, b.z, { rally: v.phase === 'rally' || (v.phase === 'serve' && p.id !== v.serverId), ts: RP.on || GAME.mode === 'client' ? 1 : GAME.tScale ?? 1 });
   }
+  const sk = v.streak || [0, 0];
+  FX.hotT = (FX.hotT || 0) - dt;
+  const flame = FX.hotT <= 0 && !RP.on;
+  if (flame) FX.hotT = 0.12;
+  for (const p of v.players) {
+    const c = GAME.chars.get(p.id);
+    if (!c) continue;
+    if (sk[p.team] >= 3) { c.foot.material.color.setHex(0xff8a1a); if (flame && p.y < 0.3) spawnPart(p.x + rand(-0.25, 0.25), 0.1, p.z + rand(-0.25, 0.25), 0, rand(1, 2.2), 0, rand(0.12, 0.2), pick([0xff7a1a, 0xffc93a]), 0.35, -2); }
+    else c.foot.material.color.setHex(TEAM_HEX[p.team]);
+  }
+  receptionHint(v);
   // balón: posición, giro y deformación al golpear
   ballMesh.position.set(b.x, b.y, b.z);
   let mg = null;
@@ -3297,7 +3529,7 @@ function sanitizeLook(l) {
 const num = (v, a, b) => clamp(Number.isFinite(+v) ? +v : 0, a, b);
 function cleanInput(i) {
   i = i || {};
-  return { mx: num(i.mx, -1, 1), mz: num(i.mz, -1, 1), ax: num(i.ax, -20, 20), az: num(i.az, -20, 20), jumpSeq: i.jumpSeq | 0, hitSeq: i.hitSeq | 0, setSeq: i.setSeq | 0, diveSeq: i.diveSeq | 0 };
+  return { mx: num(i.mx, -1, 1), mz: num(i.mz, -1, 1), ax: num(i.ax, -20, 20), az: num(i.az, -20, 20), jumpSeq: i.jumpSeq | 0, hitSeq: i.hitSeq | 0, setSeq: i.setSeq | 0, diveSeq: i.diveSeq | 0, pw: i.pw == null ? -1 : num(i.pw, -1, 1.5), play: num(i.play, 0, 3) | 0, plSeq: i.plSeq | 0 };
 }
 function cpuName(used) {
   let n;
@@ -3402,7 +3634,7 @@ async function clientRelayJoin(code) {
     });
     NET.hostConn = conn; NET.via = 'relevo'; NET.welcomed = false;
     NET.lastHostMsg = performance.now();
-    conn.send({ t: 'hello', name: SAVE.name, look: SAVE.look });
+    conn.send({ t: 'hello', name: SAVE.name, look: SAVE.look, perks: myPerks() });
     if (await waitFor(() => NET.welcomed, 6000)) { setJoinStatus('¡Conectado (por relevo)!'); return; }
     conn.close();
     if (NET.hostConn === conn) NET.hostConn = null;
@@ -3427,7 +3659,7 @@ function hostCreate() {
   NET.role = 'host';
   NET.code = genCode();
   NET.settings = { size: SAVE.size, diff: SAVE.diff, pts: SAVE.pts, venue: SAVE.venue };
-  NET.lobby = [{ id: 0, name: SAVE.name, look: SAVE.look, team: 0 }];
+  NET.lobby = [{ id: 0, name: SAVE.name, look: SAVE.look, team: 0, perks: myPerks() }];
   NET.nextId = 1;
   GAME.myId = 0;
   showScreen('scrLobby');
@@ -3460,7 +3692,7 @@ function hostOnData(conn, d) {
       const counts = [0, 0];
       NET.lobby.forEach((p) => counts[p.team]++);
       const id = NET.nextId++;
-      const entry = { id, name: String(d.name || 'Amigo').slice(0, 12), look: sanitizeLook(d.look), team: counts[0] <= counts[1] ? 0 : 1 };
+      const entry = { id, name: String(d.name || 'Amigo').slice(0, 12), look: sanitizeLook(d.look), team: counts[0] <= counts[1] ? 0 : 1, perks: Array.isArray(d.perks) ? d.perks.filter((k) => PERK_IDS.includes(k)).slice(0, 3) : [] };
       NET.lobby.push(entry);
       NET.conns.set(conn.peer, { conn, id, rtt: 0.1 });
       conn.send({ t: 'welcome', id, code: NET.code });
@@ -3509,7 +3741,7 @@ function hostStart() {
   const roster = [], used = new Set();
   let cpuId = 100;
   for (const t of [0, 1]) {
-    humans[t].forEach((h) => roster.push({ id: h.id, name: h.name, team: t, cpu: false, look: h.look }));
+    humans[t].forEach((h) => roster.push({ id: h.id, name: h.name, team: t, cpu: false, look: h.look, perks: h.perks || [] }));
     for (let i = humans[t].length; i < size; i++) roster.push({ id: cpuId++, name: cpuName(used), team: t, cpu: true, look: randomLook() });
   }
   const settings = { size, diff: s.diff, pts: s.pts, venue: s.venue };
@@ -3554,7 +3786,7 @@ function clientJoin(code) {
   peer.on('open', () => {
     const conn = peer.connect(PEER_PREFIX + code, { reliable: true, serialization: 'json' });
     NET.hostConn = conn; NET.via = 'directa';
-    conn.on('open', () => { clearTimeout(to); conn.send({ t: 'hello', name: SAVE.name, look: SAVE.look }); setJoinStatus('¡Conectado!'); });
+    conn.on('open', () => { clearTimeout(to); conn.send({ t: 'hello', name: SAVE.name, look: SAVE.look, perks: myPerks() }); setJoinStatus('¡Conectado!'); });
     conn.on('data', clientOnData);
     conn.on('close', () => { if (NET.peer === peer && NET.hostConn === conn) { toast('Se cerró la conexión con el anfitrión'); leaveToMenu(); } });
     conn.on('error', fallback);
@@ -3622,6 +3854,7 @@ function clientSnap(s) {
     }
   }
   CV.rid = s.rid;
+  CV.streak = s.sk || [0, 0];
 }
 function clientUpdate(dt) {
   const now = performance.now() / 1000;
@@ -3775,21 +4008,22 @@ function togglePause() {
   GAME.paused = !GAME.paused;
   $('#bResume').textContent = GAME.mode === 'local' ? 'Continuar' : 'Volver al partido (sigue online)';
   $('#bWatch').style.display = GAME.mode === 'local' && !GAME.tutorial ? '' : 'none';
+  $('#bClip').style.display = GAME.mode === 'local' && !GAME.tutorial && window.MediaRecorder && canvas.captureStream ? '' : 'none';
   showScreen(GAME.paused ? 'scrPause' : null);
 }
 
 // ---------- partido ----------
 function startLocal() {
   const size = SAVE.size, used = new Set([SAVE.name]);
-  const roster = [{ id: 0, name: SAVE.name, team: 0, cpu: false, look: SAVE.look }];
+  const roster = [{ id: 0, name: SAVE.name, team: 0, cpu: false, look: SAVE.look, perks: myPerks() }];
   for (let i = 1; i < size; i++) roster.push({ id: i, name: cpuName(used), team: 0, cpu: true, look: randomLook() });
   for (let i = 0; i < size; i++) roster.push({ id: 10 + i, name: cpuName(used), team: 1, cpu: true, look: randomLook() });
-  startMatch('local', roster, { size, diff: SAVE.diff, pts: SAVE.pts, venue: SAVE.venue }, 0);
+  startMatch('local', roster, { size, diff: SAVE.diff, pts: SAVE.pts, venue: SAVE.venue, assist: autoAssist() }, 0);
 }
 function startMatch(mode, roster, settings, myId) {
   Object.assign(GAME, { mode, roster, settings, myId, paused: false, ended: false, slowmo: 0, hitStop: 0, tutorial: false, manager: false });
   document.body.classList.remove('mgrOn'); if (typeof closeDecision === 'function') closeDecision();
-  GAME.cup = false; rpClear();
+  GAME.cup = false; GAME.season = false; rpClear();
   document.body.classList.remove('tutOn'); tutMark.visible = false; FX.cue = null;
   GAME.myTeam = roster.find((r) => r.id === myId)?.team ?? 0;
   setVenue(settings.venue || 'parque');
@@ -3805,8 +4039,12 @@ function startMatch(mode, roster, settings, myId) {
   $('#sTarget').textContent = settings.pts;
   $('#netInfo').style.display = mode === 'local' ? 'none' : '';
   HUD.last = [0, 0];
-  showBanner('¡A JUGAR!', `${settings.size} vs ${settings.size} · a ${settings.pts} puntos`);
+  showBanner('¡A JUGAR!', `${settings.size} vs ${settings.size} · a ${settings.pts} puntos` + (isPro() && mode !== 'menu' ? ' · ⚡ PRO' : ''));
+  PRO.on = false;
   const card = $('#ctrlCard');
+  card.innerHTML = isPro()
+    ? '<div><b>WASD</b> moverte · ratón apunta</div><div><b>Mantén clic</b> carga · suelta = golpe</div><div><b>Potencia</b> 🟦 suave 🟩 control 🟨 fuerte 🟥 ¡pasado!</div><div><b>Saque</b> arriba = flotante · al bajar = efecto</div><div><b>E</b> colocar · en el aire = finta</div><div><b>1 2 3</b> pedir jugada al colocador</div><div><b>Espacio</b> saltar · clic der = plancha</div>'
+    : '<div><b>WASD</b> moverte</div><div><b>Ratón</b> apunta cada toque</div><div><b>Clic izq</b> recibir · rematar · sacar</div><div><b>E</b> colocar · en el aire = finta</div><div><b>Espacio</b> saltar (salta + clic = remate)</div><div><b>Clic der</b> plancha · bloqueo en la red</div><div><b>1 2 3</b> pedir jugada al colocador</div>';
   card.style.display = IS_TOUCH ? 'none' : '';
   card.style.opacity = 1;
   clearTimeout(GAME.cardT);
@@ -3829,7 +4067,7 @@ function leaveToMenu() {
   netReset();
   Object.assign(GAME, { mode: 'menu', paused: false, myId: -1, ended: false, tutorial: false, manager: false });
   document.body.classList.remove('mgrOn'); closeDecision();
-  GAME.cup = false; rpClear();
+  GAME.cup = false; GAME.season = false; rpClear();
   document.body.classList.remove('tutOn'); tutMark.visible = false; FX.cue = null;
   $('#hud').classList.remove('on');
   $('#touchUI').classList.remove('on');
@@ -3853,6 +4091,9 @@ function showEndScreen(res) {
     const won = res.winner === GAME.myTeam;
     if (won) track('win', 1, { diff: GAME.settings.diff, venue: GAME.settings.venue, opp: res.score[1 - GAME.myTeam], mode: GAME.mode });
     const cupBonus = GAME.cup && SAVE.cup ? cupResolve(won) : 0;
+    const seaBonus = GAME.season && SAVE.season ? seasonResolve(won, res.score) : 0;
+    recordFriends(res, won);
+    if (GAME.mode === 'local' && !GAME.manager) SAVE.lossRun = won ? 0 : (SAVE.lossRun || 0) + 1;
     $('#eTitle').textContent = won ? '¡VICTORIA!' : 'Derrota';
     $('#eTitle').style.color = won ? TEAM_CSS[GAME.myTeam] : '#8a93b5';
     $('#eScore').innerHTML = `<span style="background:${TEAM_CSS[0]}">${res.score[0]}</span> - <span style="background:${TEAM_CSS[1]}">${res.score[1]}</span>`;
@@ -3873,12 +4114,15 @@ function showEndScreen(res) {
     SAVE.games++;
     if (won) { SAVE.wins++; SAVE.streak++; SAVE.best = Math.max(SAVE.best, SAVE.streak); } else SAVE.streak = 0;
     if (won && SAVE.streak >= 2) xp += SAVE.streak * 15;
+    const proXp = SAVE.ctrl === 'pro' && !GAME.manager;
+    if (proXp) xp *= 1.25;
     xp = Math.round(xp);
     const oldLv = SAVE.level;
     SAVE.xp += xp;
     while (SAVE.xp >= xpNeed(SAVE.level)) { SAVE.xp -= xpNeed(SAVE.level); SAVE.level++; }
     storeSave();
-    $('#eXpGain').textContent = `+${xp} XP` + (won && SAVE.streak >= 2 ? ` · 🔥 racha de ${SAVE.streak}` : '');
+    $('#eXpGain').textContent = `+${xp} XP` + (won && SAVE.streak >= 2 ? ` · 🔥 racha de ${SAVE.streak}` : '') + (proXp ? ' · ⚡ Pro +25%' : '');
+    if (won && proXp) track('proWin');
     $('#eLvl').textContent = SAVE.level;
     $('#eXp').style.width = '0%';
     setTimeout(() => { $('#eXp').style.width = Math.round((SAVE.xp / xpNeed(SAVE.level)) * 100) + '%'; }, 350);
@@ -3892,6 +4136,12 @@ function showEndScreen(res) {
     again.textContent = GAME.mode === 'client' ? 'Esperando al anfitrión…' : '¡Revancha!';
     lobbyB.style.display = GAME.mode === 'host' ? '' : 'none';
     $('#bEndMenu').textContent = GAME.mode === 'local' ? 'Menú' : 'Salir de la sala';
+    if (GAME.season && SAVE.season) {
+      const sea = SAVE.season;
+      again.textContent = sea.phase === 'fin' || sea.phase === 'out' ? '📅 Ver la temporada' : '▶ Siguiente partido';
+      $('#eUnlocks').innerHTML += `<div class="unlock">📅 Temporada · +${seaBonus} XP${sea.phase === 'po' ? ' · ¡estás en playoffs!' : ''}${sea.champ === 0 ? ' · 🏆 ¡CAMPEÓN DE LIGA!' : ''}</div>`;
+      if (sea.champ === 0) { confetti(0, 0, 160); SFX.levelUp(); }
+    }
     if (GAME.cup && SAVE.cup) {
       const cup = SAVE.cup, champ = cup.champion === 0;
       again.textContent = champ ? '🏆 Ver la copa' : cup.alive ? '▶ Continuar torneo' : 'Ver el cuadro';
@@ -3907,7 +4157,7 @@ function showEndScreen(res) {
 let previewChar = null;
 function openCustom() {
   $('#cName').value = SAVE.name;
-  renderCustRows();
+  renderCustRows(); renderPerks();
   rebuildPreview();
 }
 function closeCustom() {
@@ -3942,6 +4192,215 @@ function renderCustRows() {
       row.appendChild(el);
     }
     box.appendChild(row);
+  }
+}
+// ---------- habilidades ----------
+const PERKS = [
+  { id: 'bomba', ico: '💣', name: 'Saque bomba', desc: 'Saques más rápidos y precisos', lv: 3 },
+  { id: 'felina', ico: '🐈', name: 'Defensa felina', desc: 'Más alcance en planchas y mejores recepciones', lv: 4 },
+  { id: 'mago', ico: '🪄', name: 'Colocador mago', desc: 'Colocaciones perfectas más fáciles', lv: 6 },
+  { id: 'martillo', ico: '🔨', name: 'Martillo', desc: 'Remates más potentes', lv: 7 },
+  { id: 'muelles', ico: '🦘', name: 'Muelles', desc: 'Saltas más alto', lv: 9 },
+  { id: 'muro', ico: '🧱', name: 'Muro', desc: 'Bloqueos más anchos', lv: 11 },
+];
+const perkSlots = () => (SAVE.level >= 15 ? 3 : SAVE.level >= 8 ? 2 : SAVE.level >= 3 ? 1 : 0);
+function myPerks() { return (SAVE.perks || []).filter((k) => PERKS.some((p) => p.id === k && p.lv <= SAVE.level)).slice(0, perkSlots()); }
+function renderPerks() {
+  const box = $('#perkBox'), on = myPerks(), slots = perkSlots();
+  box.innerHTML = `<div class="slots">${slots ? `Puedes llevar <b>${slots}</b> habilidad${slots > 1 ? 'es' : ''} (${on.length}/${slots}). Más huecos en los niveles 8 y 15.` : 'Las habilidades se desbloquean desde el nivel 3.'}</div><div class="perkGrid">` +
+    PERKS.map((p) => { const lock = p.lv > SAVE.level; return `<button class="perk ${on.includes(p.id) ? 'sel' : ''} ${lock ? 'lock' : ''}" data-perk="${p.id}"><b>${p.ico} ${p.name}</b><small>${lock ? '🔒 Nivel ' + p.lv : p.desc}</small></button>`; }).join('') + '</div>';
+}
+$('#perkBox').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-perk]');
+  if (!b) return;
+  const p = PERKS.find((x) => x.id === b.dataset.perk);
+  if (p.lv > SAVE.level) return toast('Se desbloquea en el nivel ' + p.lv);
+  let on = myPerks();
+  if (on.includes(p.id)) on = on.filter((k) => k !== p.id);
+  else if (on.length < perkSlots()) on.push(p.id);
+  else if (perkSlots()) { on.shift(); on.push(p.id); }
+  else return toast('Las habilidades se desbloquean en el nivel 3');
+  SAVE.perks = on; storeSave(); SFX.ui(); renderPerks();
+});
+// ayuda oculta: si pierdes muchos seguidos contra la PC, la PC afloja un poco (sin avisar)
+function autoAssist() { const n = SAVE.lossRun || 0; return n >= 3 ? Math.min(0.12, 0.04 * (n - 2)) : 0; }
+
+// ---------- TEMPORADA: liga de 8 equipos, rivales con memoria y playoffs ----------
+const SEA_WEEKS = 7;
+function seaClubs() {
+  if (!SAVE.seaClubs) {
+    const used = new Set();
+    SAVE.seaClubs = [];
+    while (SAVE.seaClubs.length < 7) { const n = pick(CLUB_NAMES) + ' ' + pick(CLUB_PLACES); if (!used.has(n)) { used.add(n); SAVE.seaClubs.push({ name: n, str: rand(0.3, 0.82) }); } }
+  }
+  return SAVE.seaClubs;
+}
+function roundRobin(n) { // método del círculo
+  const ids = [...Array(n).keys()], rounds = [];
+  for (let r = 0; r < n - 1; r++) {
+    const pairs = [];
+    for (let i = 0; i < n / 2; i++) { const a = ids[i], b = ids[n - 1 - i]; pairs.push(r % 2 ? [b, a] : [a, b]); }
+    rounds.push(pairs);
+    ids.splice(1, 0, ids.pop());
+  }
+  return rounds;
+}
+const h2h = (name) => ((SAVE.h2h || {})[name] || { w: 0, l: 0 });
+function nemesisIdx(sea) { // el club que más te ha ganado
+  let best = -1, bl = 0;
+  sea.teams.forEach((t, i) => { if (i) { const r = h2h(t.name); if (r.l > bl && r.l > r.w) { bl = r.l; best = i; } } });
+  return best;
+}
+function newLeague(size) {
+  const clubs = seaClubs();
+  clubs.forEach((c) => { c.str = clamp(c.str + rand(-0.08, 0.1), 0.25, 0.9); });
+  const teams = [{ name: SAVE.name, me: true }, ...clubs.map((c) => ({ name: c.name, str: c.str }))];
+  const used = new Set([SAVE.name]), mates = [];
+  for (let i = 1; i < size; i++) mates.push({ name: cpuName(used), look: randomLook() });
+  SAVE.season = { n: (SAVE.seasonN = (SAVE.seasonN || 0) + 1), size, teams, sched: roundRobin(8), week: 0, table: teams.map(() => ({ pj: 0, g: 0, p: 0, sf: 0, sc: 0, pts: 0 })), last: [], phase: 'liga', po: null, champ: null, mates };
+  storeSave();
+}
+const seaDiff = (str) => (str < 0.42 ? 0 : str < 0.66 ? 1 : 2);
+function seaNext(sea) { // [oponente, partido de playoff?]
+  if (sea.phase === 'liga') { const m = sea.sched[sea.week].find((x) => x.includes(0)); return m[0] === 0 ? m[1] : m[0]; }
+  if (sea.phase === 'po') { const m = sea.po.round === 0 ? sea.po.semis.find((x) => x.includes(0)) : sea.po.final; return m && m.includes(0) ? (m[0] === 0 ? m[1] : m[0]) : -1; }
+  return -1;
+}
+function playSeasonMatch() {
+  const sea = SAVE.season, opp = seaNext(sea);
+  if (opp < 0) return;
+  const t = sea.teams[opp], size = sea.size, used = new Set([SAVE.name, ...sea.mates.map((m) => m.name)]);
+  const roster = [{ id: 0, name: SAVE.name, team: 0, cpu: false, look: SAVE.look, perks: myPerks() }];
+  sea.mates.forEach((m, i) => roster.push({ id: i + 1, name: m.name, team: 0, cpu: true, look: m.look }));
+  for (let i = 0; i < size; i++) roster.push({ id: 10 + i, name: cpuName(used), team: 1, cpu: true, look: randomLook() });
+  const po = sea.phase === 'po', wk = po ? 7 + sea.po.round : sea.week;
+  startMatch('local', roster, { size, diff: seaDiff(t.str), pts: po ? 15 : 11, venue: po && sea.po.round === 1 ? 'estadio' : VENUE_IDS[wk % VENUE_IDS.length], assist: autoAssist() }, 0);
+  GAME.season = true;
+  const nem = nemesisIdx(sea) === opp, r = h2h(t.name);
+  showBanner(po ? (sea.po.round ? '🏆 FINAL' : 'SEMIFINAL') : 'JORNADA ' + (sea.week + 1), (nem ? '⚔️ CLÁSICO vs ' : 'vs ') + escapeHtml(t.name) + (r.w + r.l ? ` (${r.w}-${r.l})` : ''), nem ? '#ff6b8a' : '#ffe14d');
+}
+function seaRecord(sea, a, b, sa, sb) {
+  const T = sea.table;
+  T[a].pj++; T[b].pj++; T[a].sf += sa; T[a].sc += sb; T[b].sf += sb; T[b].sc += sa;
+  if (sa > sb) { T[a].g++; T[b].p++; T[a].pts += 3; } else { T[b].g++; T[a].p++; T[b].pts += 3; }
+}
+function seaSimGame(sea, a, b, pts) { // resultado simulado entre dos clubes
+  const sa = sea.teams[a].str ?? 0.55, sb = sea.teams[b].str ?? 0.55;
+  const aw = Math.random() < sa / (sa + sb);
+  const lose = randi(Math.max(0, pts - 9), pts - 2);
+  return aw ? [pts, lose] : [lose, pts];
+}
+const seaOrder = (sea) => sea.table.map((r, i) => ({ i, ...r })).sort((x, y) => y.pts - x.pts || (y.sf - y.sc) - (x.sf - x.sc) || y.sf - x.sf);
+// mi partido terminó: cuenta, simula los demás y avanza
+function seasonResolve(won, score) {
+  const sea = SAVE.season, opp = seaNext(sea);
+  if (opp < 0) return 0;
+  const name = sea.teams[opp].name, me = score[GAME.myTeam], them = score[1 - GAME.myTeam];
+  if (!SAVE.h2h) SAVE.h2h = {};
+  const r = (SAVE.h2h[name] = SAVE.h2h[name] || { w: 0, l: 0 });
+  const wasNem = nemesisIdx(sea) === opp;
+  if (won) r.w++; else r.l++;
+  let bonus = won ? 70 : 15;
+  if (won && wasNem) bonus += 60;
+  sea.last = [`${won ? '✅' : '❌'} ${escapeHtml(SAVE.name)} ${me}-${them} ${escapeHtml(name)}`];
+  if (sea.phase === 'liga') {
+    seaRecord(sea, 0, opp, me, them);
+    for (const [a, b] of sea.sched[sea.week]) {
+      if (a === 0 || b === 0) continue;
+      const [x, y] = seaSimGame(sea, a, b, 11);
+      seaRecord(sea, a, b, x, y);
+      sea.last.push(`${escapeHtml(sea.teams[a].name)} ${x}-${y} ${escapeHtml(sea.teams[b].name)}`);
+    }
+    sea.week++;
+    if (sea.week >= SEA_WEEKS) {
+      const o = seaOrder(sea).map((x) => x.i);
+      sea.po = { semis: [[o[0], o[3]], [o[1], o[2]]], final: null, round: 0, seeds: o.slice(0, 4) };
+      sea.phase = o.slice(0, 4).includes(0) ? 'po' : 'out';
+      if (sea.phase === 'out') seaFinishPlayoffs(sea, false);
+    }
+  } else if (sea.phase === 'po') {
+    if (sea.po.round === 0) {
+      const winners = sea.po.semis.map((m) => {
+        if (m.includes(0)) return won ? 0 : opp;
+        const [x, y] = seaSimGame(sea, m[0], m[1], 15);
+        sea.last.push(`Semifinal: ${escapeHtml(sea.teams[m[0]].name)} ${x}-${y} ${escapeHtml(sea.teams[m[1]].name)}`);
+        return x > y ? m[0] : m[1];
+      });
+      sea.po.final = winners;
+      if (won) { bonus += 150; sea.po.round = 1; } else seaFinishPlayoffs(sea, false);
+    } else {
+      sea.champ = won ? 0 : opp; sea.phase = 'fin';
+      if (won) { bonus += 600; track('seasonTitle'); }
+    }
+  }
+  addXP(bonus);
+  storeSave();
+  return bonus;
+}
+function seaFinishPlayoffs(sea) { // ya no juegas: se simula el resto
+  if (!sea.po.final) sea.po.final = sea.po.semis.map((m) => { const [x, y] = seaSimGame(sea, m[0], m[1], 15); return x > y ? m[0] : m[1]; });
+  const [x, y] = seaSimGame(sea, sea.po.final[0], sea.po.final[1], 15);
+  sea.champ = x > y ? sea.po.final[0] : sea.po.final[1];
+  sea.phase = 'fin';
+}
+function openSeason() { showScreen('scrSeason'); renderSeason(); }
+const seaPick = { size: 2 };
+function renderSeason() {
+  const sea = SAVE.season, body = $('#seaBody');
+  if (!sea) {
+    $('#seaTitle').textContent = '📅 Temporada';
+    const clubs = seaClubs(), nem = clubs.map((c) => ({ c, r: h2h(c.name) })).filter((x) => x.r.l > x.r.w).sort((a, b) => b.r.l - a.r.l)[0];
+    body.innerHTML = `<p class="mgrIntro">Liga de <b>8 equipos</b>: 7 jornadas contra todos, y los <b>4 mejores van a playoffs</b> (semifinal y final en el estadio). Los clubes son siempre los mismos y <b>recuerdan tus partidos</b>: el que más te gane será tu némesis ⚔️.</p>
+      ${nem ? `<p class="lastRes">⚔️ Tu némesis: <b>${escapeHtml(nem.c.name)}</b> (te ganó ${nem.r.l} de ${nem.r.l + nem.r.w})</p>` : ''}
+      <label class="t">Jugadores por equipo</label>
+      <div class="row">${[1, 2, 3, 4].map((n) => `<button class="chip ${seaPick.size === n ? 'sel' : ''}" data-ssize="${n}">${n} vs ${n}</button>`).join('')}</div>
+      <button class="btn green" data-sact="start" style="margin-top:14px">¡Empezar temporada!</button>`;
+    return;
+  }
+  $('#seaTitle').textContent = `📅 Temporada ${sea.n}`;
+  const nem = nemesisIdx(sea), order = seaOrder(sea);
+  const nm = (i) => escapeHtml(sea.teams[i].name) + (i === 0 ? ' ⭐' : i === nem ? ' ⚔️' : '');
+  const table = '<table class="st"><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th><th>Dif</th><th>Pts</th></tr>' +
+    order.map((r, k) => `<tr class="${r.i === 0 ? 'me' : ''}"><td>${k + 1}${k < 4 ? '' : ''}</td><td class="${r.i === nem ? 'nem' : ''}" style="text-align:left">${nm(r.i)}</td><td>${r.pj}</td><td>${r.g}</td><td>${r.p}</td><td>${r.sf - r.sc > 0 ? '+' : ''}${r.sf - r.sc}</td><td><b>${r.pts}</b></td></tr>`).join('') + '</table>';
+  let top = '', foot = '';
+  if (sea.phase === 'liga' || sea.phase === 'po') {
+    const opp = seaNext(sea), t = sea.teams[opp], r = h2h(t.name), po = sea.phase === 'po';
+    const v = VENUES[po && sea.po.round === 1 ? 'estadio' : VENUE_IDS[(po ? 7 + sea.po.round : sea.week) % VENUE_IDS.length]];
+    top = `<div class="seaHead"><span>${po ? (sea.po.round ? '🏆 Final' : '🥊 Semifinal') : `Jornada ${sea.week + 1} de ${SEA_WEEKS}`}</span><span>${sea.size} vs ${sea.size}</span></div>
+      <div class="nextMatch"><div class="vs"><b>${escapeHtml(SAVE.name)}</b></div><div class="vsx">VS</div><div class="vs"><b>${nm(opp)}</b><span class="ovr r">${['Fácil', 'Normal', 'Difícil'][seaDiff(t.str)]}</span></div></div>
+      <div class="meta">${v.emoji} ${v.name} · a ${po ? 15 : 11} puntos · historial ${r.w}-${r.l}${opp === nem ? ' · ⚔️ ¡es tu némesis! (+60 XP si ganas)' : ''}</div>
+      <button class="btn green" data-sact="play">▶ Jugar</button>`;
+  } else {
+    const champ = sea.champ;
+    top = `<div class="season"><div class="big">${champ === 0 ? '🏆 ¡CAMPEÓN DE LIGA!' : sea.phase === 'fin' ? 'Temporada terminada' : ''}</div><p>${champ === 0 ? 'Ganaste la temporada. +600 XP' : `Campeón: <b>${nm(champ)}</b>${sea.po && !sea.po.seeds.includes(0) ? ' · no entraste en playoffs' : ''}`}</p></div>
+      <button class="btn green" data-sact="new">Nueva temporada</button>`;
+  }
+  if (sea.phase === 'liga' || sea.phase === 'po') foot = '<button class="btn small gray" data-sact="quit" style="margin-top:6px">Abandonar temporada</button>';
+  body.innerHTML = top + (sea.last && sea.last.length ? `<div class="lastRes">${sea.last.join('<br>')}</div>` : '') + (sea.phase === 'po' || sea.phase === 'fin' || sea.phase === 'out' ? `<div class="lastRes">Playoffs: ${sea.po.semis.map((m) => nm(m[0]) + ' vs ' + nm(m[1])).join(' · ')}${sea.po.final ? ' → Final: ' + nm(sea.po.final[0]) + ' vs ' + nm(sea.po.final[1]) : ''}</div>` : '') + table + foot;
+}
+$('#seaBody').addEventListener('click', (e) => {
+  const s2 = e.target.closest('[data-ssize]'), a = e.target.closest('[data-sact]');
+  SFX.resume();
+  if (s2) { seaPick.size = +s2.dataset.ssize; SFX.ui(); return renderSeason(); }
+  if (!a) return;
+  SFX.ui();
+  const act = a.dataset.sact;
+  if (act === 'start') { newLeague(seaPick.size); return renderSeason(); }
+  if (act === 'play') return playSeasonMatch();
+  if (act === 'new') { SAVE.season = null; storeSave(); return renderSeason(); }
+  if (act === 'quit') { if (confirm('¿Abandonar la temporada? Se pierde la clasificación.')) { SAVE.season = null; storeSave(); renderSeason(); } }
+});
+$('#bSeason').onclick = () => { SFX.resume(); SFX.ui(); openSeason(); };
+
+// ---------- amigos: resultados de los partidos online ----------
+function recordFriends(res, won) {
+  if (GAME.mode !== 'host' && GAME.mode !== 'client') return;
+  if (!SAVE.friends) SAVE.friends = {};
+  for (const p of res.players) {
+    if (p.cpu || p.id === GAME.myId) continue;
+    const f = (SAVE.friends[p.name] = SAVE.friends[p.name] || { w: 0, l: 0, with: 0 });
+    if (p.team === GAME.myTeam) f.with++; else if (won) f.w++; else f.l++;
+    f.last = todayStr();
   }
 }
 $('#cName').addEventListener('input', (e) => { SAVE.name = e.target.value.trim().slice(0, 12) || 'Jugador'; storeSave(); });
@@ -4805,10 +5264,11 @@ let rpBtnT = null;
 function showRpBtn() {
   const b = $('#rpBtn');
   b.classList.add('on');
+  if (window.MediaRecorder && canvas.captureStream) $('#rpSave').classList.add('on');
   clearTimeout(rpBtnT);
   rpBtnT = setTimeout(hideRpBtn, 4500);
 }
-function hideRpBtn() { clearTimeout(rpBtnT); $('#rpBtn').classList.remove('on'); }
+function hideRpBtn() { clearTimeout(rpBtnT); $('#rpBtn').classList.remove('on'); $('#rpSave').classList.remove('on'); }
 function watchLastReplay() {
   if (GAME.mode !== 'local' || GAME.tutorial) return toast('Las repeticiones están en los partidos contra la PC, torneos y Mánager');
   if (!RP.lastClip) return toast('Todavía no hay ninguna jugada para repetir');
@@ -4816,7 +5276,46 @@ function watchLastReplay() {
   rpPlay(RP.lastClip);
 }
 function rpResetChar(c) { c.snapYaw = true; c.contact = null; c.warp.set(0, 0, 0); c.magnet = null; c.ckC = null; c.holdRy = null; c.snapArms = false; c.xfFrom = null; c.lastPose = null; }
+// graba la repetición del canvas y la guarda (o la comparte en el móvil)
+function saveClip() {
+  if (GAME.mode !== 'local' || GAME.tutorial) return toast('Los videos se guardan en partidos contra la PC, torneos, temporada y Mánager');
+  if (!RP.lastClip) return toast('Todavía no hay ninguna jugada para guardar');
+  if (!window.MediaRecorder || !canvas.captureStream) return toast('Tu navegador no permite grabar video 😕');
+  const types = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+  const mime = types.find((t) => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+  let rec;
+  try { rec = new MediaRecorder(canvas.captureStream(30), mime ? { mimeType: mime, videoBitsPerSecond: 6e6 } : undefined); }
+  catch (e) { return toast('No se pudo empezar la grabación'); }
+  const chunks = [];
+  rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = () => {
+    document.body.classList.remove('recording');
+    const type = rec.mimeType || mime || 'video/webm';
+    const blob = new Blob(chunks, { type });
+    if (!blob.size) return toast('No se pudo grabar el video');
+    const name = 'remate-park-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-') + (type.includes('mp4') ? '.mp4' : '.webm');
+    const file = typeof File === 'function' ? new File([blob], name, { type }) : null;
+    if (IS_TOUCH && file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: 'Remate Park', text: '¡Mira esta jugada! 🏐' }).catch(() => downloadBlob(blob, name));
+    } else downloadBlob(blob, name);
+    toast('💾 ¡Video guardado! ' + name, 3500);
+  };
+  if (GAME.paused) { GAME.paused = false; showScreen(null); }
+  if (RP.on) rpStop();
+  rpPlay(RP.lastClip);
+  RP.rec = rec;
+  document.body.classList.add('recording');
+  rec.start(250);
+  toast('🎥 Grabando la jugada…', 1800);
+}
+function downloadBlob(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
 function rpStop() {
+  if (RP.rec) { const r = RP.rec; RP.rec = null; setTimeout(() => { if (r.state !== 'inactive') r.stop(); }, 250); }
   RP.on = false; RP.frames = null; RP.view = null; RP.keys = null;
   GAME.shake = 0; GAME.camPunch = 0; GAME.hitStop = 0; trailPts.length = 0;
   for (const c of GAME.chars.values()) rpResetChar(c);
@@ -4879,7 +5378,7 @@ function rpCamera(dt) {
   camera.position.copy(CAM.pos);
   camera.lookAt(CAM.look);
 }
-function rpSkip() { if (RP.on) { rpStop(); SFX.ui(); return true; } return false; }
+function rpSkip() { if (RP.on && RP.rec) return true; if (RP.on) { rpStop(); SFX.ui(); return true; } return false; }
 
 // =========================================================
 //  RETOS DIARIOS, LOGROS Y ESTADÍSTICAS TOTALES
@@ -4929,6 +5428,8 @@ const ACH = [
   { id: 'cup_g', ico: '🏆', name: 'Copa Oro', desc: 'Gana la Copa Oro', ok: (t) => t.cups.oro >= 1 },
   { id: 'mgr_w', ico: '💼', name: 'Míster', desc: 'Gana 5 partidos como mánager', ok: (t) => t.mgrWins >= 5 },
   { id: 'mgr_t', ico: '🏅', name: 'Mánager campeón', desc: 'Gana una liga en el Modo Mánager', ok: (t) => t.mgrTitles >= 1 },
+  { id: 'season1', ico: '📅', name: 'Campeón de liga', desc: 'Gana una Temporada', ok: (t) => (t.seasonTitles || 0) >= 1 },
+  { id: 'pro1', ico: '⚡', name: 'Profesional', desc: 'Gana un partido con los controles Pro', ok: (t) => (t.proWins || 0) >= 1 },
   { id: 'daily7', ico: '📅', name: 'Constancia', desc: 'Completa los retos 7 días seguidos', ok: () => (SAVE.daily ? SAVE.daily.best : 0) >= 7 },
   { id: 'lvl5', ico: '⭐', name: 'Nivel 5', desc: 'Llega al nivel 5', ok: () => SAVE.level >= 5 },
   { id: 'lvl12', ico: '🌟', name: 'Nivel 12', desc: 'Llega al nivel 12 (¡la corona!)', ok: () => SAVE.level >= 12 },
@@ -4965,6 +5466,8 @@ function track(ev, n = 1, info = {}) {
     case 'tourneyWin': t.cups[info.cup] = (t.cups[info.cup] || 0) + 1; break;
     case 'mgrWin': t.mgrWins++; break;
     case 'mgrTitle': t.mgrTitles++; break;
+    case 'proWin': t.proWins = (t.proWins || 0) + 1; break;
+    case 'seasonTitle': t.seasonTitles = (t.seasonTitles || 0) + 1; break;
   }
   const D = daily();
   for (const c of D.list) {
@@ -5014,6 +5517,11 @@ function renderGoals() {
         const def = DAILY_POOL.find((p) => p.id === c.id);
         return `<div class="goal ${c.done ? 'done' : ''}"><div class="gico">${c.done ? '✅' : def.ico}</div><div class="ginfo"><b>${def.txt(c.n, c.v)}</b><span class="abar"><i style="width:${(c.prog / c.n) * 100}%;background:${c.done ? '#2fd27a' : '#3a7bff'}"></i></span><small>${c.prog}/${c.n}</small></div><div class="gxp">+${def.xp} XP</div></div>`;
       }).join('') + '<p class="tipSmall">Completa los 3 retos para ganar un bonus y mantener tu racha. Cuentan los partidos contra la PC, torneos, online y Mánager.</p>';
+  } else if (goalTab === 'friends') {
+    const list = Object.entries(SAVE.friends || {}).sort((a, b) => (b[1].w + b[1].l + b[1].with) - (a[1].w + a[1].l + a[1].with));
+    body.innerHTML = `<div class="streak">👥 Tus partidos online contra amigos</div><div class="friends">` + (list.length
+      ? list.map(([n, f]) => `<div class="fr"><b>${escapeHtml(n)}</b><span>${f.w}✅ – ${f.l}❌${f.with ? ` · ${f.with} juntos` : ''}</span></div>`).join('')
+      : '<p class="tipSmall">Juega en una sala online con amigos (🌐 Crear sala) y aquí verás quién gana más.</p>') + '</div>';
   } else {
     if (!SAVE.ach) SAVE.ach = {};
     const got = ACH.filter((a) => SAVE.ach[a.id]).length;
@@ -5055,10 +5563,10 @@ const cupOpp = (cup) => { const l = cup.rounds[cup.round], i = l.indexOf(0); ret
 function playCupMatch() {
   const cup = SAVE.cup, r = cup.round, opp = cup.teams[cupOpp(cup)];
   const size = cup.size, used = new Set([SAVE.name, ...cup.mates.map((m) => m.name)]);
-  const roster = [{ id: 0, name: SAVE.name, team: 0, cpu: false, look: SAVE.look }];
+  const roster = [{ id: 0, name: SAVE.name, team: 0, cpu: false, look: SAVE.look, perks: myPerks() }];
   cup.mates.forEach((m, i) => roster.push({ id: i + 1, name: m.name, team: 0, cpu: true, look: m.look }));
   for (let i = 0; i < size; i++) roster.push({ id: 10 + i, name: cpuName(used), team: 1, cpu: true, look: randomLook() });
-  startMatch('local', roster, { size, diff: CUPS[cup.tier].diff[r], pts: r === 2 ? 15 : 11, venue: cup.venue }, 0);
+  startMatch('local', roster, { size, diff: CUPS[cup.tier].diff[r], pts: r === 2 ? 15 : 11, venue: cup.venue, assist: autoAssist() }, 0);
   GAME.cup = true;
   showBanner(ROUND_NAMES[r], 'vs ' + escapeHtml(opp.name), '#ffe14d');
 }
@@ -5176,6 +5684,7 @@ document.addEventListener('click', (e) => {
   if (chip) {
     const k = chip.parentElement.dataset.opt, v = chip.dataset.v;
     SAVE[k] = isNaN(+v) ? v : +v; storeSave(); syncChips(); SFX.ui();
+    if (k === 'ctrl') syncCtrl();
     if (k === 'venue') setVenue(v);
   }
   const lchip = e.target.closest('[data-lopt] .chip');
@@ -5228,7 +5737,21 @@ $('#bReplays').onclick = () => {
   toast({ dest: 'Se repetirán solos los mejores puntos (aces, súper remates, bloqueos, jugadones…)', todas: 'Se repetirán todos los puntos', no: 'Sin repeticiones automáticas. Igual puedes tocar «Repetir jugada»' }[SAVE.replays], 3200);
 };
 $('#bWatch').onclick = () => { SFX.ui(); watchLastReplay(); };
+const CTRL_TXT = { clasico: 'Clásico', pro: 'Pro ⚡' };
+function syncCtrl() {
+  $('#bCtrl').textContent = '🎮 Controles: ' + CTRL_TXT[SAVE.ctrl];
+  $('#ctrlHint').textContent = SAVE.ctrl === 'pro'
+    ? 'Pro: mantén GOLPE para cargar la potencia y suéltalo para golpear. Suave = preciso, fuerte = potente pero arriesgado. +25% XP.'
+    : 'Clásico: solo cuenta el momento del toque. Ideal para empezar.';
+}
+$('#bCtrl').onclick = () => { SAVE.ctrl = SAVE.ctrl === 'pro' ? 'clasico' : 'pro'; storeSave(); syncCtrl(); SFX.ui(); toast(SAVE.ctrl === 'pro' ? '⚡ Controles Pro: mantén GOLPE para cargar la potencia' : '🎮 Controles clásicos', 2600); };
+syncCtrl();
 $('#rpBtn').onclick = (e) => { e.stopPropagation(); SFX.ui(); if (RP.lastClip) rpPlay(RP.lastClip); };
+$('#rpSave').onclick = (e) => { e.stopPropagation(); SFX.ui(); saveClip(); };
+$('#bClip').onclick = () => { SFX.ui(); saveClip(); };
+function syncVib() { $('#bVib').textContent = '📳 Vibración: ' + (SAVE.vib === false ? 'No' : 'Sí'); $('#bVib').style.display = IS_TOUCH ? '' : 'none'; }
+$('#bVib').onclick = () => { SAVE.vib = SAVE.vib === false; storeSave(); syncVib(); SFX.ui(); buzz(40); };
+syncVib();
 syncReplaysBtn();
 $('#rpBadge').onclick = () => rpSkip();
 $('#pauseBtn').onclick = () => togglePause();
@@ -5256,6 +5779,7 @@ $('#bFs').onclick = () => toggleFullscreen();
 for (const row of $$('.venueRow')) row.innerHTML = VENUE_IDS.map((id) => '<button class="chip" data-v="' + id + '">' + VENUES[id].emoji + '<small>' + VENUES[id].name + '</small></button>').join('');
 $('#bAgain').onclick = () => {
   if (GAME.cup) { leaveToMenu(); openCup(); return; }
+  if (GAME.season) { leaveToMenu(); openSeason(); return; }
   if (GAME.manager) { leaveToMenu(); openClub(); return; }
   if (GAME.mode === 'local') startLocal();
   else if (GAME.mode === 'host') hostStart();
@@ -5390,6 +5914,7 @@ function frame(now) {
       const me = v.players.find((p) => p.id === GAME.myId);
       updateAim(v, me);
       updateHud(v);
+      playsTick(v);
     }
     renderView(v, dt);
   }
@@ -5406,6 +5931,7 @@ function frame(now) {
     if (GAME.mode === 'host') ni.textContent = `Sala ${NET.code} · ${NET.conns.size} amigo${NET.conns.size === 1 ? '' : 's'}`;
     else ni.textContent = `Sala ${NET.code} · ping ${Math.round(NET.rtt * 1000)} ms · ${NET.via}`;
   }
+  chargeTick(dt);
   if (RP.on && RP.view) rpCamera(dt);
   else updateCamera(dt, v || { players: [], ball: { x: 0, y: 0, z: 0 } });
   const fxDt = rv && RP.on ? rv.dt : dt;
